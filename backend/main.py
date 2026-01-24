@@ -1,38 +1,28 @@
 import os
 import json
 import uuid
-from datetime import datetime, timedelta
+from datetime import datetime
 from typing import Optional
 import uvicorn
-from fastapi import FastAPI, HTTPException, Depends, status
+from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel
 from openai import OpenAI
 from dotenv import load_dotenv
 import sqlalchemy
-from passlib.context import CryptContext
-from jose import JWTError, jwt
-from database import database, circuits, users, metadata
+from database import database, circuits, metadata
 
 # Load environment variables
 load_dotenv()
 
 # --- CONFIGURATION ---
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
-SECRET_KEY = os.getenv("SECRET_KEY", "supersecretkey") # CHANGE THIS IN PRODUCTION
-ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 60 * 24 * 7 # 7 days
 
 if not OPENAI_API_KEY:
     raise ValueError("No OPENAI_API_KEY found.")
 
 client = OpenAI(api_key=OPENAI_API_KEY)
 model_name = os.getenv("OPENAI_MODEL", "gpt-4o")
-
-# Auth Config
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="api/login") # Point to our login route
 
 # Initialize FastAPI
 app = FastAPI(title="TechWatt Circuit AI")
@@ -42,7 +32,7 @@ app = FastAPI(title="TechWatt Circuit AI")
 async def startup():
     await database.connect()
     engine = sqlalchemy.create_engine(str(database.url))
-    metadata.create_all(engine) # Creates tables if missing
+    metadata.create_all(engine)
 
 @app.on_event("shutdown")
 async def shutdown():
@@ -68,19 +58,6 @@ app.add_middleware(
 )
 
 # --- MODELS ---
-class UserCreate(BaseModel):
-    email: EmailStr
-    password: str
-
-class UserInDB(BaseModel):
-    id: int
-    email: str
-    created_at: datetime
-    
-class Token(BaseModel):
-    access_token: str
-    token_type: str
-
 class CircuitRequest(BaseModel):
     query: str
 
@@ -104,49 +81,7 @@ class BOMResponse(BaseModel):
     total_estimated_cost: str
     notes: Optional[str] = None
 
-# --- AUTH HELPERS ---
-def verify_password(plain_password, hashed_password):
-    return pwd_context.verify(plain_password, hashed_password)
-
-def get_password_hash(password):
-    return pwd_context.hash(password)
-
-def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
-    to_encode = data.copy()
-    if expires_delta:
-        expire = datetime.utcnow() + expires_delta
-    else:
-        expire = datetime.utcnow() + timedelta(minutes=15)
-    to_encode.update({"exp": expire})
-    encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
-    return encoded_jwt
-
-async def get_current_user(token: str = Depends(oauth2_scheme)):
-    credentials_exception = HTTPException(
-        status_code=status.HTTP_401_UNAUTHORIZED,
-        detail="Could not validate credentials",
-        headers={"WWW-Authenticate": "Bearer"},
-    )
-    try:
-        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-        email: str = payload.get("sub")
-        if email is None:
-            raise credentials_exception
-    except JWTError:
-        raise credentials_exception
-        
-    query = users.select().where(users.c.email == email)
-    user = await database.fetch_one(query)
-    if user is None:
-        raise credentials_exception
-    return user
-
-async def get_optional_user(token: Optional[str] = None):
-    # Helper for logic that works differently if logged in or not
-    # Not used as dependency directly usually
-    return None
-
-# --- PROMPTS (Same as before) ---
+# --- PROMPTS ---
 SYSTEM_PROMPT_DIAGRAM = """
 You are an expert Electronics Engineer creating WIRING DIAGRAMS for TechWatt.ai.
 STRUCTURE: One MAIN controller in center, Peripherals around it.
@@ -197,46 +132,6 @@ OUTPUT JSON ONLY:
 
 # --- ENDPOINTS ---
 
-@app.post("/api/register", response_model=Token)
-async def register(user: UserCreate):
-    # Check if user exists
-    query = users.select().where(users.c.email == user.email)
-    existing_user = await database.fetch_one(query)
-    if existing_user:
-        raise HTTPException(status_code=400, detail="Email already registered")
-    
-    hashed_pw = get_password_hash(user.password)
-    query = users.insert().values(email=user.email, hashed_password=hashed_pw)
-    await database.execute(query)
-    
-    access_token = create_access_token(data={"sub": user.email})
-    return {"access_token": access_token, "token_type": "bearer"}
-
-@app.post("/api/login", response_model=Token)
-async def login(form_data: OAuth2PasswordRequestForm = Depends()):
-    # Find user
-    query = users.select().where(users.c.email == form_data.username)
-    user = await database.fetch_one(query)
-    
-    if not user or not verify_password(form_data.password, user.hashed_password):
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Incorrect email or password",
-            headers={"WWW-Authenticate": "Bearer"},
-        )
-    
-    access_token = create_access_token(data={"sub": user.email})
-    return {"access_token": access_token, "token_type": "bearer"}
-
-@app.get("/api/me", response_model=UserInDB)
-async def read_users_me(current_user = Depends(get_current_user)):
-    return {
-        "id": current_user["id"],
-        "email": current_user["email"],
-        "created_at": current_user["created_at"]
-    }
-
-# AI Endpoints (Open public for now, but usually protected)
 @app.post("/api/generate", response_model=CircuitResponse)
 async def generate_circuit(request: CircuitRequest):
     try:
@@ -289,13 +184,13 @@ async def generate_bom(request: CircuitRequest):
         raise HTTPException(status_code=500, detail=str(e))
 
 @app.post("/api/save")
-async def save_circuit(request: SaveRequest, current_user = Depends(get_current_user)):
-    # REQUIRES LOGIN
+async def save_circuit(request: SaveRequest):
+    # PUBLIC SAVE
     try:
         circuit_id = str(uuid.uuid4())[:8]
         query = circuits.insert().values(
             id=circuit_id,
-            user_id=current_user["id"], # Attach to user
+            user_id=None, # Anonymous
             query=request.query,
             diagram_data=request.diagram_data,
             code=request.code,
@@ -309,10 +204,10 @@ async def save_circuit(request: SaveRequest, current_user = Depends(get_current_
         raise HTTPException(status_code=500, detail="Database error")
 
 @app.get("/api/recent")
-async def get_recent_circuits(limit: int = 10, current_user = Depends(get_current_user)):
-    # REQUIRES LOGIN - Fetch ONLY this user's circuits
+async def get_recent_circuits(limit: int = 10):
+    # PUBLIC HISTORY - Global recent
     try:
-        query = circuits.select().where(circuits.c.user_id == current_user["id"]).order_by(sqlalchemy.desc(circuits.c.created_at)).limit(limit)
+        query = circuits.select().order_by(sqlalchemy.desc(circuits.c.created_at)).limit(limit)
         results = await database.fetch_all(query)
         return [
             {
@@ -327,8 +222,6 @@ async def get_recent_circuits(limit: int = 10, current_user = Depends(get_curren
 
 @app.get("/api/circuit/{circuit_id}")
 async def load_circuit(circuit_id: str):
-    # PUBLIC (Sharing should be public generally, or we check ownership)
-    # For now, reading is public, saving is private
     query = circuits.select().where(circuits.c.id == circuit_id)
     result = await database.fetch_one(query)
     if not result:

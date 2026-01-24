@@ -58,7 +58,7 @@ const Home = () => {
           Arduino code, and component cost estimate instantly.
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <Link to="/app?action=login" className="inline-flex items-center justify-center gap-2 px-8 py-4 text-lg font-bold text-white bg-blue-600 rounded-xl hover:bg-blue-700 transition-all shadow-xl shadow-blue-600/30">
+          <Link to="/app" className="inline-flex items-center justify-center gap-2 px-8 py-4 text-lg font-bold text-white bg-blue-600 rounded-xl hover:bg-blue-700 transition-all shadow-xl shadow-blue-600/30">
             Start Designing Free <ArrowRight size={20} />
           </Link>
           <button 

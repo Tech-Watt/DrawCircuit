@@ -13,8 +13,7 @@ import ReactFlow, {
 import 'reactflow/dist/style.css';
 import axios from 'axios';
 import { 
-  Download, Cpu, Loader2, Zap, Save, Share2, 
-  Code, FileText, LayoutTemplate, Copy, Check, Clock, X, User, LogOut 
+  Download, Cpu, Loader2, Zap, Save, Check, Clock, X, Code, FileText, LayoutTemplate, Copy
 } from 'lucide-react';
 import * as htmlToImage from 'html-to-image';
 
@@ -93,14 +92,6 @@ const CircuitMaker = () => {
   const [edges, setEdges] = useState([]);
   const [query, setQuery] = useState('');
   
-  // Auth State
-  const [showAuthModal, setShowAuthModal] = useState(false);
-  const [authMode, setAuthMode] = useState('login');
-  const [user, setUser] = useState(null);
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [authLoading, setAuthLoading] = useState(false);
-
   // History State
   const [showHistory, setShowHistory] = useState(false);
   const [recentCircuits, setRecentCircuits] = useState([]);
@@ -118,79 +109,14 @@ const CircuitMaker = () => {
   
   const canvasRef = useRef(null);
   
-  // Check token on mount
+  // Check URL on mount
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (token) {
-        checkUser(token);
-    }
-    // Check URL for shared ID
     const params = new URLSearchParams(window.location.search);
     const id = params.get('id');
-    const action = params.get('action');
-
     if (id) {
        loadSharedCircuit(id);
     }
-    
-    // Auto-open login if requested and not logged in
-    if (action === 'login' && !token) {
-        setShowAuthModal(true);
-        // Clear param so it doesn't reopen on refresh
-        window.history.replaceState({}, '', '/app');
-    }
   }, []);
-
-  const checkUser = async (token) => {
-      try {
-          const res = await axios.get(`${API_BASE_URL}/me`, {
-              headers: { Authorization: `Bearer ${token}` }
-          });
-          setUser(res.data);
-      } catch (e) {
-          localStorage.removeItem('token');
-          setUser(null);
-      }
-  };
-
-  const handleAuth = async (e) => {
-      e.preventDefault();
-      setAuthLoading(true);
-      try {
-          let res;
-          if (authMode === 'login') {
-              const formData = new FormData();
-              formData.append('username', email);
-              formData.append('password', password);
-              res = await axios.post(`${API_BASE_URL}/login`, formData);
-          } else {
-              res = await axios.post(`${API_BASE_URL}/register`, { email, password });
-          }
-
-          const token = res.data.access_token;
-          localStorage.setItem('token', token);
-          await checkUser(token);
-          setShowAuthModal(false);
-          setEmail('');
-          setPassword('');
-      } catch (err) {
-          alert("Authentication failed: " + (err.response?.data?.detail || err.message));
-      } finally {
-          setAuthLoading(false);
-      }
-  };
-
-  const logout = () => {
-      localStorage.removeItem('token');
-      setUser(null);
-      setRecentCircuits([]);
-      setShowHistory(false);
-  };
-  
-  // React Flow Callbacks
-  const onNodesChange = useCallback((changes) => setNodes((nds) => applyNodeChanges(changes, nds)), []);
-  const onEdgesChange = useCallback((changes) => setEdges((eds) => applyEdgeChanges(changes, eds)), []);
-  const onConnect = useCallback((params) => setEdges((eds) => addEdge(params, eds)), []);
 
   const loadSharedCircuit = async (id) => {
       setLoading(true);
@@ -212,16 +138,8 @@ const CircuitMaker = () => {
   };
 
   const fetchHistory = async () => {
-      if (!user) {
-          setAuthMode('login');
-          setShowAuthModal(true);
-          return;
-      }
       try {
-          const token = localStorage.getItem('token');
-          const res = await axios.get(`${API_BASE_URL}/recent`, {
-              headers: { Authorization: `Bearer ${token}` }
-          });
+          const res = await axios.get(`${API_BASE_URL}/recent`);
           setRecentCircuits(res.data);
           setShowHistory(true);
       } catch (e) {
@@ -234,6 +152,11 @@ const CircuitMaker = () => {
       setShowHistory(false);
       window.history.pushState({}, '', `?id=${id}`);
   };
+
+  // React Flow Callbacks
+  const onNodesChange = useCallback((changes) => setNodes((nds) => applyNodeChanges(changes, nds)), []);
+  const onEdgesChange = useCallback((changes) => setEdges((eds) => applyEdgeChanges(changes, eds)), []);
+  const onConnect = useCallback((params) => setEdges((eds) => addEdge(params, eds)), []);
 
   const renderDiagram = (data) => {
       if (!data) return;
@@ -317,22 +240,15 @@ const CircuitMaker = () => {
   };
 
   const handleSave = async () => {
-      if (!user) {
-          setAuthMode('login');
-          setShowAuthModal(true);
-          return;
-      }
       if (!window.lastDiagramData) return;
       setSaving(true);
       try {
-          const token = localStorage.getItem('token');
+          // No Auth Header needed
           const res = await axios.post(`${API_BASE_URL}/save`, { 
               query,
               diagram_data: window.lastDiagramData,
               code: codeData ? codeData.code : "",
               bom: bomData ? bomData.items : []
-          }, {
-              headers: { Authorization: `Bearer ${token}` }
           });
           
           const url = `${window.location.origin}?id=${res.data.id}`;
@@ -388,74 +304,19 @@ const CircuitMaker = () => {
   return (
     <div className="h-screen flex flex-col bg-gray-50 text-gray-900 font-sans relative">
       
-      {/* Auth Modal */}
-      {showAuthModal && (
-          <div className="absolute inset-0 z-[60] flex items-center justify-center bg-black/60 backdrop-blur-sm animate-in fade-in">
-              <div className="bg-white rounded-xl shadow-2xl w-96 p-6 relative">
-                  <button onClick={() => setShowAuthModal(false)} className="absolute top-4 right-4 text-gray-400 hover:text-gray-600"><X size={20} /></button>
-                  <h2 className="text-xl font-bold mb-1 text-center bg-clip-text text-transparent bg-gradient-to-r from-blue-700 to-blue-500">
-                      {authMode === 'login' ? 'Welcome Back' : 'Join TechWatt'}
-                  </h2>
-                  <p className="text-center text-gray-500 text-sm mb-6">
-                      {authMode === 'login' ? 'Login to save your designs' : 'Create an account to track your history'}
-                  </p>
-                  
-                  <form onSubmit={handleAuth} className="space-y-4">
-                      <div>
-                          <input 
-                              type="email" 
-                              placeholder="Email address" 
-                              required
-                              className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
-                              value={email}
-                              onChange={e => setEmail(e.target.value)}
-                          />
-                      </div>
-                      <div>
-                          <input 
-                              type="password" 
-                              placeholder="Password" 
-                              required
-                              className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
-                              value={password}
-                              onChange={e => setPassword(e.target.value)}
-                          />
-                      </div>
-                      <button 
-                          type="submit" 
-                          disabled={authLoading}
-                          className="w-full py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition disabled:opacity-50"
-                      >
-                          {authLoading ? <Loader2 className="animate-spin mx-auto"/> : (authMode === 'login' ? 'Login' : 'Create Account')}
-                      </button>
-                  </form>
-                  
-                  <div className="mt-4 text-center text-sm text-gray-600">
-                      {authMode === 'login' ? "Don't have an account? " : "Already have an account? "}
-                      <button 
-                          onClick={() => setAuthMode(authMode === 'login' ? 'register' : 'login')}
-                          className="text-blue-600 font-semibold hover:underline"
-                      >
-                          {authMode === 'login' ? 'Register' : 'Login'}
-                      </button>
-                  </div>
-              </div>
-          </div>
-      )}
-
       {/* History Drawer */}
       {showHistory && (
           <div className="absolute inset-0 z-50 flex">
               <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={() => setShowHistory(false)}></div>
               <div className="relative w-80 bg-white shadow-2xl h-full ml-auto flex flex-col animate-in slide-in-from-right duration-200">
                   <div className="p-4 border-b flex justify-between items-center bg-gray-50">
-                      <h3 className="font-bold text-gray-700 flex items-center gap-2"><Clock size={16}/> Saved History</h3>
+                      <h3 className="font-bold text-gray-700 flex items-center gap-2"><Clock size={16}/> Recent Designs</h3>
                       <button onClick={() => setShowHistory(false)} className="hover:bg-gray-200 p-1 rounded-full"><X size={16}/></button>
                   </div>
                   <div className="flex-1 overflow-y-auto p-4 space-y-3">
                       {recentCircuits.length === 0 ? (
                           <p className="text-gray-400 text-center text-sm py-10">
-                             {user ? "No saved circuits yet." : "Please login to see history."}
+                             No saved circuits yet.
                           </p>
                       ) : (
                           recentCircuits.map((c) => (
@@ -488,21 +349,9 @@ const CircuitMaker = () => {
           </div>
         </div>
         <div className="flex gap-2">
-            {!user ? (
-                <button onClick={() => setShowAuthModal(true)} className="flex items-center gap-2 px-4 py-2 text-blue-600 hover:bg-blue-50 rounded-lg text-sm font-bold transition-colors mr-2">
-                    <User size={16} /> Login
-                </button>
-            ) : (
-                <div className="flex items-center gap-2 mr-2">
-                     <span className="text-xs text-gray-500 hidden md:inline">{user.email}</span>
-                    <button onClick={fetchHistory} className="flex items-center gap-2 px-3 py-2 text-gray-700 hover:bg-gray-100 rounded-lg text-sm font-medium transition-colors border border-gray-200">
-                        <Clock size={16} /> History
-                    </button>
-                    <button onClick={logout} className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors" title="Logout">
-                        <LogOut size={16} />
-                    </button>
-                </div>
-            )}
+            <button onClick={fetchHistory} className="flex items-center gap-2 px-3 py-2 text-gray-700 hover:bg-gray-100 rounded-lg text-sm font-medium transition-colors border border-gray-200 mr-2">
+                <Clock size={16} /> Recent
+            </button>
             
             {shareUrl && (
                 <div className="flex items-center gap-2 bg-green-50 text-green-700 px-3 py-1 rounded text-sm border border-green-200">
@@ -511,7 +360,7 @@ const CircuitMaker = () => {
                 </div>
             )}
             <button onClick={handleSave} disabled={saving || !nodes.length} className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-300 hover:bg-gray-50 rounded-lg text-sm font-medium transition-colors">
-                {saving ? <Loader2 className="animate-spin" size={16} /> : <Save size={16} />} Save & Share
+                {saving ? <Loader2 className="animate-spin" size={16} /> : <Save size={16} />} Save Publicly
             </button>
             <button onClick={handleExport} disabled={nodes.length === 0} className="flex items-center gap-2 px-4 py-2 bg-gray-900 text-white hover:bg-gray-800 rounded-lg text-sm font-medium transition-colors shadow-lg shadow-gray-900/20">
                 <Download size={16} /> Export
@@ -565,7 +414,7 @@ const CircuitMaker = () => {
             </div>
 
             {/* Sidebar Content */}
-            <div className="flex-1 overflow-y-auto p-5 bg-gray-50/50">
+             <div className="flex-1 overflow-y-auto p-5 bg-gray-50/50">
                 {activeTab === 'diagram' && (
                     <div className="space-y-4">
                         {explanation ? (
