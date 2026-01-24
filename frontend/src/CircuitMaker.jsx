@@ -374,10 +374,10 @@ const CircuitMaker = () => {
       </header>
 
       <div className="flex flex-1 overflow-hidden flex-col md:flex-row">
-        {/* Resizable Sidebar - Collapsed on mobile to bottom or stacked */}
+        {/* Resizable Sidebar - INPUT FIRST on Mobile */}
         <aside 
-            className="bg-white border-b md:border-b-0 md:border-r flex flex-col z-10 shadow-[4px_0_24px_rgba(0,0,0,0.02)] relative shrink-0 order-2 md:order-1 h-[40vh] md:h-auto"
-            style={{ width: isMobile ? '100%' : sidebarWidth }}
+            className="bg-white border-b md:border-b-0 md:border-r flex flex-col z-10 shadow-[4px_0_24px_rgba(0,0,0,0.02)] relative shrink-0 order-1 md:order-1 h-auto md:h-auto"
+            style={{ width: isMobile ? '100%' : sidebarWidth, maxHeight: isMobile ? '50vh' : 'none' }}
         >
             {/* Drag Handle - Desktop Only */}
             <div
@@ -389,7 +389,7 @@ const CircuitMaker = () => {
                 <label className="block text-sm font-medium text-gray-700 mb-2">Project Description</label>
                 <div className="relative">
                     <textarea
-                        className="w-full h-16 md:h-24 p-3 border border-gray-300 rounded-lg text-sm resize-none focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all"
+                        className="w-full h-20 md:h-24 p-3 border border-gray-300 rounded-lg text-sm resize-none focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all"
                         placeholder="e.g. Arduino UNO with HC-SR04..."
                         value={query}
                         onChange={(e) => setQuery(e.target.value)}
@@ -522,8 +522,8 @@ const CircuitMaker = () => {
             </div>
         </aside>
 
-        {/* Canvas */}
-        <main className="flex-1 relative bg-gray-100" ref={canvasRef}>
+        {/* Canvas - Order 2 on Mobile (Below Sidebar) */}
+        <main className="flex-1 relative bg-gray-100 order-2" ref={canvasRef}>
           <ReactFlow
             nodes={nodes}
             edges={edges}
@@ -540,13 +540,13 @@ const CircuitMaker = () => {
           </ReactFlow>
           
            {nodes.length === 0 && !loading && (
-            <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-              <div className="bg-white/80 backdrop-blur-sm p-8 rounded-2xl shadow-xl text-center border max-w-md">
-                <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                     <Cpu size={32} className="text-blue-600" />
+            <div className="absolute inset-0 flex items-center justify-center pointer-events-none p-4">
+              <div className="bg-white/80 backdrop-blur-sm p-4 md:p-8 rounded-2xl shadow-xl text-center border max-w-sm w-full">
+                <div className="w-10 h-10 md:w-16 md:h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-3 md:mb-4">
+                     <Cpu size={20} className="text-blue-600 md:w-8 md:h-8" />
                 </div>
-                <h2 className="text-xl font-bold text-gray-900 mb-2">Design Your Circuit</h2>
-                <p className="text-gray-600 mb-0">Describe your idea, and AI will generate the wiring, code, and cost estimate instantly.</p>
+                <h2 className="text-base md:text-xl font-bold text-gray-900 mb-1 md:mb-2">Design Your Circuit</h2>
+                <p className="text-xs md:text-base text-gray-600 mb-0">Describe your idea to generate wiring, code, and costs.</p>
               </div>
             </div>
           )}
