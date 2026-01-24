@@ -29,7 +29,9 @@ FRONTEND_URL = os.getenv("FRONTEND_URL", "http://localhost:5173")
 allowed_origins = [
     "http://localhost:5173",
     "http://localhost:3000",
-    "https://techwatt-drawcircuit-production-fb0d.up.railway.app",  # Frontend URL from error
+    "https://techwatt-drawcircuit-production-fb0d.up.railway.app",  # Railway Frontend
+    "https://www.circuit.techwatt.ai",  # Custom Domain
+    "https://circuit.techwatt.ai", # Allow non-www too just in case
     FRONTEND_URL,
 ]
 
