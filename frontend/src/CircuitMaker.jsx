@@ -127,8 +127,17 @@ const CircuitMaker = () => {
     // Check URL for shared ID
     const params = new URLSearchParams(window.location.search);
     const id = params.get('id');
+    const action = params.get('action');
+
     if (id) {
        loadSharedCircuit(id);
+    }
+    
+    // Auto-open login if requested and not logged in
+    if (action === 'login' && !token) {
+        setShowAuthModal(true);
+        // Clear param so it doesn't reopen on refresh
+        window.history.replaceState({}, '', '/app');
     }
   }, []);
 
