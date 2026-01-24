@@ -4,7 +4,7 @@ import sqlalchemy
 from datetime import datetime
 
 # Database URL from environment or direct string (for now)
-DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://postgres:XFKYLsJtqqAinqWJshVkwNxaFmMfdBVe@crossover.proxy.rlwy.net:18193/railway")
+DATABASE_URL = os.getenv("DATABASE_URL")
 
 database = databases.Database(DATABASE_URL)
 metadata = sqlalchemy.MetaData()
