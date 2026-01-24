@@ -374,10 +374,40 @@ const CircuitMaker = () => {
       </header>
 
       <div className="flex flex-1 overflow-hidden flex-col md:flex-row">
-        {/* Resizable Sidebar - INPUT FIRST on Mobile */}
+        {/* Canvas Area - Order 1 on Mobile (Top) */}
+        <main className="relative bg-gray-100 order-1 md:order-2 h-[45vh] md:h-auto md:flex-1 w-full" ref={canvasRef}>
+          <ReactFlow
+            nodes={nodes}
+            edges={edges}
+            onNodesChange={onNodesChange}
+            onEdgesChange={onEdgesChange}
+            onConnect={onConnect}
+            nodeTypes={nodeTypes}
+            fitView
+            fitViewOptions={{ padding: 0.2 }}
+          >
+            <Background color="#cbd5e1" gap={20} />
+            <Controls className="bg-white border shadow-lg rounded-lg" />
+            <MiniMap className="border shadow-lg rounded-lg" />
+          </ReactFlow>
+          
+           {nodes.length === 0 && !loading && (
+            <div className="absolute inset-0 flex items-center justify-center pointer-events-none p-4">
+              <div className="bg-white/80 backdrop-blur-sm p-3 md:p-8 rounded-2xl shadow-xl text-center border max-w-xs md:max-w-sm w-full">
+                <div className="w-8 h-8 md:w-16 md:h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-2 md:mb-4">
+                     <Cpu size={16} className="text-blue-600 md:w-8 md:h-8" />
+                </div>
+                <h2 className="text-sm md:text-xl font-bold text-gray-900 mb-1 md:mb-2">Design Your Circuit</h2>
+                <p className="text-[10px] md:text-base text-gray-600 mb-0">Describe your idea to generate wiring, code, and costs.</p>
+              </div>
+            </div>
+          )}
+        </main>
+
+        {/* Controls Sidebar - Order 2 on Mobile (Bottom) */}
         <aside 
-            className="bg-white border-b md:border-b-0 md:border-r flex flex-col z-10 shadow-[4px_0_24px_rgba(0,0,0,0.02)] relative shrink-0 order-1 md:order-1 h-auto md:h-auto"
-            style={{ width: isMobile ? '100%' : sidebarWidth, maxHeight: isMobile ? '50vh' : 'none' }}
+            className="bg-white border-t md:border-t-0 md:border-r flex flex-col z-10 shadow-[0_-4px_24px_rgba(0,0,0,0.02)] relative shrink-0 order-2 md:order-1 flex-1 md:flex-none md:h-auto overflow-hidden"
+            style={{ width: isMobile ? '100%' : sidebarWidth }}
         >
             {/* Drag Handle - Desktop Only */}
             <div
@@ -385,11 +415,11 @@ const CircuitMaker = () => {
                 onMouseDown={startResizing}
             />
 
-            <div className="p-4 md:p-5 border-b">
-                <label className="block text-sm font-medium text-gray-700 mb-2">Project Description</label>
+            <div className="p-3 md:p-5 border-b shrink-0">
+                <label className="block text-xs md:text-sm font-medium text-gray-700 mb-1 md:mb-2">Project Description</label>
                 <div className="relative">
                     <textarea
-                        className="w-full h-20 md:h-24 p-3 border border-gray-300 rounded-lg text-sm resize-none focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all"
+                        className="w-full h-16 md:h-24 p-2 md:p-3 border border-gray-300 rounded-lg text-sm resize-none focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all"
                         placeholder="e.g. Arduino UNO with HC-SR04..."
                         value={query}
                         onChange={(e) => setQuery(e.target.value)}
@@ -398,28 +428,28 @@ const CircuitMaker = () => {
                     <button
                         onClick={handleGenerate}
                         disabled={loading || !query.trim()}
-                        className="absolute bottom-3 right-3 p-2 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-300 text-white rounded-md shadow-sm transition-colors"
+                        className="absolute bottom-2 right-2 md:bottom-3 md:right-3 p-1.5 md:p-2 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-300 text-white rounded-md shadow-sm transition-colors"
                     >
-                        {loading ? <Loader2 className="animate-spin" size={16} /> : <Zap size={16} />}
+                        {loading ? <Loader2 className="animate-spin" size={14} /> : <Zap size={14} />}
                     </button>
                 </div>
             </div>
 
             {/* Feature Tabs */}
-            <div className="flex border-b bg-gray-50">
-                <button onClick={() => setActiveTab('diagram')} className={`flex-1 py-2 md:py-3 text-sm font-medium flex items-center justify-center gap-2 border-b-2 transition-colors ${activeTab === 'diagram' ? 'border-blue-500 text-blue-600 bg-white' : 'border-transparent text-gray-500 hover:bg-gray-100'}`}>
-                    <LayoutTemplate size={16} /> <span className="hidden xs:inline">Diagram</span>
+            <div className="flex border-b bg-gray-50 shrink-0">
+                <button onClick={() => setActiveTab('diagram')} className={`flex-1 py-2 md:py-3 text-xs md:text-sm font-medium flex items-center justify-center gap-1 md:gap-2 border-b-2 transition-colors ${activeTab === 'diagram' ? 'border-blue-500 text-blue-600 bg-white' : 'border-transparent text-gray-500 hover:bg-gray-100'}`}>
+                    <LayoutTemplate size={14} /> <span className="inline">Diagram</span>
                 </button>
-                <button onClick={() => setActiveTab('code')} className={`flex-1 py-2 md:py-3 text-sm font-medium flex items-center justify-center gap-2 border-b-2 transition-colors ${activeTab === 'code' ? 'border-blue-500 text-blue-600 bg-white' : 'border-transparent text-gray-500 hover:bg-gray-100'}`}>
-                    <Code size={16} /> <span className="hidden xs:inline">Code</span>
+                <button onClick={() => setActiveTab('code')} className={`flex-1 py-2 md:py-3 text-xs md:text-sm font-medium flex items-center justify-center gap-1 md:gap-2 border-b-2 transition-colors ${activeTab === 'code' ? 'border-blue-500 text-blue-600 bg-white' : 'border-transparent text-gray-500 hover:bg-gray-100'}`}>
+                    <Code size={14} /> <span className="inline">Code</span>
                 </button>
-                <button onClick={() => setActiveTab('bom')} className={`flex-1 py-2 md:py-3 text-sm font-medium flex items-center justify-center gap-2 border-b-2 transition-colors ${activeTab === 'bom' ? 'border-blue-500 text-blue-600 bg-white' : 'border-transparent text-gray-500 hover:bg-gray-100'}`}>
-                    <FileText size={16} /> <span className="hidden xs:inline">Cost</span>
+                <button onClick={() => setActiveTab('bom')} className={`flex-1 py-2 md:py-3 text-xs md:text-sm font-medium flex items-center justify-center gap-1 md:gap-2 border-b-2 transition-colors ${activeTab === 'bom' ? 'border-blue-500 text-blue-600 bg-white' : 'border-transparent text-gray-500 hover:bg-gray-100'}`}>
+                    <FileText size={14} /> <span className="inline">Cost</span>
                 </button>
             </div>
 
             {/* Sidebar Content */}
-            <div className="flex-1 overflow-y-auto p-4 md:p-5 bg-gray-50/50">
+            <div className="flex-1 overflow-y-auto p-3 md:p-5 bg-gray-50/50">
                 {/* ... (Existing Content Panels - no changes needed internally) ... */}
                 {activeTab === 'diagram' && (
                     <div className="space-y-4">
@@ -521,36 +551,6 @@ const CircuitMaker = () => {
                 )}
             </div>
         </aside>
-
-        {/* Canvas - Order 2 on Mobile (Below Sidebar) */}
-        <main className="flex-1 relative bg-gray-100 order-2" ref={canvasRef}>
-          <ReactFlow
-            nodes={nodes}
-            edges={edges}
-            onNodesChange={onNodesChange}
-            onEdgesChange={onEdgesChange}
-            onConnect={onConnect}
-            nodeTypes={nodeTypes}
-            fitView
-            fitViewOptions={{ padding: 0.2 }}
-          >
-            <Background color="#cbd5e1" gap={20} />
-            <Controls className="bg-white border shadow-lg rounded-lg" />
-            <MiniMap className="border shadow-lg rounded-lg" />
-          </ReactFlow>
-          
-           {nodes.length === 0 && !loading && (
-            <div className="absolute inset-0 flex items-center justify-center pointer-events-none p-4">
-              <div className="bg-white/80 backdrop-blur-sm p-4 md:p-8 rounded-2xl shadow-xl text-center border max-w-sm w-full">
-                <div className="w-10 h-10 md:w-16 md:h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-3 md:mb-4">
-                     <Cpu size={20} className="text-blue-600 md:w-8 md:h-8" />
-                </div>
-                <h2 className="text-base md:text-xl font-bold text-gray-900 mb-1 md:mb-2">Design Your Circuit</h2>
-                <p className="text-xs md:text-base text-gray-600 mb-0">Describe your idea to generate wiring, code, and costs.</p>
-              </div>
-            </div>
-          )}
-        </main>
       </div>
     </div>
   );
