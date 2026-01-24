@@ -2,7 +2,8 @@ import os
 import databases
 import sqlalchemy
 from datetime import datetime
-
+from dotenv import load_dotenv
+load_dotenv()
 # Database URL from environment or direct string (for now)
 DATABASE_URL = os.getenv("DATABASE_URL")
 
