@@ -119,11 +119,6 @@ const Home = () => {
              <img src={logo} alt="TechWatt Logo" className="h-6 opacity-50 grayscale" />
              <span>© 2026 TechWatt AI. All rights reserved.</span>
           </div>
-          <div className="flex gap-6">
-            <a href="#" className="hover:text-blue-600">Privacy Policy</a>
-            <a href="#" className="hover:text-blue-600">Terms of Service</a>
-            <a href="https://github.com/Tech-Watt/DrawCircuit" className="hover:text-blue-600">GitHub</a>
-          </div>
         </div>
       </footer>
     </div>
