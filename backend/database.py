@@ -32,3 +32,16 @@ circuits = sqlalchemy.Table(
     sqlalchemy.Column("bom", sqlalchemy.JSON, nullable=True),
     sqlalchemy.Column("created_at", sqlalchemy.DateTime, default=datetime.utcnow),
 )
+
+# Components Table (for Study Guide)
+components = sqlalchemy.Table(
+    "components",
+    metadata,
+    sqlalchemy.Column("id", sqlalchemy.Integer, primary_key=True),
+    sqlalchemy.Column("name", sqlalchemy.String, unique=True, nullable=False),
+    sqlalchemy.Column("description", sqlalchemy.Text, nullable=False),
+    sqlalchemy.Column("category", sqlalchemy.String, nullable=False), # Sensor, Actuator, Controller
+    sqlalchemy.Column("wiring_guide", sqlalchemy.Text, nullable=True),
+    sqlalchemy.Column("image_url", sqlalchemy.JSON, nullable=True),
+    sqlalchemy.Column("created_at", sqlalchemy.DateTime, default=datetime.utcnow),
+)

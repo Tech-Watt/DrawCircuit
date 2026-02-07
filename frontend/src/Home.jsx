@@ -36,6 +36,7 @@ const Home = () => {
             </div>
             <div className="hidden md:flex items-center space-x-8">
               <a href="#features" className="text-gray-600 hover:text-blue-600 transition-colors">Features</a>
+              <Link to="/study" className="text-gray-600 hover:text-blue-600 transition-colors">Study Guide</Link>
               <Link to="/app" className="px-5 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-all shadow-lg shadow-blue-600/20">
                 Launch App
               </Link>

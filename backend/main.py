@@ -10,7 +10,9 @@ from pydantic import BaseModel
 from openai import OpenAI
 from dotenv import load_dotenv
 import sqlalchemy
-from database import database, circuits, metadata
+from database import database, circuits, components, metadata
+
+
 
 # Load environment variables
 load_dotenv()
@@ -57,7 +59,47 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# --- CLOUDINARY CONFIG ---
+import cloudinary
+import cloudinary.uploader
+from fastapi import UploadFile, File
+
+cloudinary.config( 
+  cloud_name = os.getenv("CLOUDINARY_CLOUD_NAME"), 
+  api_key = os.getenv("CLOUDINARY_API_KEY"), 
+  api_secret = os.getenv("CLOUDINARY_API_SECRET") 
+)
+
+@app.post("/api/upload")
+async def upload_image(file: UploadFile = File(...)):
+    try:
+        # Upload the file to Cloudinary
+        result = cloudinary.uploader.upload(file.file, folder="robotics_components")
+        return {"url": result.get("secure_url")}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Image upload failed: {str(e)}")
+
 # --- MODELS ---
+from typing import Optional, List, Union
+
+# ...
+
+class ComponentRequest(BaseModel):
+    name: str
+    description: str
+    category: str
+    wiring_guide: Optional[str] = None
+    image_url: Optional[Union[str, List[str]]] = None
+
+class ComponentResponse(BaseModel):
+    id: int
+    name: str
+    description: str
+    category: str
+    wiring_guide: Optional[str] = None
+    image_url: Optional[Union[str, List[str]]] = None
+    created_at: datetime
+
 class CircuitRequest(BaseModel):
     query: str
 
@@ -80,6 +122,53 @@ class BOMResponse(BaseModel):
     items: list
     total_estimated_cost: str
     notes: Optional[str] = None
+
+class ComponentGenRequest(BaseModel):
+    name: str
+    category: str
+
+class ComponentGenResponse(BaseModel):
+    description: str
+    wiring_guide: str
+
+class PasswordVerifyRequest(BaseModel):
+    password: str
+
+@app.post("/api/generate-component-details", response_model=ComponentGenResponse)
+async def generate_component_details(request: ComponentGenRequest):
+    try:
+        prompt = f"""
+        You are an expert robotics teacher for kids. 
+        Write a fun, kid-friendly explanation for a robotics component.
+        
+        Component Name: {request.name}
+        Category: {request.category}
+        
+        Output JSON format only:
+        {{
+            "description": "A fun explanation using analogies (e.g. 'The Brain', 'The Muscle'). Use emojis.",
+            "wiring_guide": "Simple step-by-step wiring instructions for Arduino."
+        }}
+        """
+        
+        completion = client.chat.completions.create(
+            model=model_name,
+            messages=[{"role": "user", "content": prompt}],
+            response_format={"type": "json_object"}
+        )
+        
+        content = json.loads(completion.choices[0].message.content)
+        return content
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/api/verify-password")
+async def verify_password(request: PasswordVerifyRequest):
+    expected_password = os.getenv("ADMIN_PASSWORD", "techwatt123")
+    if request.password == expected_password:
+        return {"valid": True}
+    else:
+        raise HTTPException(status_code=401, detail="Invalid password")
 
 # --- PROMPTS ---
 SYSTEM_PROMPT_DIAGRAM = """
@@ -131,6 +220,65 @@ OUTPUT JSON ONLY:
 """
 
 # --- ENDPOINTS ---
+
+@app.get("/api/components", response_model=list[ComponentResponse])
+async def get_components():
+    query = components.select().order_by(components.c.name)
+    results = await database.fetch_all(query)
+    return [dict(r) for r in results]
+
+@app.post("/api/components", response_model=ComponentResponse)
+async def create_component(request: ComponentRequest):
+    try:
+        query = components.insert().values(
+            name=request.name,
+            description=request.description,
+            category=request.category,
+            wiring_guide=request.wiring_guide,
+            image_url=request.image_url,
+            created_at=datetime.utcnow()
+        )
+        last_record_id = await database.execute(query)
+        return {
+            **request.dict(),
+            "id": last_record_id,
+            "created_at": datetime.utcnow()
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/api/components/{component_id}", response_model=ComponentResponse)
+async def get_component(component_id: int):
+    query = components.select().where(components.c.id == component_id)
+    result = await database.fetch_one(query)
+    if not result:
+        raise HTTPException(status_code=404, detail="Component not found")
+    return dict(result)
+
+@app.put("/api/components/{component_id}", response_model=ComponentResponse)
+async def update_component(component_id: int, request: ComponentRequest):
+    query = components.update().where(components.c.id == component_id).values(
+        name=request.name,
+        description=request.description,
+        category=request.category,
+        wiring_guide=request.wiring_guide,
+        image_url=request.image_url
+    )
+    await database.execute(query)
+    
+    # Fetch updated record
+    fetch_query = components.select().where(components.c.id == component_id)
+    result = await database.fetch_one(fetch_query)
+    if not result:
+         raise HTTPException(status_code=404, detail="Component not found")
+    return dict(result)
+
+@app.delete("/api/components/{component_id}")
+async def delete_component(component_id: int):
+    query = components.delete().where(components.c.id == component_id)
+    await database.execute(query)
+    return {"message": "Component deleted successfully"}
+
 
 @app.post("/api/generate", response_model=CircuitResponse)
 async def generate_circuit(request: CircuitRequest):
