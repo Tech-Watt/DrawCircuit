@@ -11,4 +11,4 @@ passlib[bcrypt]
 python-jose[cryptography]
 python-multipart
 pydantic[email]
-python-dotenv
+cloudinary
