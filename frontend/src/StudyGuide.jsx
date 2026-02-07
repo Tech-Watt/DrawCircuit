@@ -147,6 +147,137 @@ const StudyGuide = () => {
     }, 500);
   };
 
+  const handleAIDownload = () => {
+    const printWindow = window.open('', '', 'width=800,height=600');
+    
+    // Convert markdown content to HTML using a temporary approach or library in the print window
+    const modulesContent = aiModules.map(mod => ({
+      ...mod,
+      htmlContent: mod.content
+        // Basic cleanup for asterisks if they are just bold markers
+        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') // Bold
+        .replace(/\*(.*?)\*/g, '<em>$1</em>') // Italic
+        .replace(/^# (.*$)/gm, '<h3>$1</h3>') // H1
+        .replace(/^## (.*$)/gm, '<h4>$1</h4>') // H2
+        .replace(/^### (.*$)/gm, '<h5>$1</h5>') // H3
+        .replace(/^- (.*$)/gm, '<ul><li>$1</li></ul>') // Lists (simple)
+        .replace(/\n/g, '<br />') // Newlines
+        // Cleanup extra list tags for consecutive items (simple regex fix)
+        .replace(/<\/ul><br \/><ul>/g, '')
+    }));
+
+    const html = `
+      <html>
+        <head>
+          <title>Tech Watt AI for Kids - Course Outline</title>
+          <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+          <style>
+            body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #1e293b; padding: 40px; line-height: 1.6; }
+            h1 { text-align: center; color: #7e22ce; border-bottom: 4px solid #7e22ce; padding-bottom: 20px; margin-bottom: 10px; font-size: 32px; }
+            .subtitle { text-align: center; color: #64748b; font-size: 18px; margin-bottom: 50px; font-style: italic; }
+            
+            .week-card { 
+                border: 1px solid #e2e8f0; 
+                border-radius: 16px; 
+                padding: 30px; 
+                margin-bottom: 30px; 
+                page-break-inside: avoid; 
+                background: #ffffff;
+                box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            }
+            
+            .week-header { 
+                display: flex; 
+                align-items: center; 
+                gap: 20px; 
+                margin-bottom: 20px; 
+                border-bottom: 2px solid #f1f5f9; 
+                padding-bottom: 15px; 
+            }
+            
+            .week-badge { 
+                background: #7e22ce; 
+                color: white; 
+                padding: 8px 16px; 
+                border-radius: 12px; 
+                font-weight: 800; 
+                font-size: 14px; 
+                text-transform: uppercase;
+                letter-spacing: 1px;
+            }
+            
+            .week-title { 
+                font-size: 24px; 
+                font-weight: 800; 
+                color: #0f172a; 
+            }
+            
+            .week-desc {
+                font-size: 16px;
+                color: #475569;
+                margin-bottom: 20px;
+                font-style: italic;
+                background: #f8fafc;
+                padding: 10px 15px;
+                border-left: 4px solid #cbd5e1;
+                border-radius: 4px;
+            }
+
+            .content { color: #334155; }
+            .content h1, .content h2, .content h3 { color: #7e22ce; margin-top: 25px; margin-bottom: 10px; font-weight: 700; }
+            .content h1 { font-size: 20px; border-bottom: 1px solid #e2e8f0; padding-bottom: 5px; }
+            .content h2 { font-size: 18px; }
+            .content p { margin-bottom: 10px; }
+            .content ul { padding-left: 20px; margin-bottom: 15px; }
+            .content li { margin-bottom: 6px; position: relative; }
+            .content strong { color: #0f172a; font-weight: 700; }
+            
+            /* Hide the markdown title if it duplicates the card title */
+            .content h1:first-child { display: none; }
+
+            @media print {
+              body { padding: 0; background: white; }
+              .week-card { box-shadow: none; border: 1px solid #ccc; break-inside: avoid; }
+            }
+          </style>
+        </head>
+        <body>
+          <h1>Tech Watt AI for Kids</h1>
+          <p class="subtitle">Future-Ready Artificial Intelligence Curriculum</p>
+          
+          ${aiModules.map(mod => `
+            <div class="week-card">
+              <div class="week-header">
+                <span class="week-badge">Week ${mod.week}</span>
+                <span class="week-title">${mod.title}</span>
+              </div>
+              <div class="week-desc">${mod.description}</div>
+              <div class="content" id="content-${mod.id}"></div>
+              <script>
+                document.getElementById('content-${mod.id}').innerHTML = marked.parse(\`${mod.content.replace(/`/g, '\\`').replace(/\$/g, '\\$')}\`);
+              </script>
+            </div>
+          `).join('')}
+
+          <div style="text-align: center; margin-top: 50px; color: #94a3b8; font-size: 12px; border-top: 1px solid #e2e8f0; padding-top: 30px;">
+            © ${new Date().getFullYear()} TechWatt AI. Empowering the next generation of innovators. <br/>
+            www.techwatt.ai
+          </div>
+        </body>
+      </html>
+    `;
+    printWindow.document.write(html);
+    printWindow.document.close();
+    
+    // Wait for script to load and render before printing
+    printWindow.onload = () => {
+        setTimeout(() => {
+            printWindow.focus();
+            printWindow.print();
+        }, 800);
+    };
+  };
+
   return (
     <div className="min-h-screen bg-slate-900 text-white font-sans selection:bg-cyan-500 selection:text-slate-900">
       {/* Background Effects */}
@@ -177,7 +308,7 @@ const StudyGuide = () => {
               <div>
                 <h1 className="text-3xl md:text-4xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-blue-500">
                   {activeModule === 'components' ? 'Robotics Kit Components' : 
-                   activeModule === 'ai' ? 'AI Integration Guide' : 
+                   activeModule === 'ai' ? 'Tech Watt AI for Kids' : 
                    activeModule === 'courses' ? 'Explore Courses' : 
                    'Study Hub Dashboard'}
                 </h1>
@@ -211,6 +342,15 @@ const StudyGuide = () => {
                     <Download size={20} /> <span className="md:hidden lg:inline">Download Guide</span>
                   </button>
                 </>
+              )}
+
+              {activeModule === 'ai' && (
+                  <button 
+                    onClick={handleAIDownload}
+                    className="flex-1 md:flex-none px-4 py-2 bg-purple-900/40 hover:bg-purple-800/60 text-purple-300 hover:text-white font-bold rounded-lg border border-purple-500/30 transition-all flex justify-center items-center gap-2 whitespace-nowrap"
+                  >
+                    <Download size={20} /> <span className="hidden md:inline">Download Outline</span>
+                  </button>
               )}
               
               <Link to="/admin" className="p-2 text-slate-500 hover:text-cyan-400 transition-colors" title="Admin Access">
@@ -246,7 +386,7 @@ const StudyGuide = () => {
               <div className="bg-purple-500/10 w-16 h-16 rounded-2xl flex items-center justify-center mb-6 text-purple-400 group-hover:bg-purple-500 group-hover:text-white transition-colors">
                 <Bot size={32} />
               </div>
-              <h2 className="text-2xl font-bold mb-3">AI Guide</h2>
+              <h2 className="text-2xl font-bold mb-3">Tech Watt AI for Kids</h2>
               <p className="text-slate-400 mb-6">Learn how to integrate Artificial Intelligence into your robotics projects using Python.</p>
               <div className="flex items-center text-purple-400 font-medium group-hover:translate-x-2 transition-transform">
                 Explore AI <ArrowLeft className="ml-2 rotate-180" size={16} />
