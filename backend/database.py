@@ -43,6 +43,7 @@ ai_courses = sqlalchemy.Table(
     sqlalchemy.Column("week", sqlalchemy.Integer, nullable=True), # For ordering/structure
     sqlalchemy.Column("content", sqlalchemy.Text, nullable=True),
     sqlalchemy.Column("image_url", sqlalchemy.JSON, nullable=True),
+    sqlalchemy.Column("course_type", sqlalchemy.String, default="python_master"), # 'python_master' or 'ai_kids'
     sqlalchemy.Column("created_at", sqlalchemy.DateTime, default=datetime.utcnow),
 )
 

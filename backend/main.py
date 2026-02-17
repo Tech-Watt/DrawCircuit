@@ -106,6 +106,7 @@ class AICourseRequest(BaseModel):
     week: Optional[int] = None
     content: Optional[str] = None
     image_url: Optional[Union[str, List[str]]] = None
+    course_type: Optional[str] = "python_master"
 
 class AICourseResponse(BaseModel):
     id: int
@@ -114,6 +115,7 @@ class AICourseResponse(BaseModel):
     week: Optional[int] = None
     content: Optional[str] = None
     image_url: Optional[Union[str, List[str]]] = None
+    course_type: Optional[str] = "python_master"
     created_at: datetime
 
 class CircuitRequest(BaseModel):
@@ -297,8 +299,10 @@ async def delete_component(component_id: int):
 
 
 @app.get("/api/ai-courses", response_model=list[AICourseResponse])
-async def get_ai_courses():
+async def get_ai_courses(type: Optional[str] = None):
     query = ai_courses.select().order_by(ai_courses.c.week)
+    if type:
+        query = query.where(ai_courses.c.course_type == type)
     results = await database.fetch_all(query)
     return [dict(r) for r in results]
 
@@ -311,6 +315,7 @@ async def create_ai_course(request: AICourseRequest):
             week=request.week,
             content=request.content,
             image_url=request.image_url,
+            course_type=request.course_type,
             created_at=datetime.utcnow()
         )
         last_record_id = await database.execute(query)
@@ -330,7 +335,8 @@ async def update_ai_course(course_id: int, request: AICourseRequest):
             description=request.description,
             week=request.week,
             content=request.content,
-            image_url=request.image_url
+            image_url=request.image_url,
+            course_type=request.course_type
         )
         await database.execute(query)
         

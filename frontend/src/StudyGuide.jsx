@@ -27,6 +27,7 @@ const StudyGuide = () => {
   const [loading, setLoading] = useState(true);
   const [activeDisplayImage, setActiveDisplayImage] = useState(null);
   const [aiModules, setAiModules] = useState([]);
+  const [selectedCourse, setSelectedCourse] = useState(null); // 'kids', 'python_master'
   const [expandedModuleId, setExpandedModuleId] = useState(null);
 
   useEffect(() => {
@@ -42,16 +43,16 @@ const StudyGuide = () => {
   }, [selectedComponent]);
 
   useEffect(() => {
-    if (activeModule === 'ai') {
+    if (activeModule === 'ai' && selectedCourse) {
         const fetchAI = async () => {
             try {
-                const res = await axios.get(`${API_URL}/api/ai-courses`);
+                const res = await axios.get(`${API_URL}/api/ai-courses?type=${selectedCourse}`);
                 setAiModules(res.data);
             } catch (err) { console.error(err); }
         };
         fetchAI();
     }
-  }, [activeModule]);
+  }, [activeModule, selectedCourse]);
 
   useEffect(() => {
     fetchComponents();
@@ -150,26 +151,14 @@ const StudyGuide = () => {
   const handleAIDownload = () => {
     const printWindow = window.open('', '', 'width=800,height=600');
     
-    // Convert markdown content to HTML using a temporary approach or library in the print window
-    const modulesContent = aiModules.map(mod => ({
-      ...mod,
-      htmlContent: mod.content
-        // Basic cleanup for asterisks if they are just bold markers
-        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') // Bold
-        .replace(/\*(.*?)\*/g, '<em>$1</em>') // Italic
-        .replace(/^# (.*$)/gm, '<h3>$1</h3>') // H1
-        .replace(/^## (.*$)/gm, '<h4>$1</h4>') // H2
-        .replace(/^### (.*$)/gm, '<h5>$1</h5>') // H3
-        .replace(/^- (.*$)/gm, '<ul><li>$1</li></ul>') // Lists (simple)
-        .replace(/\n/g, '<br />') // Newlines
-        // Cleanup extra list tags for consecutive items (simple regex fix)
-        .replace(/<\/ul><br \/><ul>/g, '')
-    }));
+    // Determine title based on selected course
+    const courseTitle = selectedCourse === 'kids' ? 'Tech Watt AI for Kids' : 'Tech Watt Python & AI Master Course';
+    const courseSubtitle = selectedCourse === 'kids' ? 'Future-Ready Artificial Intelligence Curriculum' : 'From Python Fundamentals to Deployment - A Complete Master Course';
 
     const html = `
       <html>
         <head>
-          <title>Tech Watt AI for Kids - Course Outline</title>
+          <title>${courseTitle} - Outline</title>
           <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
           <style>
             body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #1e293b; padding: 40px; line-height: 1.6; }
@@ -242,8 +231,8 @@ const StudyGuide = () => {
           </style>
         </head>
         <body>
-          <h1>Tech Watt AI for Kids</h1>
-          <p class="subtitle">Future-Ready Artificial Intelligence Curriculum</p>
+          <h1>${courseTitle}</h1>
+          <p class="subtitle">${courseSubtitle}</p>
           
           ${aiModules.map(mod => `
             <div class="week-card">
@@ -292,13 +281,20 @@ const StudyGuide = () => {
         <header className="flex flex-col gap-6 mb-12">
           <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6">
             <div className="flex items-start md:items-center gap-4 w-full lg:w-auto">
-              {activeModule ? (
+              {selectedCourse ? (
                  <button 
-                   onClick={() => setActiveModule(null)}
+                  onClick={() => setSelectedCourse(null)}
                    className="p-2 rounded-full bg-slate-800 hover:bg-slate-700 transition-colors shrink-0 group"
                  >
                    <ArrowLeft size={24} className="text-cyan-400 group-hover:-translate-x-1 transition-transform" />
                  </button>
+              ) : activeModule ? (
+                  <button 
+                    onClick={() => setActiveModule(null)}
+                    className="p-2 rounded-full bg-slate-800 hover:bg-slate-700 transition-colors shrink-0 group"
+                  >
+                    <ArrowLeft size={24} className="text-cyan-400 group-hover:-translate-x-1 transition-transform" />
+                  </button>
               ) : (
                 <Link to="/" className="p-2 rounded-full bg-slate-800 hover:bg-slate-700 transition-colors shrink-0">
                   <ArrowLeft size={24} className="text-cyan-400" />
@@ -307,13 +303,16 @@ const StudyGuide = () => {
               
               <div>
                 <h1 className="text-3xl md:text-4xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-blue-500">
-                  {activeModule === 'components' ? 'Robotics Kit Components' : 
-                   activeModule === 'ai' ? 'Tech Watt AI for Kids' : 
+                  {selectedCourse === 'kids' ? 'Tech Watt AI for Kids' : 
+                   selectedCourse === 'python_master' ? 'Python & AI Master Course' :
+                   activeModule === 'components' ? 'Robotics Kit Components' : 
+                   activeModule === 'ai' ? 'Choose Your Path' : 
                    activeModule === 'courses' ? 'Explore Courses' : 
                    'Study Hub Dashboard'}
                 </h1>
                 <p className="text-slate-400 mt-1 text-sm md:text-base">
-                  {activeModule ? 'Master your skills with our interactive guides.' : 'Select a module below to start learning.'}
+                  {selectedCourse ? 'Explore the curriculum week by week.' : 
+                   activeModule ? 'Master your skills with our interactive guides.' : 'Select a module below to start learning.'}
                 </p>
               </div>
             </div>
@@ -344,7 +343,7 @@ const StudyGuide = () => {
                 </>
               )}
 
-              {activeModule === 'ai' && (
+              {activeModule === 'ai' && selectedCourse && (
                   <button 
                     onClick={handleAIDownload}
                     className="flex-1 md:flex-none px-4 py-2 bg-purple-900/40 hover:bg-purple-800/60 text-purple-300 hover:text-white font-bold rounded-lg border border-purple-500/30 transition-all flex justify-center items-center gap-2 whitespace-nowrap"
@@ -362,7 +361,7 @@ const StudyGuide = () => {
 
         {/* Dashboard View */}
         {activeModule === null && (
-          <div className="grid md:grid-cols-3 gap-8 mt-4">
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mt-4">
             <div 
               onClick={() => setActiveModule('components')}
               className="group cursor-pointer relative bg-slate-800 rounded-3xl p-8 border border-slate-700 hover:border-cyan-500/50 transition-all hover:scale-105"
@@ -379,17 +378,32 @@ const StudyGuide = () => {
             </div>
 
             <div 
-              onClick={() => setActiveModule('ai')}
+              onClick={() => { setActiveModule('ai'); setSelectedCourse('kids'); }}
+              className="group cursor-pointer relative bg-slate-800 rounded-3xl p-8 border border-slate-700 hover:border-pink-500/50 transition-all hover:scale-105"
+            >
+              <div className="absolute inset-0 bg-gradient-to-br from-pink-500/5 to-transparent rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
+              <div className="bg-pink-500/10 w-16 h-16 rounded-2xl flex items-center justify-center mb-6 text-pink-400 group-hover:bg-pink-500 group-hover:text-white transition-colors">
+                <Bot size={32} />
+              </div>
+              <h2 className="text-2xl font-bold mb-3">Tech Watt AI for Kids</h2>
+              <p className="text-slate-400 mb-6">Designed for young innovators (Ages 10+). Learn AI basics, safety, and create fun projects.</p>
+              <div className="flex items-center text-pink-400 font-medium group-hover:translate-x-2 transition-transform">
+                Start Learning <ArrowLeft className="ml-2 rotate-180" size={16} />
+              </div>
+            </div>
+
+            <div 
+              onClick={() => { setActiveModule('ai'); setSelectedCourse('python_master'); }}
               className="group cursor-pointer relative bg-slate-800 rounded-3xl p-8 border border-slate-700 hover:border-purple-500/50 transition-all hover:scale-105"
             >
               <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-transparent rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
               <div className="bg-purple-500/10 w-16 h-16 rounded-2xl flex items-center justify-center mb-6 text-purple-400 group-hover:bg-purple-500 group-hover:text-white transition-colors">
-                <Bot size={32} />
+                <Layers size={32} />
               </div>
-              <h2 className="text-2xl font-bold mb-3">Tech Watt AI for Kids</h2>
-              <p className="text-slate-400 mb-6">Learn how to integrate Artificial Intelligence into your robotics projects using Python.</p>
+              <h2 className="text-2xl font-bold mb-3">Python & AI Master</h2>
+              <p className="text-slate-400 mb-6">From core Python foundations to advanced Machine Learning and Deployment.</p>
               <div className="flex items-center text-purple-400 font-medium group-hover:translate-x-2 transition-transform">
-                Explore AI <ArrowLeft className="ml-2 rotate-180" size={16} />
+                Explore Course <ArrowLeft className="ml-2 rotate-180" size={16} />
               </div>
             </div>
 
