@@ -42,8 +42,10 @@ const AdminDashboard = () => {
     week: '',
     description: '',
     content: '',
-    image_urls: []
+    image_urls: [],
+    course_type: 'python_master' // Default
   });
+  const [selectedAICourseType, setSelectedAICourseType] = useState('python_master'); // 'python_master' or 'kids'
   const [editingAIModuleId, setEditingAIModuleId] = useState(null);
 
   useEffect(() => {
@@ -89,12 +91,18 @@ const AdminDashboard = () => {
 
   const fetchAIModules = async () => {
     try {
-      const res = await axios.get(`${API_URL}/api/ai-courses`);
+      const res = await axios.get(`${API_URL}/api/ai-courses?type=${selectedAICourseType}`);
       setAiModules(res.data);
     } catch (error) {
        console.error("Error fetching AI modules", error);
     }
   };
+
+  useEffect(() => {
+    if (view === 'ai_modules') {
+        fetchAIModules();
+    }
+  }, [selectedAICourseType]);
 
   const handleDelete = async (id) => {
     if (!confirm("Are you sure you want to delete this component?")) return;
@@ -233,7 +241,8 @@ const AdminDashboard = () => {
             week: parseInt(newAIModule.week) || 0,
             description: newAIModule.description,
             content: newAIModule.content,
-            image_url: newAIModule.image_urls
+            image_url: newAIModule.image_urls,
+            course_type: selectedAICourseType
         };
 
         if (editingAIModuleId) {
@@ -242,7 +251,7 @@ const AdminDashboard = () => {
             await axios.post(`${API_URL}/api/ai-courses`, payload);
         }
         
-        setNewAIModule({ title: '', week: '', description: '', content: '', image_urls: [] });
+        setNewAIModule({ title: '', week: '', description: '', content: '', image_urls: [], course_type: selectedAICourseType });
         setEditingAIModuleId(null);
         fetchAIModules();
         navigate('/success');
@@ -271,14 +280,15 @@ const AdminDashboard = () => {
         week: mod.week,
         description: mod.description,
         content: mod.content,
-        image_urls: mod.image_url || []
+        image_urls: mod.image_url || [],
+        course_type: mod.course_type || selectedAICourseType
      });
      window.scrollTo({ top: 0, behavior: 'smooth' });
   };
   
   const handleCancelEditAIModule = () => {
     setEditingAIModuleId(null);
-    setNewAIModule({ title: '', week: '', description: '', content: '', image_urls: [] });
+    setNewAIModule({ title: '', week: '', description: '', content: '', image_urls: [], course_type: selectedAICourseType });
   };
 
   // Login Screen
@@ -603,6 +613,24 @@ const AdminDashboard = () => {
             <div className="grid lg:grid-cols-3 gap-8">
                  {/* AI Module Form */}
                  <div className="lg:col-span-1">
+                    {/* Course Selector Tabs */}
+                    <div className="flex bg-slate-900 p-1 rounded-xl mb-6 border border-slate-800">
+                        <button 
+                            type="button"
+                            onClick={() => setSelectedAICourseType('kids')}
+                            className={`flex-1 py-2 px-4 rounded-lg text-sm font-bold transition-all ${selectedAICourseType === 'kids' ? 'bg-pink-500 text-white shadow-lg' : 'text-slate-400 hover:text-white'}`}
+                        >
+                            AI for Kids
+                        </button>
+                        <button 
+                            type="button"
+                            onClick={() => setSelectedAICourseType('python_master')}
+                            className={`flex-1 py-2 px-4 rounded-lg text-sm font-bold transition-all ${selectedAICourseType === 'python_master' ? 'bg-purple-600 text-white shadow-lg' : 'text-slate-400 hover:text-white'}`}
+                        >
+                            Python & AI
+                        </button>
+                    </div>
+
                     <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 sticky top-24">
                         <h2 className="text-xl font-bold mb-6 flex items-center gap-2">
                              {editingAIModuleId ? <Edit className="text-purple-400" /> : <Plus className="text-purple-400" />} 
@@ -676,7 +704,10 @@ const AdminDashboard = () => {
                  {/* AI Module List */}
                  <div className="lg:col-span-2 space-y-6">
                     <div className="bg-slate-900 border border-slate-800 p-4 rounded-xl flex justify-between items-center">
-                        <h2 className="font-bold text-lg">AI Course Modules</h2>
+                        <h2 className="font-bold text-lg flex items-center gap-2">
+                            {selectedAICourseType === 'kids' ? <Bot className="text-pink-400" /> : <Layers className="text-purple-400" />}
+                            {selectedAICourseType === 'kids' ? 'AI for Kids Curriculum' : 'Python & AI Master Curriculum'}
+                        </h2>
                         <div className="text-slate-400 text-sm">{aiModules.length} Modules</div>
                     </div>
                     
