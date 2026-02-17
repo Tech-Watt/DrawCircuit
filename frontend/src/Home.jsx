@@ -36,10 +36,9 @@ const Home = () => {
             </div>
             <div className="hidden md:flex items-center space-x-8">
               <a href="#features" className="text-gray-600 hover:text-blue-600 transition-colors">Features</a>
-              <a href="#ai-course" className="text-gray-600 hover:text-purple-600 transition-colors">AI Course</a>
               <Link to="/study" className="text-gray-600 hover:text-blue-600 transition-colors">Study Guide</Link>
               <Link to="/app" className="px-5 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-all shadow-lg shadow-blue-600/20">
-                Launch App
+                Design Circuit
               </Link>
             </div>
           </div>
@@ -56,7 +55,7 @@ const Home = () => {
           <span className="bg-clip-text text-transparent bg-gradient-to-r from-purple-600 to-blue-500">Master AI</span>
         </h1>
         <p className="text-xl text-gray-600 max-w-2xl mx-auto mb-10 leading-relaxed">
-          The ultimate platform for young innovators. Design circuits instantly with AI and master Artificial Intelligence with our <strong>Tech Watt AI for Kids</strong> curriculum.
+          The ultimate platform for young innovators. Design circuits instantly with AI and master Artificial Intelligence with our <strong>Tech Watt AI</strong> curriculum.
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <Link to="/app" className="inline-flex items-center justify-center gap-2 px-8 py-4 text-lg font-bold text-white bg-blue-600 rounded-xl hover:bg-blue-700 transition-all shadow-xl shadow-blue-600/30">
