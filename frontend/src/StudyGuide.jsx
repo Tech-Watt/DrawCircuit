@@ -299,16 +299,16 @@ const StudyGuide = () => {
                     onClick={() => setActiveModule(null)}
                     className="p-2 rounded-full bg-slate-800 hover:bg-slate-700 transition-colors shrink-0 group"
                   >
-                    <ArrowLeft size={24} className="text-cyan-400 group-hover:-translate-x-1 transition-transform" />
+                  <ArrowLeft size={24} className="text-blue-400 group-hover:-translate-x-1 transition-transform" />
                   </button>
               ) : (
                 <Link to="/" className="p-2 rounded-full bg-slate-800 hover:bg-slate-700 transition-colors shrink-0">
-                  <ArrowLeft size={24} className="text-cyan-400" />
+                  <ArrowLeft size={24} className="text-blue-400" />
                 </Link>
               )}
               
               <div>
-                <h1 className="text-3xl md:text-4xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-blue-500">
+                <h1 className="text-3xl md:text-4xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-indigo-600">
                   {selectedCourse === 'kids' ? 'Tech Watt AI for Kids' : 
                    selectedCourse === 'python_master' ? 'Python & AI Master Course' :
                    selectedCourse === 'drone_building' ? 'Drone Building Course' :
@@ -329,7 +329,7 @@ const StudyGuide = () => {
               {activeModule === 'components' && (
                 <>
                   <div className="relative group w-full md:w-64">
-                    <div className="absolute -inset-0.5 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-lg blur opacity-30 group-hover:opacity-75 transition duration-200"></div>
+                    <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-lg blur opacity-30 group-hover:opacity-75 transition duration-200"></div>
                     <div className="relative flex items-center bg-slate-800 rounded-lg px-3 py-2">
                       <Search size={20} className="text-slate-400 mr-2 shrink-0" />
                       <input 
@@ -344,7 +344,7 @@ const StudyGuide = () => {
                   
                   <button 
                     onClick={handleDownload}
-                    className="flex-1 md:flex-none px-4 py-2 bg-slate-800 hover:bg-slate-700 text-cyan-400 font-bold rounded-lg border border-slate-700 transition-all flex justify-center items-center gap-2 whitespace-nowrap"
+                    className="flex-1 md:flex-none px-4 py-2 bg-slate-800 hover:bg-slate-700 text-blue-400 font-bold rounded-lg border border-slate-700 transition-all flex justify-center items-center gap-2 whitespace-nowrap"
                   >
                     <Download size={20} /> <span className="md:hidden lg:inline">Download Guide</span>
                   </button>
@@ -360,7 +360,7 @@ const StudyGuide = () => {
                   </button>
               )}
               
-              <Link to="/admin" className="p-2 text-slate-500 hover:text-cyan-400 transition-colors" title="Admin Access">
+              <Link to="/admin" className="p-2 text-slate-500 hover:text-blue-400 transition-colors" title="Admin Access">
                   <Shield size={20} />
               </Link>
             </div>
@@ -372,15 +372,15 @@ const StudyGuide = () => {
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mt-4">
             <div 
               onClick={() => setActiveModule('components')}
-              className="group cursor-pointer relative bg-slate-800 rounded-3xl p-8 border border-slate-700 hover:border-cyan-500/50 transition-all hover:scale-105"
+              className="group cursor-pointer relative bg-slate-800 rounded-3xl p-8 border border-slate-700 hover:border-blue-500/50 transition-all hover:scale-105"
             >
-              <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/5 to-transparent rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
-              <div className="bg-cyan-500/10 w-16 h-16 rounded-2xl flex items-center justify-center mb-6 text-cyan-400 group-hover:bg-cyan-500 group-hover:text-white transition-colors">
+              <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-transparent rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
+              <div className="bg-blue-500/10 w-16 h-16 rounded-2xl flex items-center justify-center mb-6 text-blue-400 group-hover:bg-blue-500 group-hover:text-white transition-colors">
                 <Book size={32} />
               </div>
               <h2 className="text-2xl font-bold mb-3">Robotics Kit Guide</h2>
               <p className="text-slate-400 mb-6">Detailed pinouts, wiring diagrams, and usage examples for every component in your kit.</p>
-              <div className="flex items-center text-cyan-400 font-medium group-hover:translate-x-2 transition-transform">
+              <div className="flex items-center text-blue-400 font-medium group-hover:translate-x-2 transition-transform">
                 Start Learning <ArrowLeft className="ml-2 rotate-180" size={16} />
               </div>
             </div>
@@ -447,15 +447,15 @@ const StudyGuide = () => {
 
             <div 
               onClick={() => setActiveModule('courses')}
-              className="group cursor-pointer relative bg-slate-800 rounded-3xl p-8 border border-slate-700 hover:border-blue-500/50 transition-all hover:scale-105"
+              className="group cursor-pointer relative bg-slate-800 rounded-3xl p-8 border border-slate-700 hover:border-indigo-500/50 transition-all hover:scale-105"
             >
-              <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-transparent rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
-              <div className="bg-blue-500/10 w-16 h-16 rounded-2xl flex items-center justify-center mb-6 text-blue-400 group-hover:bg-blue-500 group-hover:text-white transition-colors">
+              <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/5 to-transparent rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
+              <div className="bg-indigo-500/10 w-16 h-16 rounded-2xl flex items-center justify-center mb-6 text-indigo-400 group-hover:bg-indigo-500 group-hover:text-white transition-colors">
                 <Layers size={32} />
               </div>
               <h2 className="text-2xl font-bold mb-3">Other Courses</h2>
               <p className="text-slate-400 mb-6">Explore advanced topics including Computer Vision, Game Dev, and Web Design.</p>
-              <div className="flex items-center text-blue-400 font-medium group-hover:translate-x-2 transition-transform">
+              <div className="flex items-center text-indigo-400 font-medium group-hover:translate-x-2 transition-transform">
                  View Catalog <ArrowLeft className="ml-2 rotate-180" size={16} />
               </div>
             </div>
@@ -468,18 +468,18 @@ const StudyGuide = () => {
             {/* Kit Gallery */}
             <div className="mb-12">
                <h2 className="text-2xl font-bold text-white mb-6 flex items-center gap-2">
-                 <img src={kitImg} className="w-8 h-8 rounded-full border border-cyan-500" alt="Kit Icon" /> Meet Your Kit
+                 <img src={kitImg} className="w-8 h-8 rounded-full border border-blue-500" alt="Kit Icon" /> Meet Your Kit
                </h2>
                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                  {kitImages.map((img, idx) => (
                    <div 
                      key={idx} 
                      onClick={() => setSelectedImage(img)}
-                     className="rounded-xl overflow-hidden shadow-lg border border-slate-700 aspect-video group relative cursor-pointer hover:border-cyan-500/50 transition-all"
+                     className="rounded-xl overflow-hidden shadow-lg border border-slate-700 aspect-video group relative cursor-pointer hover:border-blue-500/50 transition-all"
                    >
                        <img src={img} alt={`Robotics Kit ${idx + 1}`} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
                         <div className="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-3">
-                           <span className="text-cyan-400 text-xs font-bold uppercase tracking-wider">View Image</span>
+                           <span className="text-blue-400 text-xs font-bold uppercase tracking-wider">View Image</span>
                         </div>
                    </div>
                  ))}
@@ -488,7 +488,7 @@ const StudyGuide = () => {
 
             {loading ? (
               <div className="flex justify-center items-center h-64">
-                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-cyan-500"></div>
+                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
               </div>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -498,7 +498,7 @@ const StudyGuide = () => {
                     onClick={() => setSelectedComponent(comp)}
                     className="group relative cursor-pointer"
                   >
-                    <div className="absolute -inset-0.5 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-2xl blur opacity-20 group-hover:opacity-100 transition duration-300"></div>
+                    <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-2xl blur opacity-20 group-hover:opacity-100 transition duration-300"></div>
                     <div className="relative h-full bg-slate-800 rounded-2xl p-6 border border-slate-700 hover:border-slate-600 transition-all flex flex-col">
                       <div className="h-48 rounded-xl bg-slate-900 mb-4 overflow-hidden flex items-center justify-center">
                         {comp.image_url && (Array.isArray(comp.image_url) ? comp.image_url.length > 0 : comp.image_url) ? (
@@ -508,17 +508,17 @@ const StudyGuide = () => {
                             className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" 
                           />
                         ) : (
-                          <Cpu size={64} className="text-slate-600 group-hover:text-cyan-400 transition-colors" />
+                          <Cpu size={64} className="text-slate-600 group-hover:text-blue-400 transition-colors" />
                         )}
                       </div>
                       <div className="flex justify-between items-start mb-2">
-                        <h3 className="text-xl font-bold text-white group-hover:text-cyan-400 transition-colors">{comp.name}</h3>
-                        <span className="px-2 py-1 rounded-md bg-slate-700 text-xs text-cyan-300 border border-slate-600">
+                        <h3 className="text-xl font-bold text-white group-hover:text-blue-400 transition-colors">{comp.name}</h3>
+                        <span className="px-2 py-1 rounded-md bg-slate-700 text-xs text-blue-300 border border-slate-600">
                           {comp.category}
                         </span>
                       </div>
                       <p className="text-slate-400 text-sm line-clamp-3 mb-4 flex-grow">{comp.description}</p>
-                      <div className="flex items-center text-cyan-500 text-sm font-medium mt-auto">
+                      <div className="flex items-center text-blue-500 text-sm font-medium mt-auto">
                         View Guide <Activity size={16} className="ml-1" />
                       </div>
                     </div>
@@ -667,14 +667,14 @@ const StudyGuide = () => {
         {/* Other Courses View */}
         {activeModule === 'courses' && (
             <div className="text-center py-20">
-                <Layers size={64} className="mx-auto text-blue-500 mb-6" />
+                <Layers size={64} className="mx-auto text-indigo-500 mb-6" />
                 <h2 className="text-3xl font-bold mb-4">Explore More Courses</h2>
                 <p className="text-slate-400 max-w-lg mx-auto mb-8">Take your skills to the next level with our advanced curriculum.</p>
                 <a 
                     href="https://www.techwatt.ai/" 
                     target="_blank" 
                     rel="noopener noreferrer"
-                    className="inline-flex items-center px-6 py-3 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 transition-colors"
+                    className="inline-flex items-center px-6 py-3 bg-indigo-600 text-white font-bold rounded-lg hover:bg-indigo-700 transition-colors"
                 >
                     Visit TechWatt Academy
                 </a>
