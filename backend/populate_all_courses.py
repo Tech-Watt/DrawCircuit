@@ -279,8 +279,180 @@ By the end of this course, you will master:
         await database.execute(query)
         print(f"Added Master Module: Week {mod['week']}")
 
+
+    # 3. TechWatt Drone Building Course
+    drone_modules = [
+        {
+            "week": 1,
+            "title": "Introduction to Drones & Safety",
+            "description": "History, types of drones, and essential safety rules.",
+            "content": """# 🚁 Week 1: Introduction to Drones & Safety
+
+## Focus
+We take off! Understanding the history, types, and crucial safety rules of drones.
+
+## 📝 Activities
+- **History**: Evolution from military to recreational use.
+- **Types**: Camera drones, Racing drones (FPV), Micro drones.
+- **Safety First**: The 'Drone Code', no-fly zones, and battery safety.
+- **Mini Project**: Research and present a unique use of drones (e.g., delivery, rescue)."""
+        },
+        {
+            "week": 2,
+            "title": "Anatomy of a Drone",
+            "description": "Deep dive into the components: Frame, Motors, ESCs, Flight Controller.",
+            "content": """# 🔍 Week 2: Anatomy of a Drone
+
+## Focus
+Breaking down the drone into its critical components.
+
+## 📝 Core Parts
+- **Frame**: The skeleton (Carbon fiber vs plastic).
+- **Motors**: Brushless vs Brushed motors (KV ratings explained).
+- **ESCs**: Electronic Speed Controllers - the muscle.
+- **Flight Controller (FC)**: The brain of the operation.
+- **Propellers**: Thrust generation and direction."""
+        },
+        {
+            "week": 3,
+            "title": "Aerodynamics & Physics",
+            "description": "The science of flight: Lift, Thrust, Pitch, Roll, Yaw.",
+            "content": """# 🌬️ Week 3: Aerodynamics & Physics
+
+## Focus
+How do these things actually fly?
+
+## 📝 Concepts
+- **Forces of Flight**: Lift, Weight, Thrust, and Drag.
+- **Movement Axes**: 
+  - **Pitch**: Moving forward/backward.
+  - **Roll**: Moving left/right.
+  - **Yaw**: Rotating left/right.
+  - **Throttle**: Altitude control.
+- **Activity**: Paper plane aerodynamics challenge."""
+        },
+        {
+            "week": 4,
+            "title": "Power Systems",
+            "description": "Batteries (LiPo), Charging safety, and Power Distribution.",
+            "content": """# 🔋 Week 4: Power Systems
+
+## Focus
+The energy source that keeps us airborne.
+
+## 📝 LiPo Batteries
+- **Chemistry**: Lithium Polymer basics.
+- **Ratings**: Understanding 'S' (Cells) and 'C' (Discharge) ratings.
+- **Safety**: Charging, storage, and handling damaged packs.
+- **PDB**: The Power Distribution Board wiring."""
+        },
+        {
+            "week": 5,
+            "title": "Flight Controllers & Sensors",
+            "description": "The brain: Gyroscopes, Accelerometers, GPS, and processing.",
+            "content": """# 🧠 Week 5: Flight Controllers & Sensors
+
+## Focus
+How the drone balances itself and knows where it is.
+
+## 📝 Sensors
+- **IMU**: Inertial Measurement Unit (Gyro + Accelerometer).
+- **Barometer**: Measuring altitude.
+- **GPS/Compass**: Position hold and return-to-home features.
+- **Microcontrollers**: STM32 chips and firmware basics."""
+        },
+        {
+            "week": 6,
+            "title": "Communication Systems",
+            "description": "Transmitters (TX), Receivers (RX), and Telemetry.",
+            "content": """# 📡 Week 6: Communication Systems
+
+## Focus
+The invisible link between pilot and machine.
+
+## 📝 Radio Control
+- **Protocols**: PWM, PPM, SBUS, ELRS, Crossfire.
+- **Frequency**: 2.4GHz vs 900MHz range and penetration.
+- **Binding**: Pairing the TX to the RX.
+- **Telemetry**: Getting data back from the drone (Voltage, RSSI)."""
+        },
+        {
+            "week": 7,
+            "title": "Assembly & Soldering",
+            "description": "Hands-on: Building the frame and soldering components.",
+            "content": """# 🛠️ Week 7: Assembly & Soldering
+
+## Focus
+Putting it all together. Time to burn some solder!
+
+## 📝 Build Steps
+- **Frame Prep**: Sanding carbon edges.
+- **Soldering 101**: Tinning wires and pads safely.
+- **Mounting**: FC stack, motors, and camera mounting.
+- **Cable Management**: Keeping wires away from props."""
+        },
+        {
+            "week": 8,
+            "title": "Configuration & First Flight",
+            "description": "Betaflight setup, Pre-flight checks, and Maiden Voyage.",
+            "content": """# ⚙️ Week 8: Configuration & First Flight
+
+## Focus
+Software setup and the moment of truth.
+
+## 📝 Betaflight
+- **Setup**: Port configuration, Motor direction, PID basics.
+- **Modes**: Acro vs Angle (Self-leveling).
+- **Fail-safe**: Setting up emergency drop (CRITICAL).
+- **Maiden Hover**: Testing stability in a safe environment."""
+        },
+        {
+            "week": 9,
+            "title": "Advanced Flight & FPV",
+            "description": "First Person View flying, Goggles, and Video Transmitters.",
+            "content": """# 🕶️ Week 9: Advanced Flight & FPV
+
+## Focus
+Flying from the cockpit view.
+
+## 📝 FPV System
+- **Camera**: Analog vs Digital.
+- **VTX**: Video Transmitters (Power levels, Bands/Channels).
+- **Goggles**: Seeing what the drone sees.
+- **Maneuvers**: Flips, rolls, and gap shooting basics."""
+        },
+        {
+            "week": 10,
+            "title": "Autonomous Drones & AI",
+            "description": "The future: Programming drones and AI integration concepts.",
+            "content": """# 🤖 Week 10: Autonomous Drones & AI
+
+## Focus
+When the computer takes the sticks.
+
+## 📝 Advanced Topics
+- **Mission Planning**: Waypoint navigation.
+- **Computer Vision**: Object tracking concepts.
+- **Swarm Technology**: Drones working together.
+- **Future Careers**: Drone inspection, surveying, and cinematography."""
+        }
+    ]
+
+    for mod in drone_modules:
+        query = ai_courses.insert().values(
+            week=mod["week"],
+            title=mod["title"],
+            description=mod["description"],
+            content=mod["content"],
+            course_type="drone_building",
+            created_at=datetime.utcnow()
+        )
+        await database.execute(query)
+        print(f"Added Drone Module: Week {mod['week']}")
+
     await database.disconnect()
-    print("Done! Both courses populated.")
+    await database.disconnect()
+    print("Done! All three courses populated.")
 
 if __name__ == "__main__":
     asyncio.run(populate_all_courses())
