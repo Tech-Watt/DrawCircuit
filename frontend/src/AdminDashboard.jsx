@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { Search, Plus, X, Cpu, Zap, Activity, ArrowLeft, Download, Book, Bot, Layers, Trash2, LogOut, Shield, Edit, FileText, List, Plane } from 'lucide-react';
+import { Search, Plus, X, Cpu, Zap, Activity, ArrowLeft, Download, Book, Bot, Layers, Trash2, LogOut, Shield, Edit, FileText, List, Plane, BarChart } from 'lucide-react';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 
@@ -636,6 +636,13 @@ const AdminDashboard = () => {
                         >
                             Drones
                         </button>
+                        <button 
+                            type="button"
+                            onClick={() => setSelectedAICourseType('data_analytics')}
+                            className={`flex-1 py-2 px-4 rounded-lg text-sm font-bold transition-all ${selectedAICourseType === 'data_analytics' ? 'bg-emerald-500 text-white shadow-lg' : 'text-slate-400 hover:text-white'}`}
+                        >
+                            Data Analytics
+                        </button>
                     </div>
 
                     <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 sticky top-24">
@@ -714,9 +721,11 @@ const AdminDashboard = () => {
                         <h2 className="font-bold text-lg flex items-center gap-2">
                             {selectedAICourseType === 'kids' ? <Bot className="text-pink-400" /> : 
                              selectedAICourseType === 'drone_building' ? <Plane className="text-orange-400" /> : 
+                             selectedAICourseType === 'data_analytics' ? <BarChart className="text-emerald-400" /> : 
                              <Layers className="text-purple-400" />}
                             {selectedAICourseType === 'kids' ? 'AI for Kids Curriculum' : 
                              selectedAICourseType === 'drone_building' ? 'Drone Building Curriculum' : 
+                             selectedAICourseType === 'data_analytics' ? 'Data Analytics Curriculum' : 
                              'Python & AI Master Curriculum'}
                         </h2>
                         <div className="text-slate-400 text-sm">{aiModules.length} Modules</div>

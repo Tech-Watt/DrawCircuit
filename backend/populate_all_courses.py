@@ -450,9 +450,175 @@ When the computer takes the sticks.
         await database.execute(query)
         print(f"Added Drone Module: Week {mod['week']}")
 
+
+    # 4. TechWatt Data Analytics Course
+    data_analytics_modules = [
+        {
+            "week": 1,
+            "title": "Introduction to Data Analytics",
+            "description": "What is data analytics? The data lifecycle, tools, and career paths.",
+            "content": """# 📊 Week 1: Introduction to Data Analytics
+
+## Focus
+Understanding the world of data and its impact.
+
+## 📝 Concepts
+- **What is Data Analytics?**: Descriptive, Diagnostic, Predictive, and Prescriptive analytics.
+- **The Data Lifecycle**: Collection, Cleaning, Analysis, Visualization, Interpretation.
+- **Tools Overview**: Excel, SQL, Python, Tableau/PowerBI.
+- **Career Paths**: Data Analyst vs Data Scientist vs Data Engineer."""
+        },
+        {
+            "week": 2,
+            "title": "Excel for Data Analysis",
+            "description": "Mastering Excel: Formulas, Pivot Tables, and VLOOKUP for quick analysis.",
+            "content": """# 📗 Week 2: Excel for Data Analysis
+
+## Focus
+Mastering the world's most popular data tool.
+
+## 📝 Skills
+- **Functions**: IF, COUNTIF, SUMIF, VLOOKUP, XLOOKUP.
+- **Pivot Tables**: Summarizing large datasets instantly.
+- **Data Cleaning**: Removing duplicates, text-to-columns, and conditioning formatting.
+- **Mini Project**: Analyze a sales dataset using Excel."""
+        },
+        {
+            "week": 3,
+            "title": "SQL Fundamentals",
+            "description": "Databases 101: SELECT, WHERE, GROUP BY, and JOINs.",
+            "content": """# 🗄️ Week 3: SQL Fundamentals
+
+## Focus
+Talking to databases to extract exactly what you need.
+
+## 📝 Concepts
+- **RDBMS**: Relational Database Management Systems basics.
+- **Basic Queries**: SELECT, FROM, WHERE, ORDER BY.
+- **Aggregations**: COUNT, SUM, AVG, GROUP BY, HAVING.
+- **Joins**: INNER, LEFT, RIGHT, and FULL outer joins."""
+        },
+        {
+            "week": 4,
+            "title": "Advanced SQL & Database Design",
+            "description": "Complex queries, Subqueries, Windows Functions, and Schema design.",
+            "content": """# 🏗️ Week 4: Advanced SQL & Database Design
+
+## Focus
+Complex data retrieval and structuring.
+
+## 📝 Skills
+- **Advanced Queries**: Subqueries and CTEs (Common Table Expressions).
+- **Window Functions**: ROW_NUMBER, RANK, LEAD, LAG.
+- **Database Design**: Normalization (1NF, 2NF, 3NF) and ER Diagrams.
+- **Mini Project**: Design a database for a library system."""
+        },
+        {
+            "week": 5,
+            "title": "Python for Data Analysis (Pandas)",
+            "description": "Moving beyond Excel: DataFrames, Series, and Cleaning with Pandas.",
+            "content": """# 🐼 Week 5: Python for Data Analysis
+
+## Focus
+Unlocking the power of programming for data.
+
+## 📝 Libraries
+- **Pandas Basics**: Series and DataFrames.
+- **Data Cleaning**: Handling missing values (`dropna`, `fillna`) and types.
+- **Manipulation**: Filtering, sorting, and grouping data with code.
+- **File I/O**: Reading CSV, Excel, and SQL data into Python."""
+        },
+        {
+            "week": 6,
+            "title": "Data Visualization with Python",
+            "description": "Storytelling with data: Matplotlib and Seaborn.",
+            "content": """# 📈 Week 6: Data Visualization with Python
+
+## Focus
+Making data beautiful and understandable.
+
+## 📝 Tools
+- **Matplotlib**: Creating static, animated, and interactive visualizations.
+- **Seaborn**: Statistical graphics made easy.
+- **Chart Types**: Histograms, Scatter plots, Box plots, Heatmaps.
+- **Best Practices**: Choosing the right chart for the right data."""
+        },
+        {
+            "week": 7,
+            "title": "Business Intelligence (PowerBI / Tableau)",
+            "description": "Building interactive dashboards for stakeholders.",
+            "content": """# 📊 Week 7: Business Intelligence
+
+## Focus
+Creating dashboards that drive business decisions.
+
+## 📝 Skills
+- **Connecting Data**: Importing from various sources.
+- **Data Modeling**: Creating relationships and calculated measures (DAX).
+- **Dashboard Design**: Layout, interactivity, and filters.
+- **Storytelling**: Guiding the user through the insights."""
+        },
+        {
+            "week": 8,
+            "title": "Statistics for Data Analytics",
+            "description": "Probability, Distributions, Hypothesis Testing, and Correlation.",
+            "content": """# 📐 Week 8: Statistics for Data Analytics
+
+## Focus
+The math behind the insights.
+
+## 📝 Concepts
+- **Descriptive Stats**: Mean, Median, Mode, Standard Deviation.
+- **Distributions**: Normal distribution and Z-Scores.
+- **Probability**: Basics and Conditional Probability.
+- **Inference**: Hypothesis testing (p-values) and Correlation vs Causation."""
+        },
+        {
+            "week": 9,
+            "title": "Real-World Case Studies",
+            "description": "Applying skills to Marketing, Finance, and Operations datasets.",
+            "content": """# 💼 Week 9: Real-World Case Studies
+
+## Focus
+Applying theory to practice in different industries.
+
+## 📝 Domains
+- **Marketing Analytics**: Customer segmentation (RFM Analysis) and Campaign ROI.
+- **Financial Analytics**: Stock price trends and Risk assessment.
+- **Operations**: Supply chain optimization and Inventory management.
+- **Project**: Choose a domain and perform a full analysis."""
+        },
+        {
+            "week": 10,
+            "title": "Capstone Project & Portfolio",
+            "description": "End-to-end analysis project and portfolio building.",
+            "content": """# 🚀 Week 10: Capstone Project & Portfolio
+
+## Focus
+Showcasing your skills to get hired.
+
+## 📝 Final Steps
+- **Capstone**: Select a dataset, clean it, analyze it, visualize it, and present recommendations.
+- **Portfolio**: Creating a GitHub repository or website to host your projects.
+- **Resume**: Tailoring your CV for Data Analyst roles.
+- **Interview Prep**: Common technical and behavioral questions."""
+        }
+    ]
+
+    for mod in data_analytics_modules:
+        query = ai_courses.insert().values(
+            week=mod["week"],
+            title=mod["title"],
+            description=mod["description"],
+            content=mod["content"],
+            course_type="data_analytics",
+            created_at=datetime.utcnow()
+        )
+        await database.execute(query)
+        print(f"Added Data Analytics Module: Week {mod['week']}")
+
     await database.disconnect()
-    await database.disconnect()
-    print("Done! All three courses populated.")
+    print("Done! All four courses populated.")
 
 if __name__ == "__main__":
     asyncio.run(populate_all_courses())

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import { Search, X, Cpu, Zap, Activity, ArrowLeft, Download, Book, Bot, Layers, Shield, ChevronDown, Plane } from 'lucide-react';
+import { Search, X, Cpu, Zap, Activity, ArrowLeft, Download, Book, Bot, Layers, Shield, ChevronDown, Plane, BarChart } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 
 // ... imports
@@ -154,9 +154,11 @@ const StudyGuide = () => {
     // Determine title based on selected course
     const courseTitle = selectedCourse === 'kids' ? 'Tech Watt AI for Kids' : 
                         selectedCourse === 'drone_building' ? 'Tech Watt Drone Building Course' : 
+                        selectedCourse === 'data_analytics' ? 'Tech Watt Data Analytics Course' : 
                         'Tech Watt Python & AI Master Course';
     const courseSubtitle = selectedCourse === 'kids' ? 'Future-Ready Artificial Intelligence Curriculum' : 
                            selectedCourse === 'drone_building' ? 'From Basics to Advanced Flight - Professional Drone Curriculum' : 
+                           selectedCourse === 'data_analytics' ? 'Master Excel, SQL, Python, and PowerBI - Zero to Analyst' : 
                            'From Python Fundamentals to Deployment - A Complete Master Course';
 
     const html = `
@@ -310,6 +312,7 @@ const StudyGuide = () => {
                   {selectedCourse === 'kids' ? 'Tech Watt AI for Kids' : 
                    selectedCourse === 'python_master' ? 'Python & AI Master Course' :
                    selectedCourse === 'drone_building' ? 'Drone Building Course' :
+                   selectedCourse === 'data_analytics' ? 'Data Analytics Course' :
                    activeModule === 'components' ? 'Robotics Kit Components' : 
                    activeModule === 'ai' ? 'Choose Your Path' : 
                    activeModule === 'courses' ? 'Explore Courses' : 
@@ -428,6 +431,21 @@ const StudyGuide = () => {
             </div>
 
             <div 
+              onClick={() => { setActiveModule('ai'); setSelectedCourse('data_analytics'); }}
+              className="group cursor-pointer relative bg-slate-800 rounded-3xl p-8 border border-slate-700 hover:border-emerald-500/50 transition-all hover:scale-105"
+            >
+              <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/5 to-transparent rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
+              <div className="bg-emerald-500/10 w-16 h-16 rounded-2xl flex items-center justify-center mb-6 text-emerald-400 group-hover:bg-emerald-500 group-hover:text-white transition-colors">
+                <BarChart size={32} />
+              </div>
+              <h2 className="text-2xl font-bold mb-3">Data Analytics</h2>
+              <p className="text-slate-400 mb-6">Master Excel, SQL, Python & PowerBI. Become a certified Data Analyst.</p>
+              <div className="flex items-center text-emerald-400 font-medium group-hover:translate-x-2 transition-transform">
+                 Start Analyzing <ArrowLeft className="ml-2 rotate-180" size={16} />
+              </div>
+            </div>
+
+            <div 
               onClick={() => setActiveModule('courses')}
               className="group cursor-pointer relative bg-slate-800 rounded-3xl p-8 border border-slate-700 hover:border-blue-500/50 transition-all hover:scale-105"
             >
@@ -518,22 +536,27 @@ const StudyGuide = () => {
                   <div className={`inline-block p-3 rounded-2xl border mb-4 
                     ${selectedCourse === 'kids' ? 'bg-pink-500/10 border-pink-500/20' : 
                       selectedCourse === 'drone_building' ? 'bg-orange-500/10 border-orange-500/20' : 
+                      selectedCourse === 'data_analytics' ? 'bg-emerald-500/10 border-emerald-500/20' : 
                       'bg-purple-500/10 border-purple-500/20'}`}>
                      {selectedCourse === 'kids' ? <Bot size={32} className="text-pink-400" /> : 
                       selectedCourse === 'drone_building' ? <Plane size={32} className="text-orange-400" /> : 
+                      selectedCourse === 'data_analytics' ? <BarChart size={32} className="text-emerald-400" /> : 
                       <Bot size={32} className="text-purple-400" />}
                   </div>
                   <h2 className={`text-4xl md:text-5xl font-bold bg-clip-text text-transparent mb-4 
                     ${selectedCourse === 'kids' ? 'bg-gradient-to-r from-white via-pink-200 to-pink-400' : 
                       selectedCourse === 'drone_building' ? 'bg-gradient-to-r from-white via-orange-200 to-orange-400' : 
+                      selectedCourse === 'data_analytics' ? 'bg-gradient-to-r from-white via-emerald-200 to-emerald-400' : 
                       'bg-gradient-to-r from-white via-purple-200 to-purple-400'}`}>
                       {selectedCourse === 'kids' ? 'AI for Kids Curriculum' : 
                        selectedCourse === 'drone_building' ? 'Drone Building Curriculum' : 
+                       selectedCourse === 'data_analytics' ? 'Data Analytics Curriculum' : 
                        'Python & AI Master Curriculum'}
                   </h2>
                   <p className="text-slate-400 text-lg">
                     {selectedCourse === 'kids' ? 'Fun, safe, and interactive AI learning.' : 
                      selectedCourse === 'drone_building' ? 'Master the skies with drone engineering.' : 
+                     selectedCourse === 'data_analytics' ? 'Turn raw data into actionable insights.' : 
                      'Master the future of intelligent machines.'}
                   </p>
               </div>
@@ -545,16 +568,19 @@ const StudyGuide = () => {
                           <div className={`absolute left-8 top-24 bottom-0 w-0.5 bg-gradient-to-b to-transparent -z-10 h-full 
                             ${selectedCourse === 'kids' ? 'from-pink-500/30' : 
                               selectedCourse === 'drone_building' ? 'from-orange-500/30' : 
+                              selectedCourse === 'data_analytics' ? 'from-emerald-500/30' : 
                               'from-purple-500/30'}`}></div>
                       )}
                       
                       <div className={`bg-slate-900/80 backdrop-blur border border-slate-800 rounded-3xl overflow-hidden transition-all duration-500 hover:shadow-lg 
                         ${selectedCourse === 'kids' ? 'hover:border-pink-500/30' : 
                           selectedCourse === 'drone_building' ? 'hover:border-orange-500/30' : 
+                          selectedCourse === 'data_analytics' ? 'hover:border-emerald-500/30' : 
                           'hover:border-purple-500/30'}
                         ${expandedModuleId === mod.id ? 
                             (selectedCourse === 'kids' ? 'ring-1 ring-pink-500/50 bg-slate-900' : 
                              selectedCourse === 'drone_building' ? 'ring-1 ring-orange-500/50 bg-slate-900' : 
+                             selectedCourse === 'data_analytics' ? 'ring-1 ring-emerald-500/50 bg-slate-900' : 
                              'ring-1 ring-purple-500/50 bg-slate-900') : ''}`}>
                           <div 
                             className="p-6 md:p-8 cursor-pointer flex gap-6 items-start"
@@ -565,6 +591,7 @@ const StudyGuide = () => {
                                 ${expandedModuleId === mod.id ? 
                                     (selectedCourse === 'kids' ? 'border-pink-500/50 text-pink-400' : 
                                      selectedCourse === 'drone_building' ? 'border-orange-500/50 text-orange-400' : 
+                                     selectedCourse === 'data_analytics' ? 'border-emerald-500/50 text-emerald-400' : 
                                      'border-purple-500/50 text-purple-400') : 'text-slate-500'}`}>
                                   <span className="text-[10px] font-mono uppercase tracking-wider">Week</span>
                                   <span className="text-2xl font-bold font-mono">{mod.week}</span>
@@ -575,6 +602,7 @@ const StudyGuide = () => {
                                     ${expandedModuleId === mod.id ? 
                                         (selectedCourse === 'kids' ? 'text-pink-400' : 
                                          selectedCourse === 'drone_building' ? 'text-orange-400' : 
+                                         selectedCourse === 'data_analytics' ? 'text-emerald-400' : 
                                          'text-purple-400') : 
                                         'text-white group-hover:text-slate-200'}`}>
                                       {mod.title}
@@ -586,6 +614,7 @@ const StudyGuide = () => {
                                 ${expandedModuleId === mod.id ? 
                                     (selectedCourse === 'kids' ? 'rotate-180 border-pink-500/30 text-pink-400' : 
                                      selectedCourse === 'drone_building' ? 'rotate-180 border-orange-500/30 text-orange-400' : 
+                                     selectedCourse === 'data_analytics' ? 'rotate-180 border-emerald-500/30 text-emerald-400' : 
                                      'rotate-180 border-purple-500/30 text-purple-400') : 
                                     'rotate-0 text-slate-500 group-hover:text-white'}`}>
                                   <ChevronDown size={20} />
@@ -599,10 +628,10 @@ const StudyGuide = () => {
                                       <div className="text-slate-300 leading-relaxed text-base md:text-lg">
                                           <ReactMarkdown
                                             components={{
-                                                h1: ({...props}) => <h1 className={`text-2xl font-bold mt-6 mb-3 ${selectedCourse === 'kids' ? 'text-pink-400' : selectedCourse === 'drone_building' ? 'text-orange-400' : 'text-purple-400'}`} {...props} />,
-                                                h2: ({...props}) => <h2 className={`text-xl font-bold mt-5 mb-2 ${selectedCourse === 'kids' ? 'text-pink-300' : selectedCourse === 'drone_building' ? 'text-orange-300' : 'text-purple-300'}`} {...props} />,
+                                                h1: ({...props}) => <h1 className={`text-2xl font-bold mt-6 mb-3 ${selectedCourse === 'kids' ? 'text-pink-400' : selectedCourse === 'drone_building' ? 'text-orange-400' : selectedCourse === 'data_analytics' ? 'text-emerald-400' : 'text-purple-400'}`} {...props} />,
+                                                h2: ({...props}) => <h2 className={`text-xl font-bold mt-5 mb-2 ${selectedCourse === 'kids' ? 'text-pink-300' : selectedCourse === 'drone_building' ? 'text-orange-300' : selectedCourse === 'data_analytics' ? 'text-emerald-300' : 'text-purple-300'}`} {...props} />,
                                                 ul: ({...props}) => <ul className="list-disc pl-6 mb-4 space-y-1 text-slate-300" {...props} />,
-                                                li: ({...props}) => <li className={`marker:${selectedCourse === 'kids' ? 'text-pink-500' : selectedCourse === 'drone_building' ? 'text-orange-500' : 'text-purple-500'}`} {...props} />,
+                                                li: ({...props}) => <li className={`marker:${selectedCourse === 'kids' ? 'text-pink-500' : selectedCourse === 'drone_building' ? 'text-orange-500' : selectedCourse === 'data_analytics' ? 'text-emerald-500' : 'text-purple-500'}`} {...props} />,
                                                 strong: ({...props}) => <strong className="font-bold text-white" {...props} />,
                                                 code: ({...props}) => <code className="bg-slate-900 border border-slate-800 px-1.5 py-0.5 rounded text-slate-300 font-mono text-sm" {...props} />,
                                             }}
