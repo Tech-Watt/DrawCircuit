@@ -59,3 +59,31 @@ components = sqlalchemy.Table(
     sqlalchemy.Column("image_url", sqlalchemy.JSON, nullable=True),
     sqlalchemy.Column("created_at", sqlalchemy.DateTime, default=datetime.utcnow),
 )
+
+# Events Table
+events = sqlalchemy.Table(
+    "events",
+    metadata,
+    sqlalchemy.Column("id", sqlalchemy.Integer, primary_key=True),
+    sqlalchemy.Column("title", sqlalchemy.String, nullable=False),
+    sqlalchemy.Column("description", sqlalchemy.Text, nullable=True),
+    sqlalchemy.Column("event_date", sqlalchemy.DateTime, nullable=False),
+    sqlalchemy.Column("location", sqlalchemy.String, nullable=True),
+    sqlalchemy.Column("max_spots", sqlalchemy.Integer, nullable=True),
+    sqlalchemy.Column("is_active", sqlalchemy.Boolean, default=True),
+    sqlalchemy.Column("created_at", sqlalchemy.DateTime, default=datetime.utcnow),
+)
+
+# Event Registrations Table
+event_registrations = sqlalchemy.Table(
+    "event_registrations",
+    metadata,
+    sqlalchemy.Column("id", sqlalchemy.Integer, primary_key=True),
+    sqlalchemy.Column("event_id", sqlalchemy.Integer, sqlalchemy.ForeignKey("events.id"), nullable=False),
+    sqlalchemy.Column("name", sqlalchemy.String, nullable=False),
+    sqlalchemy.Column("email", sqlalchemy.String, nullable=False),
+    sqlalchemy.Column("phone", sqlalchemy.String, nullable=True),
+    sqlalchemy.Column("organization", sqlalchemy.String, nullable=True),
+    sqlalchemy.Column("notes", sqlalchemy.Text, nullable=True),
+    sqlalchemy.Column("created_at", sqlalchemy.DateTime, default=datetime.utcnow),
+)

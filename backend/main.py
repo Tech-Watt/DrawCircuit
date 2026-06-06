@@ -1,16 +1,16 @@
 import os
 import json
 import uuid
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Optional
 import uvicorn
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel
+from pydantic import BaseModel, EmailStr
 from openai import OpenAI
 from dotenv import load_dotenv
 import sqlalchemy
-from database import database, circuits, components, ai_courses, metadata
+from database import database, circuits, components, ai_courses, events, event_registrations, metadata
 
 
 
@@ -151,6 +151,43 @@ class ComponentGenResponse(BaseModel):
 
 class PasswordVerifyRequest(BaseModel):
     password: str
+
+class EventRequest(BaseModel):
+    title: str
+    description: Optional[str] = None
+    event_date: datetime
+    location: Optional[str] = None
+    max_spots: Optional[int] = None
+    is_active: bool = True
+
+class EventResponse(BaseModel):
+    id: int
+    title: str
+    description: Optional[str] = None
+    event_date: datetime
+    location: Optional[str] = None
+    max_spots: Optional[int] = None
+    is_active: bool = True
+    registration_count: int = 0
+    spots_remaining: Optional[int] = None
+    created_at: datetime
+
+class EventRegistrationRequest(BaseModel):
+    name: str
+    email: EmailStr
+    phone: Optional[str] = None
+    organization: Optional[str] = None
+    notes: Optional[str] = None
+
+class EventRegistrationResponse(BaseModel):
+    id: int
+    event_id: int
+    name: str
+    email: str
+    phone: Optional[str] = None
+    organization: Optional[str] = None
+    notes: Optional[str] = None
+    created_at: datetime
 
 @app.post("/api/generate-component-details", response_model=ComponentGenResponse)
 async def generate_component_details(request: ComponentGenRequest):
@@ -458,6 +495,133 @@ async def load_circuit(circuit_id: str):
         "bom": result["bom"],
         "created_at": result["created_at"]
     }
+
+def _naive_utc(dt: datetime) -> datetime:
+    """Normalize datetimes for asyncpg (expects naive UTC)."""
+    if dt.tzinfo is not None:
+        return dt.astimezone(timezone.utc).replace(tzinfo=None)
+    return dt
+
+async def _get_registration_count(event_id: int) -> int:
+    query = event_registrations.select().where(event_registrations.c.event_id == event_id)
+    results = await database.fetch_all(query)
+    return len(results)
+
+async def _event_to_response(row) -> dict:
+    data = dict(row)
+    count = await _get_registration_count(data["id"])
+    max_spots = data.get("max_spots")
+    spots_remaining = (max_spots - count) if max_spots is not None else None
+    return {
+        **data,
+        "registration_count": count,
+        "spots_remaining": spots_remaining,
+    }
+
+@app.get("/api/events", response_model=list[EventResponse])
+async def get_events(active_only: bool = True):
+    query = events.select().order_by(events.c.event_date)
+    if active_only:
+        query = query.where(events.c.is_active == True)
+    results = await database.fetch_all(query)
+    return [await _event_to_response(r) for r in results]
+
+@app.get("/api/events/{event_id}", response_model=EventResponse)
+async def get_event(event_id: int):
+    query = events.select().where(events.c.id == event_id)
+    result = await database.fetch_one(query)
+    if not result:
+        raise HTTPException(status_code=404, detail="Event not found")
+    return await _event_to_response(result)
+
+@app.post("/api/events", response_model=EventResponse)
+async def create_event(request: EventRequest):
+    try:
+        query = events.insert().values(
+            title=request.title,
+            description=request.description,
+            event_date=_naive_utc(request.event_date),
+            location=request.location,
+            max_spots=request.max_spots,
+            is_active=request.is_active,
+            created_at=datetime.utcnow(),
+        )
+        last_id = await database.execute(query)
+        fetch_query = events.select().where(events.c.id == last_id)
+        result = await database.fetch_one(fetch_query)
+        return await _event_to_response(result)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.put("/api/events/{event_id}", response_model=EventResponse)
+async def update_event(event_id: int, request: EventRequest):
+    query = events.update().where(events.c.id == event_id).values(
+        title=request.title,
+        description=request.description,
+        event_date=_naive_utc(request.event_date),
+        location=request.location,
+        max_spots=request.max_spots,
+        is_active=request.is_active,
+    )
+    await database.execute(query)
+    fetch_query = events.select().where(events.c.id == event_id)
+    result = await database.fetch_one(fetch_query)
+    if not result:
+        raise HTTPException(status_code=404, detail="Event not found")
+    return await _event_to_response(result)
+
+@app.delete("/api/events/{event_id}")
+async def delete_event(event_id: int):
+    await database.execute(
+        event_registrations.delete().where(event_registrations.c.event_id == event_id)
+    )
+    await database.execute(events.delete().where(events.c.id == event_id))
+    return {"message": "Event deleted successfully"}
+
+@app.post("/api/events/{event_id}/register", response_model=EventRegistrationResponse)
+async def register_for_event(event_id: int, request: EventRegistrationRequest):
+    event_query = events.select().where(events.c.id == event_id)
+    event = await database.fetch_one(event_query)
+    if not event:
+        raise HTTPException(status_code=404, detail="Event not found")
+    if not event["is_active"]:
+        raise HTTPException(status_code=400, detail="This event is no longer accepting registrations")
+
+    count = await _get_registration_count(event_id)
+    if event["max_spots"] is not None and count >= event["max_spots"]:
+        raise HTTPException(status_code=400, detail="This event is full")
+
+    dup_query = event_registrations.select().where(
+        (event_registrations.c.event_id == event_id) &
+        (event_registrations.c.email == request.email)
+    )
+    if await database.fetch_one(dup_query):
+        raise HTTPException(status_code=400, detail="You are already registered for this event")
+
+    try:
+        query = event_registrations.insert().values(
+            event_id=event_id,
+            name=request.name,
+            email=request.email,
+            phone=request.phone,
+            organization=request.organization,
+            notes=request.notes,
+            created_at=datetime.utcnow(),
+        )
+        last_id = await database.execute(query)
+        fetch_query = event_registrations.select().where(event_registrations.c.id == last_id)
+        result = await database.fetch_one(fetch_query)
+        return dict(result)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/api/events/{event_id}/registrations", response_model=list[EventRegistrationResponse])
+async def get_event_registrations(event_id: int):
+    query = event_registrations.select().where(
+        event_registrations.c.event_id == event_id
+    ).order_by(event_registrations.c.created_at.desc())
+    results = await database.fetch_all(query)
+    return [dict(r) for r in results]
 
 @app.get("/api/health")
 def health_check():

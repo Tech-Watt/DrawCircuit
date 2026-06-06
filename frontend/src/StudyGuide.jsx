@@ -274,41 +274,36 @@ const StudyGuide = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-900 text-white font-sans selection:bg-cyan-500 selection:text-slate-900">
-      {/* Background Effects */}
-      <div className="fixed inset-0 z-0 pointer-events-none">
-        <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-slate-800 via-slate-900 to-black"></div>
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-blue-600/10 rounded-full blur-3xl"></div>
-      </div>
+    <div className="page-shell relative">
+      <div className="bg-mesh" />
 
-      <div className="relative z-10 container mx-auto px-4 py-8">
+      <div className="relative z-10 page-container py-6 sm:py-10">
         {/* Header */}
-        <header className="flex flex-col gap-6 mb-12">
-          <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6">
-            <div className="flex items-start md:items-center gap-4 w-full lg:w-auto">
+        <header className="flex flex-col gap-5 sm:gap-6 mb-8 sm:mb-12">
+          <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-5 sm:gap-6">
+            <div className="flex items-start gap-3 sm:gap-4 w-full lg:w-auto min-w-0">
               {selectedCourse ? (
                  <button 
                   onClick={() => setSelectedCourse(null)}
-                   className="p-2 rounded-full bg-slate-800 hover:bg-slate-700 transition-colors shrink-0 group"
+                   className="p-2.5 rounded-xl bg-tw-surface-2 border border-tw-border hover:bg-tw-surface-3 transition-colors shrink-0 group"
                  >
-                   <ArrowLeft size={24} className="text-cyan-400 group-hover:-translate-x-1 transition-transform" />
+                   <ArrowLeft size={20} className="text-tw-primary group-hover:-translate-x-0.5 transition-transform" />
                  </button>
               ) : activeModule ? (
                   <button 
                     onClick={() => setActiveModule(null)}
-                    className="p-2 rounded-full bg-slate-800 hover:bg-slate-700 transition-colors shrink-0 group"
+                    className="p-2.5 rounded-xl bg-tw-surface-2 border border-tw-border hover:bg-tw-surface-3 transition-colors shrink-0 group"
                   >
-                  <ArrowLeft size={24} className="text-blue-400 group-hover:-translate-x-1 transition-transform" />
+                  <ArrowLeft size={20} className="text-tw-primary group-hover:-translate-x-0.5 transition-transform" />
                   </button>
               ) : (
-                <Link to="/" className="p-2 rounded-full bg-slate-800 hover:bg-slate-700 transition-colors shrink-0">
-                  <ArrowLeft size={24} className="text-blue-400" />
+                <Link to="/" className="p-2.5 rounded-xl bg-tw-surface-2 border border-tw-border hover:bg-tw-surface-3 transition-colors shrink-0">
+                  <ArrowLeft size={20} className="text-tw-primary" />
                 </Link>
               )}
               
-              <div>
-                <h1 className="text-3xl md:text-4xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-indigo-600">
+              <div className="min-w-0">
+                <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold gradient-text leading-tight">
                   {selectedCourse === 'kids' ? 'Tech Watt AI for Kids' : 
                    selectedCourse === 'python_master' ? 'Python & AI Master Course' :
                    selectedCourse === 'drone_building' ? 'Drone Building Course' :
@@ -318,35 +313,32 @@ const StudyGuide = () => {
                    activeModule === 'courses' ? 'Explore Courses' : 
                    'Study Hub Dashboard'}
                 </h1>
-                <p className="text-slate-400 mt-1 text-sm md:text-base">
+                <p className="text-tw-muted mt-1 text-sm sm:text-base">
                   {selectedCourse ? 'Explore the curriculum week by week.' : 
                    activeModule ? 'Master your skills with our interactive guides.' : 'Select a module below to start learning.'}
                 </p>
               </div>
             </div>
             
-            <div className="flex flex-col md:flex-row items-center gap-4 w-full lg:w-auto justify-end">
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full lg:w-auto">
               {activeModule === 'components' && (
                 <>
-                  <div className="relative group w-full md:w-64">
-                    <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-lg blur opacity-30 group-hover:opacity-75 transition duration-200"></div>
-                    <div className="relative flex items-center bg-slate-800 rounded-lg px-3 py-2">
-                      <Search size={20} className="text-slate-400 mr-2 shrink-0" />
+                  <div className="relative flex items-center input-field !py-2.5 w-full sm:w-64">
+                      <Search size={18} className="text-tw-muted mr-2 shrink-0" />
                       <input 
                         type="text" 
                         placeholder="Search components..." 
-                        className="bg-transparent border-none outline-none text-white w-full placeholder-slate-500"
+                        className="bg-transparent border-none outline-none text-tw-text w-full placeholder:text-tw-muted"
                         value={search}
                         onChange={(e) => setSearch(e.target.value)}
                       />
-                    </div>
                   </div>
                   
                   <button 
                     onClick={handleDownload}
-                    className="flex-1 md:flex-none px-4 py-2 bg-slate-800 hover:bg-slate-700 text-blue-400 font-bold rounded-lg border border-slate-700 transition-all flex justify-center items-center gap-2 whitespace-nowrap"
+                    className="btn btn-secondary btn-sm justify-center"
                   >
-                    <Download size={20} /> <span className="md:hidden lg:inline">Download Guide</span>
+                    <Download size={18} /> Download Guide
                   </button>
                 </>
               )}
@@ -354,14 +346,14 @@ const StudyGuide = () => {
               {activeModule === 'ai' && selectedCourse && (
                   <button 
                     onClick={handleAIDownload}
-                    className="flex-1 md:flex-none px-4 py-2 bg-purple-900/40 hover:bg-purple-800/60 text-purple-300 hover:text-white font-bold rounded-lg border border-purple-500/30 transition-all flex justify-center items-center gap-2 whitespace-nowrap"
+                    className="btn btn-secondary btn-sm justify-center"
                   >
-                    <Download size={20} /> <span className="hidden md:inline">Download Outline</span>
+                    <Download size={18} /> Download Outline
                   </button>
               )}
               
-              <Link to="/admin" className="p-2 text-slate-500 hover:text-blue-400 transition-colors" title="Admin Access">
-                  <Shield size={20} />
+              <Link to="/admin" className="btn btn-ghost btn-sm self-end sm:self-auto" title="Admin Access">
+                  <Shield size={18} />
               </Link>
             </div>
           </div>
@@ -369,96 +361,26 @@ const StudyGuide = () => {
 
         {/* Dashboard View */}
         {activeModule === null && (
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mt-4">
-            <div 
-              onClick={() => setActiveModule('components')}
-              className="group cursor-pointer relative bg-slate-800 rounded-3xl p-8 border border-slate-700 hover:border-blue-500/50 transition-all hover:scale-105"
-            >
-              <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-transparent rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
-              <div className="bg-blue-500/10 w-16 h-16 rounded-2xl flex items-center justify-center mb-6 text-blue-400 group-hover:bg-blue-500 group-hover:text-white transition-colors">
-                <Book size={32} />
+          <div className="grid sm:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-5 mt-2">
+            {[
+              { action: () => setActiveModule('components'), icon: Book, title: 'Robotics Kit Guide', desc: 'Detailed pinouts, wiring diagrams, and usage examples for every component in your kit.', cta: 'Start Learning', color: 'text-tw-primary bg-tw-primary/10 border-tw-primary/20' },
+              { action: () => { setActiveModule('ai'); setSelectedCourse('kids'); }, icon: Bot, title: 'Tech Watt AI for Kids', desc: 'Designed for young innovators (Ages 10+). Learn AI basics, safety, and create fun projects.', cta: 'Start Learning', color: 'text-pink-400 bg-pink-500/10 border-pink-500/20' },
+              { action: () => { setActiveModule('ai'); setSelectedCourse('python_master'); }, icon: Layers, title: 'Python & AI Master', desc: 'From core Python foundations to advanced Machine Learning and Deployment.', cta: 'Explore Course', color: 'text-purple-400 bg-purple-500/10 border-purple-500/20' },
+              { action: () => { setActiveModule('ai'); setSelectedCourse('drone_building'); }, icon: Plane, title: 'Drone Building', desc: 'Build, fly, and master drones. From aerodynamics to autonomous flight.', cta: 'Start Flying', color: 'text-orange-400 bg-orange-500/10 border-orange-500/20' },
+              { action: () => { setActiveModule('ai'); setSelectedCourse('data_analytics'); }, icon: BarChart, title: 'Data Analytics', desc: 'Master Excel, SQL, Python & PowerBI. Become a certified Data Analyst.', cta: 'Start Analyzing', color: 'text-emerald-400 bg-emerald-500/10 border-emerald-500/20' },
+              { action: () => setActiveModule('courses'), icon: Layers, title: 'Other Courses', desc: 'Explore advanced topics including Computer Vision, Game Dev, and Web Design.', cta: 'View Catalog', color: 'text-tw-accent bg-sky-500/10 border-sky-500/20' },
+            ].map((card) => (
+              <div key={card.title} onClick={card.action} className="card p-6 sm:p-8 cursor-pointer group hover:-translate-y-1">
+                <div className={`w-14 h-14 rounded-xl flex items-center justify-center mb-5 border transition-colors ${card.color}`}>
+                  <card.icon size={28} />
+                </div>
+                <h2 className="text-xl font-bold text-tw-text mb-2">{card.title}</h2>
+                <p className="text-tw-muted text-sm leading-relaxed mb-5">{card.desc}</p>
+                <div className="flex items-center text-tw-primary text-sm font-semibold group-hover:translate-x-1 transition-transform">
+                  {card.cta} <ArrowLeft className="ml-1.5 rotate-180" size={15} />
+                </div>
               </div>
-              <h2 className="text-2xl font-bold mb-3">Robotics Kit Guide</h2>
-              <p className="text-slate-400 mb-6">Detailed pinouts, wiring diagrams, and usage examples for every component in your kit.</p>
-              <div className="flex items-center text-blue-400 font-medium group-hover:translate-x-2 transition-transform">
-                Start Learning <ArrowLeft className="ml-2 rotate-180" size={16} />
-              </div>
-            </div>
-
-            <div 
-              onClick={() => { setActiveModule('ai'); setSelectedCourse('kids'); }}
-              className="group cursor-pointer relative bg-slate-800 rounded-3xl p-8 border border-slate-700 hover:border-pink-500/50 transition-all hover:scale-105"
-            >
-              <div className="absolute inset-0 bg-gradient-to-br from-pink-500/5 to-transparent rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
-              <div className="bg-pink-500/10 w-16 h-16 rounded-2xl flex items-center justify-center mb-6 text-pink-400 group-hover:bg-pink-500 group-hover:text-white transition-colors">
-                <Bot size={32} />
-              </div>
-              <h2 className="text-2xl font-bold mb-3">Tech Watt AI for Kids</h2>
-              <p className="text-slate-400 mb-6">Designed for young innovators (Ages 10+). Learn AI basics, safety, and create fun projects.</p>
-              <div className="flex items-center text-pink-400 font-medium group-hover:translate-x-2 transition-transform">
-                Start Learning <ArrowLeft className="ml-2 rotate-180" size={16} />
-              </div>
-            </div>
-
-            <div 
-              onClick={() => { setActiveModule('ai'); setSelectedCourse('python_master'); }}
-              className="group cursor-pointer relative bg-slate-800 rounded-3xl p-8 border border-slate-700 hover:border-purple-500/50 transition-all hover:scale-105"
-            >
-              <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-transparent rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
-              <div className="bg-purple-500/10 w-16 h-16 rounded-2xl flex items-center justify-center mb-6 text-purple-400 group-hover:bg-purple-500 group-hover:text-white transition-colors">
-                <Layers size={32} />
-              </div>
-              <h2 className="text-2xl font-bold mb-3">Python & AI Master</h2>
-              <p className="text-slate-400 mb-6">From core Python foundations to advanced Machine Learning and Deployment.</p>
-              <div className="flex items-center text-purple-400 font-medium group-hover:translate-x-2 transition-transform">
-                Explore Course <ArrowLeft className="ml-2 rotate-180" size={16} />
-              </div>
-            </div>
-
-            <div 
-              onClick={() => { setActiveModule('ai'); setSelectedCourse('drone_building'); }}
-              className="group cursor-pointer relative bg-slate-800 rounded-3xl p-8 border border-slate-700 hover:border-orange-500/50 transition-all hover:scale-105"
-            >
-              <div className="absolute inset-0 bg-gradient-to-br from-orange-500/5 to-transparent rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
-              <div className="bg-orange-500/10 w-16 h-16 rounded-2xl flex items-center justify-center mb-6 text-orange-400 group-hover:bg-orange-500 group-hover:text-white transition-colors">
-                <Plane size={32} />
-              </div>
-              <h2 className="text-2xl font-bold mb-3">Drone Building</h2>
-              <p className="text-slate-400 mb-6">Build, fly, and master drones. From aerodynamics to autonomous flight.</p>
-              <div className="flex items-center text-orange-400 font-medium group-hover:translate-x-2 transition-transform">
-                 Start Flying <ArrowLeft className="ml-2 rotate-180" size={16} />
-              </div>
-            </div>
-
-            <div 
-              onClick={() => { setActiveModule('ai'); setSelectedCourse('data_analytics'); }}
-              className="group cursor-pointer relative bg-slate-800 rounded-3xl p-8 border border-slate-700 hover:border-emerald-500/50 transition-all hover:scale-105"
-            >
-              <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/5 to-transparent rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
-              <div className="bg-emerald-500/10 w-16 h-16 rounded-2xl flex items-center justify-center mb-6 text-emerald-400 group-hover:bg-emerald-500 group-hover:text-white transition-colors">
-                <BarChart size={32} />
-              </div>
-              <h2 className="text-2xl font-bold mb-3">Data Analytics</h2>
-              <p className="text-slate-400 mb-6">Master Excel, SQL, Python & PowerBI. Become a certified Data Analyst.</p>
-              <div className="flex items-center text-emerald-400 font-medium group-hover:translate-x-2 transition-transform">
-                 Start Analyzing <ArrowLeft className="ml-2 rotate-180" size={16} />
-              </div>
-            </div>
-
-            <div 
-              onClick={() => setActiveModule('courses')}
-              className="group cursor-pointer relative bg-slate-800 rounded-3xl p-8 border border-slate-700 hover:border-indigo-500/50 transition-all hover:scale-105"
-            >
-              <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/5 to-transparent rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
-              <div className="bg-indigo-500/10 w-16 h-16 rounded-2xl flex items-center justify-center mb-6 text-indigo-400 group-hover:bg-indigo-500 group-hover:text-white transition-colors">
-                <Layers size={32} />
-              </div>
-              <h2 className="text-2xl font-bold mb-3">Other Courses</h2>
-              <p className="text-slate-400 mb-6">Explore advanced topics including Computer Vision, Game Dev, and Web Design.</p>
-              <div className="flex items-center text-indigo-400 font-medium group-hover:translate-x-2 transition-transform">
-                 View Catalog <ArrowLeft className="ml-2 rotate-180" size={16} />
-              </div>
-            </div>
+            ))}
           </div>
         )}
 
@@ -466,20 +388,20 @@ const StudyGuide = () => {
         {activeModule === 'components' && (
           <>
             {/* Kit Gallery */}
-            <div className="mb-12">
-               <h2 className="text-2xl font-bold text-white mb-6 flex items-center gap-2">
-                 <img src={kitImg} className="w-8 h-8 rounded-full border border-blue-500" alt="Kit Icon" /> Meet Your Kit
+            <div className="mb-10 sm:mb-12">
+               <h2 className="text-xl sm:text-2xl font-bold text-tw-text mb-5 flex items-center gap-2">
+                 <img src={kitImg} className="w-8 h-8 rounded-full border border-tw-primary/40" alt="Kit Icon" /> Meet Your Kit
                </h2>
-               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+               <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
                  {kitImages.map((img, idx) => (
                    <div 
                      key={idx} 
                      onClick={() => setSelectedImage(img)}
-                     className="rounded-xl overflow-hidden shadow-lg border border-slate-700 aspect-video group relative cursor-pointer hover:border-blue-500/50 transition-all"
+                     className="rounded-xl overflow-hidden border border-tw-border aspect-video group relative cursor-pointer hover:border-tw-primary/40 transition-all"
                    >
-                       <img src={img} alt={`Robotics Kit ${idx + 1}`} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
-                        <div className="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-3">
-                           <span className="text-blue-400 text-xs font-bold uppercase tracking-wider">View Image</span>
+                       <img src={img} alt={`Robotics Kit ${idx + 1}`} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+                        <div className="absolute inset-0 bg-gradient-to-t from-tw-bg/90 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-3">
+                           <span className="text-tw-primary text-xs font-bold uppercase tracking-wider">View Image</span>
                         </div>
                    </div>
                  ))}
@@ -491,37 +413,34 @@ const StudyGuide = () => {
                 <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
               </div>
             ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
                 {filteredComponents.map(comp => (
                   <div 
                     key={comp.id}
                     onClick={() => setSelectedComponent(comp)}
-                    className="group relative cursor-pointer"
+                    className="card p-5 sm:p-6 cursor-pointer group hover:-translate-y-0.5 flex flex-col h-full"
                   >
-                    <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-2xl blur opacity-20 group-hover:opacity-100 transition duration-300"></div>
-                    <div className="relative h-full bg-slate-800 rounded-2xl p-6 border border-slate-700 hover:border-slate-600 transition-all flex flex-col">
-                      <div className="h-48 rounded-xl bg-slate-900 mb-4 overflow-hidden flex items-center justify-center">
+                      <div className="h-40 sm:h-48 rounded-xl bg-tw-surface-2 mb-4 overflow-hidden flex items-center justify-center border border-tw-border">
                         {comp.image_url && (Array.isArray(comp.image_url) ? comp.image_url.length > 0 : comp.image_url) ? (
                           <img 
                             src={Array.isArray(comp.image_url) ? comp.image_url[0] : comp.image_url} 
                             alt={comp.name} 
-                            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" 
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
                           />
                         ) : (
-                          <Cpu size={64} className="text-slate-600 group-hover:text-blue-400 transition-colors" />
+                          <Cpu size={48} className="text-tw-muted group-hover:text-tw-primary transition-colors" />
                         )}
                       </div>
-                      <div className="flex justify-between items-start mb-2">
-                        <h3 className="text-xl font-bold text-white group-hover:text-blue-400 transition-colors">{comp.name}</h3>
-                        <span className="px-2 py-1 rounded-md bg-slate-700 text-xs text-blue-300 border border-slate-600">
+                      <div className="flex justify-between items-start gap-2 mb-2">
+                        <h3 className="text-lg font-bold text-tw-text group-hover:text-tw-primary-light transition-colors">{comp.name}</h3>
+                        <span className="px-2 py-0.5 rounded-md bg-tw-surface-2 text-xs text-tw-primary border border-tw-border shrink-0">
                           {comp.category}
                         </span>
                       </div>
-                      <p className="text-slate-400 text-sm line-clamp-3 mb-4 flex-grow">{comp.description}</p>
-                      <div className="flex items-center text-blue-500 text-sm font-medium mt-auto">
-                        View Guide <Activity size={16} className="ml-1" />
+                      <p className="text-tw-muted text-sm line-clamp-3 mb-4 flex-grow">{comp.description}</p>
+                      <div className="flex items-center text-tw-primary text-sm font-semibold mt-auto">
+                        View Guide <Activity size={15} className="ml-1" />
                       </div>
-                    </div>
                   </div>
                 ))}
               </div>
@@ -666,15 +585,15 @@ const StudyGuide = () => {
 
         {/* Other Courses View */}
         {activeModule === 'courses' && (
-            <div className="text-center py-20">
-                <Layers size={64} className="mx-auto text-indigo-500 mb-6" />
-                <h2 className="text-3xl font-bold mb-4">Explore More Courses</h2>
-                <p className="text-slate-400 max-w-lg mx-auto mb-8">Take your skills to the next level with our advanced curriculum.</p>
+            <div className="card-elevated p-10 sm:p-16 text-center max-w-2xl mx-auto">
+                <Layers size={48} className="mx-auto text-tw-accent mb-5" />
+                <h2 className="text-2xl sm:text-3xl font-bold text-tw-text mb-3">Explore More Courses</h2>
+                <p className="text-tw-muted max-w-md mx-auto mb-8">Take your skills to the next level with our advanced curriculum.</p>
                 <a 
                     href="https://www.techwatt.ai/" 
                     target="_blank" 
                     rel="noopener noreferrer"
-                    className="inline-flex items-center px-6 py-3 bg-indigo-600 text-white font-bold rounded-lg hover:bg-indigo-700 transition-colors"
+                    className="btn btn-primary"
                 >
                     Visit TechWatt Academy
                 </a>
@@ -684,18 +603,17 @@ const StudyGuide = () => {
 
       {/* Detail Modal (Full Page View) */}
       {selectedComponent && (
-        <div className="fixed inset-0 z-50 bg-slate-900 overflow-y-auto animate-in fade-in duration-200">
-           <div className="container mx-auto px-4 py-8 max-w-5xl">
-              {/* Navigation / Header */}
-              <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 sticky top-0 bg-slate-900/95 backdrop-blur py-4 z-10 border-b border-slate-800 gap-4">
+        <div className="fixed inset-0 z-50 bg-tw-bg overflow-y-auto">
+           <div className="page-container py-6 sm:py-8 max-w-5xl">
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 sm:mb-8 sticky top-0 bg-tw-bg/95 backdrop-blur-xl py-4 z-10 border-b border-tw-border gap-4">
                 <button 
                   onClick={() => setSelectedComponent(null)}
-                  className="flex items-center gap-2 text-slate-400 hover:text-white transition-colors group"
+                  className="flex items-center gap-2 text-tw-muted hover:text-tw-text transition-colors group"
                 >
-                  <div className="p-2 rounded-full bg-slate-800 group-hover:bg-slate-700">
-                    <ArrowLeft size={24} />
+                  <div className="p-2 rounded-xl bg-tw-surface-2 border border-tw-border group-hover:bg-tw-surface-3">
+                    <ArrowLeft size={20} />
                   </div>
-                  <span className="font-medium">Back to Guide</span>
+                  <span className="font-medium text-sm sm:text-base">Back to Guide</span>
                 </button>
               </div>
 
@@ -805,15 +723,15 @@ const StudyGuide = () => {
 
       {/* Image Modal */}
       {selectedImage && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/90 backdrop-blur-sm animate-in fade-in duration-200" onClick={() => setSelectedImage(null)}>
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/90 backdrop-blur-sm" onClick={() => setSelectedImage(null)}>
           <div className="relative max-w-5xl max-h-[90vh] w-full flex items-center justify-center">
             <button 
               onClick={() => setSelectedImage(null)}
-              className="absolute -top-12 right-0 p-2 text-white hover:text-cyan-400 transition-colors"
+              className="absolute top-2 right-2 sm:-top-12 sm:right-0 p-2 rounded-xl bg-tw-surface text-tw-text hover:text-tw-primary transition-colors"
             >
-              <X size={32} />
+              <X size={24} />
             </button>
-            <img src={selectedImage} alt="Full View" className="max-w-full max-h-[90vh] rounded-lg shadow-2xl border border-slate-700" onClick={(e) => e.stopPropagation()} />
+            <img src={selectedImage} alt="Full View" className="max-w-full max-h-[85vh] sm:max-h-[90vh] rounded-xl border border-tw-border" onClick={(e) => e.stopPropagation()} />
           </div>
         </div>
       )}
