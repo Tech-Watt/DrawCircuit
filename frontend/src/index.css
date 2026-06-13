@@ -26,6 +26,8 @@
 
 html {
   scroll-behavior: smooth;
+  overflow-x: hidden;
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
@@ -45,17 +47,28 @@ body {
   min-height: 100vh;
   background-color: var(--color-tw-bg);
   color: var(--color-tw-text-secondary);
+  overflow-x: hidden;
 }
 
 .page-container {
   width: 100%;
   max-width: 80rem;
   margin-inline: auto;
-  padding-inline: 1rem;
+  padding-inline: max(1rem, env(safe-area-inset-left));
+  padding-right: max(1rem, env(safe-area-inset-right));
+}
+
+.page-section {
+  padding-top: 5.5rem;
+  padding-bottom: 3rem;
 }
 
 @media (min-width: 640px) {
   .page-container { padding-inline: 1.5rem; }
+  .page-section {
+    padding-top: 7rem;
+    padding-bottom: 4rem;
+  }
 }
 
 @media (min-width: 1024px) {
@@ -108,8 +121,29 @@ body {
   font-weight: 600;
   border-radius: 0.75rem;
   transition: all 0.2s;
-  white-space: nowrap;
   cursor: pointer;
+  min-height: 2.75rem;
+  text-align: center;
+}
+
+@media (max-width: 639px) {
+  .btn {
+    white-space: normal;
+  }
+
+  .card:hover {
+    transform: none;
+  }
+}
+
+.btn-block {
+  width: 100%;
+}
+
+@media (min-width: 640px) {
+  .btn-block-sm {
+    width: auto;
+  }
 }
 
 .btn:disabled {
@@ -204,6 +238,23 @@ body {
   color: var(--color-tw-muted);
   line-height: 1.7;
   max-width: 42rem;
+  margin-inline: auto;
+}
+
+.prose-content {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.prose-content pre,
+.prose-content code {
+  overflow-x: auto;
+  max-width: 100%;
+}
+
+.touch-target {
+  min-height: 2.75rem;
+  min-width: 2.75rem;
 }
 
 ::-webkit-scrollbar {

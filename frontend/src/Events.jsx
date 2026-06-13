@@ -59,7 +59,7 @@ const Events = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!form.name.trim() || !form.email.trim()) return;
+    if (!form.name.trim() || !form.email.trim() || !form.phone.trim()) return;
     setSubmitting(true);
     setError('');
     try {
@@ -81,7 +81,7 @@ const Events = () => {
       <div className="bg-mesh" />
       <Navbar />
 
-      <section className="relative z-10 pt-28 pb-16 sm:pt-32 sm:pb-24">
+      <section className="relative z-10 page-section pb-16 sm:pb-24">
         <div className="page-container">
           <div className="text-center mb-12 sm:mb-16">
             <div className="badge mx-auto mb-5">
@@ -117,7 +117,7 @@ const Events = () => {
                 return (
                   <div key={event.id} className="card p-6 flex flex-col h-full hover:-translate-y-0.5">
                     <div className="flex items-start justify-between gap-3 mb-4">
-                      <h2 className="text-lg font-bold text-tw-text leading-snug">{event.title}</h2>
+                      <h2 className="text-lg font-bold text-tw-text leading-snug min-w-0">{event.title}</h2>
                       {full && (
                         <span className="text-xs font-semibold px-2 py-1 rounded-full bg-tw-danger/10 text-tw-danger border border-tw-danger/20 shrink-0">
                           Full
@@ -143,7 +143,7 @@ const Events = () => {
                       {event.location && (
                         <div className="flex items-center gap-2.5 text-tw-muted">
                           <MapPin size={15} className="text-tw-primary shrink-0" />
-                          <span>{event.location}</span>
+                          <span className="min-w-0 break-words">{event.location}</span>
                         </div>
                       )}
                       {event.max_spots != null && (
@@ -175,9 +175,9 @@ const Events = () => {
 
       {/* Registration Modal */}
       {selectedEvent && (
-        <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-tw-text/50 backdrop-blur-sm" onClick={closeModal}>
+        <div className="fixed inset-0 z-[60] flex items-end sm:items-center justify-center p-0 sm:p-4 bg-tw-text/50 backdrop-blur-sm" onClick={closeModal}>
           <div
-            className="card-elevated w-full max-w-md p-6 sm:p-8 relative max-h-[90vh] overflow-y-auto"
+            className="card-elevated w-full sm:max-w-md p-6 sm:p-8 relative max-h-[92vh] sm:max-h-[90vh] overflow-y-auto rounded-t-2xl sm:rounded-2xl"
             onClick={(e) => e.stopPropagation()}
           >
             <button
@@ -234,11 +234,12 @@ const Events = () => {
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-tw-muted mb-1.5">Phone</label>
+                    <label className="block text-sm font-medium text-tw-muted mb-1.5">Phone *</label>
                     <input
                       type="tel"
+                      required
                       className="input-field"
-                      placeholder="Optional"
+                      placeholder="Your phone number"
                       value={form.phone}
                       onChange={(e) => setForm({ ...form, phone: e.target.value })}
                     />

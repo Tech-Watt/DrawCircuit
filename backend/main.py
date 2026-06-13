@@ -175,7 +175,7 @@ class EventResponse(BaseModel):
 class EventRegistrationRequest(BaseModel):
     name: str
     email: EmailStr
-    phone: Optional[str] = None
+    phone: str
     organization: Optional[str] = None
     notes: Optional[str] = None
 

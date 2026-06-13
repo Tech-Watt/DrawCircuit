@@ -24,7 +24,7 @@ const ConfirmDialog = ({ open, title, message, confirmLabel = 'Delete', onConfir
         <h3 className="text-lg font-bold text-tw-text mb-2">{title}</h3>
         <p className="text-tw-muted text-sm leading-relaxed mb-6">{message}</p>
 
-        <div className="flex gap-3">
+        <div className="flex flex-col-reverse sm:flex-row gap-3">
           <button onClick={onCancel} disabled={loading} className="btn btn-secondary flex-1">
             Cancel
           </button>

@@ -2,11 +2,10 @@ import React from 'react';
 
 import { Link } from 'react-router-dom';
 
-import { Zap, BookOpen, ArrowRight, Activity, GraduationCap, Calendar, Users, Bot } from 'lucide-react';
-
+import { Zap, BookOpen, ArrowRight, Activity, GraduationCap, Calendar, Users, Bot, Images } from 'lucide-react';
 import Navbar from './components/Navbar';
-
 import Footer from './components/Footer';
+import { featuredTrainingImages } from './data/trainingImages';
 
 
 
@@ -24,7 +23,7 @@ const Home = () => {
 
       {/* Hero */}
 
-      <section className="relative z-10 pt-28 pb-16 sm:pt-36 sm:pb-24">
+      <section className="relative z-10 page-section pb-16 sm:pb-24">
 
         <div className="page-container text-center">
 
@@ -58,13 +57,13 @@ const Home = () => {
 
           <div className="flex flex-col sm:flex-row gap-3 justify-center max-w-md sm:max-w-none mx-auto">
 
-            <Link to="/study" className="btn btn-primary text-base px-8 py-4">
+            <Link to="/study" className="btn btn-primary btn-block sm:w-auto text-base px-8 py-4">
 
               Explore Courses <ArrowRight size={18} />
 
             </Link>
 
-            <Link to="/events" className="btn btn-secondary text-base px-8 py-4">
+            <Link to="/events" className="btn btn-secondary btn-block sm:w-auto text-base px-8 py-4">
 
               Register for Events
 
@@ -288,7 +287,7 @@ const Home = () => {
 
               </ul>
 
-              <Link to="/study" className="btn btn-primary">
+              <Link to="/study" className="btn btn-primary btn-block sm:w-auto">
 
                 Explore All Courses <ArrowRight size={18} />
 
@@ -340,6 +339,82 @@ const Home = () => {
 
 
 
+      {/* Training gallery preview */}
+
+      <section className="relative z-10 py-20 sm:py-28 bg-tw-surface/30 border-y border-tw-border">
+
+        <div className="page-container">
+
+          <div className="text-center mb-10 sm:mb-12">
+
+            <div className="badge mx-auto mb-5">
+
+              <Images size={14} /> Hands-On Learning
+
+            </div>
+
+            <h2 className="section-heading mb-4">Training in Action</h2>
+
+            <p className="section-subheading mx-auto">
+
+              Real moments from TechWatt robotics workshops, AI classes, and student projects.
+
+            </p>
+
+          </div>
+
+
+
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4 max-w-5xl mx-auto">
+
+            {featuredTrainingImages.map((img) => (
+
+              <div
+
+                key={img.id}
+
+                className="relative aspect-[4/3] rounded-xl overflow-hidden border border-tw-border group"
+
+              >
+
+                <img
+
+                  src={img.src}
+
+                  alt={img.alt}
+
+                  loading="lazy"
+
+                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+
+                />
+
+                <div className="absolute inset-0 bg-gradient-to-t from-tw-text/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+
+              </div>
+
+            ))}
+
+          </div>
+
+
+
+          <div className="text-center mt-8 sm:mt-10">
+
+            <Link to="/gallery" className="btn btn-primary btn-block sm:w-auto px-8">
+
+              View Full Gallery <ArrowRight size={18} />
+
+            </Link>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+
       {/* Events CTA */}
 
       <section className="relative z-10 py-20 sm:py-24">
@@ -360,7 +435,7 @@ const Home = () => {
 
               </p>
 
-              <Link to="/events" className="btn btn-primary px-8">Register for Events</Link>
+              <Link to="/events" className="btn btn-primary btn-block sm:w-auto px-8">Register for Events</Link>
 
             </div>
 
@@ -376,7 +451,7 @@ const Home = () => {
 
               </p>
 
-              <Link to="/study" className="btn btn-primary px-8">Browse Study Guide</Link>
+              <Link to="/study" className="btn btn-primary btn-block sm:w-auto px-8">Browse Study Guide</Link>
 
             </div>
 

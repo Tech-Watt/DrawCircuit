@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { Search, X, Cpu, Zap, Activity, ArrowLeft, Download, Book, Bot, Layers, Shield, ChevronDown, Plane, BarChart } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
+import Navbar from './components/Navbar';
+import Footer from './components/Footer';
 
 // ... imports
 import kitImg from './assets/kit.jpeg';
@@ -276,8 +278,9 @@ const StudyGuide = () => {
   return (
     <div className="page-shell relative">
       <div className="bg-mesh" />
+      <Navbar />
 
-      <div className="relative z-10 page-container py-6 sm:py-10">
+      <div className="relative z-10 page-container page-section pb-16 sm:pb-20">
         {/* Header */}
         <header className="flex flex-col gap-5 sm:gap-6 mb-8 sm:mb-12">
           <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-5 sm:gap-6">
@@ -336,7 +339,7 @@ const StudyGuide = () => {
                   
                   <button 
                     onClick={handleDownload}
-                    className="btn btn-secondary btn-sm justify-center"
+                    className="btn btn-secondary btn-sm justify-center w-full sm:w-auto"
                   >
                     <Download size={18} /> Download Guide
                   </button>
@@ -346,7 +349,7 @@ const StudyGuide = () => {
               {activeModule === 'ai' && selectedCourse && (
                   <button 
                     onClick={handleAIDownload}
-                    className="btn btn-secondary btn-sm justify-center"
+                    className="btn btn-secondary btn-sm justify-center w-full sm:w-auto"
                   >
                     <Download size={18} /> Download Outline
                   </button>
@@ -462,17 +465,17 @@ const StudyGuide = () => {
                       selectedCourse === 'data_analytics' ? <BarChart size={32} className="text-emerald-400" /> : 
                       <Bot size={32} className="text-purple-400" />}
                   </div>
-                  <h2 className={`text-4xl md:text-5xl font-bold bg-clip-text text-transparent mb-4 
-                    ${selectedCourse === 'kids' ? 'bg-gradient-to-r from-white via-pink-200 to-pink-400' : 
-                      selectedCourse === 'drone_building' ? 'bg-gradient-to-r from-white via-orange-200 to-orange-400' : 
-                      selectedCourse === 'data_analytics' ? 'bg-gradient-to-r from-white via-emerald-200 to-emerald-400' : 
-                      'bg-gradient-to-r from-white via-purple-200 to-purple-400'}`}>
+                  <h2 className={`text-2xl sm:text-4xl md:text-5xl font-bold bg-clip-text text-transparent mb-4 
+                    ${selectedCourse === 'kids' ? 'bg-gradient-to-r from-pink-600 via-pink-500 to-pink-400' : 
+                      selectedCourse === 'drone_building' ? 'bg-gradient-to-r from-orange-600 via-orange-500 to-orange-400' : 
+                      selectedCourse === 'data_analytics' ? 'bg-gradient-to-r from-emerald-600 via-emerald-500 to-emerald-400' : 
+                      'bg-gradient-to-r from-purple-600 via-purple-500 to-purple-400'}`}>
                       {selectedCourse === 'kids' ? 'AI for Kids Curriculum' : 
                        selectedCourse === 'drone_building' ? 'Drone Building Curriculum' : 
                        selectedCourse === 'data_analytics' ? 'Data Analytics Curriculum' : 
                        'Python & AI Master Curriculum'}
                   </h2>
-                  <p className="text-tw-muted text-lg">
+                  <p className="text-tw-muted text-base sm:text-lg px-2">
                     {selectedCourse === 'kids' ? 'Fun, safe, and interactive AI learning.' : 
                      selectedCourse === 'drone_building' ? 'Master the skies with drone engineering.' : 
                      selectedCourse === 'data_analytics' ? 'Turn raw data into actionable insights.' : 
@@ -484,7 +487,7 @@ const StudyGuide = () => {
                   <div key={mod.id} className="relative group animate-in fade-in slide-in-from-bottom-8 duration-700" style={{animationDelay: `${index * 100}ms`}}>
                       {/* Connector Line */}
                       {index !== aiModules.length - 1 && (
-                          <div className={`absolute left-8 top-24 bottom-0 w-0.5 bg-gradient-to-b to-transparent -z-10 h-full 
+                          <div className={`hidden sm:block absolute left-8 top-24 bottom-0 w-0.5 bg-gradient-to-b to-transparent -z-10 h-full 
                             ${selectedCourse === 'kids' ? 'from-pink-500/30' : 
                               selectedCourse === 'drone_building' ? 'from-orange-500/30' : 
                               selectedCourse === 'data_analytics' ? 'from-emerald-500/30' : 
@@ -502,11 +505,11 @@ const StudyGuide = () => {
                              selectedCourse === 'data_analytics' ? 'ring-1 ring-emerald-500/50 bg-tw-surface' : 
                              'ring-1 ring-purple-500/50 bg-tw-surface') : ''}`}>
                           <div 
-                            className="p-6 md:p-8 cursor-pointer flex gap-6 items-start"
+                            className="p-4 sm:p-6 md:p-8 cursor-pointer flex flex-col sm:flex-row gap-4 sm:gap-6 items-start"
                             onClick={() => setExpandedModuleId(expandedModuleId === mod.id ? null : mod.id)}
                           >
                               {/* Week Badge */}
-                              <div className={`shrink-0 w-16 h-16 rounded-2xl bg-tw-surface-3 border border-tw-border flex flex-col items-center justify-center shadow-inner transition-all duration-300 group-hover:scale-105 
+                              <div className={`shrink-0 w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-tw-surface-3 border border-tw-border flex flex-col items-center justify-center shadow-inner transition-all duration-300 group-hover:scale-105 
                                 ${expandedModuleId === mod.id ? 
                                     (selectedCourse === 'kids' ? 'border-pink-500/50 text-pink-400' : 
                                      selectedCourse === 'drone_building' ? 'border-orange-500/50 text-orange-400' : 
@@ -516,8 +519,8 @@ const StudyGuide = () => {
                                   <span className="text-2xl font-bold font-mono">{mod.week}</span>
                               </div>
                               
-                              <div className="flex-1 pt-1">
-                                  <h3 className={`text-2xl font-bold mb-2 transition-colors 
+                              <div className="flex-1 pt-0 sm:pt-1 min-w-0 w-full">
+                                  <h3 className={`text-lg sm:text-2xl font-bold mb-2 transition-colors 
                                     ${expandedModuleId === mod.id ? 
                                         (selectedCourse === 'kids' ? 'text-pink-400' : 
                                          selectedCourse === 'drone_building' ? 'text-orange-400' : 
@@ -529,7 +532,7 @@ const StudyGuide = () => {
                                   <p className="text-tw-muted leading-relaxed text-sm md:text-base">{mod.description}</p>
                               </div>
                               
-                              <div className={`p-3 rounded-full border border-tw-border bg-tw-surface-3 transition-transform duration-300 
+                              <div className={`self-end sm:self-start shrink-0 p-2.5 sm:p-3 rounded-full border border-tw-border bg-tw-surface-3 transition-transform duration-300 
                                 ${expandedModuleId === mod.id ? 
                                     (selectedCourse === 'kids' ? 'rotate-180 border-pink-500/30 text-pink-400' : 
                                      selectedCourse === 'drone_building' ? 'rotate-180 border-orange-500/30 text-orange-400' : 
@@ -543,8 +546,8 @@ const StudyGuide = () => {
                           {/* Expanded Content */}
                           {expandedModuleId === mod.id && (
                               <div className="border-t border-tw-border/50 bg-tw-surface-3/30 animate-in fade-in slide-in-from-top-2 duration-300">
-                                  <div className="p-8 pt-6">
-                                      <div className="text-tw-text-secondary leading-relaxed text-base md:text-lg">
+                                  <div className="p-4 sm:p-6 md:p-8 pt-4 sm:pt-6">
+                                      <div className="prose-content text-tw-text-secondary leading-relaxed text-sm sm:text-base md:text-lg">
                                           <ReactMarkdown
                                             components={{
                                                 h1: ({...props}) => <h1 className={`text-2xl font-bold mt-6 mb-3 ${selectedCourse === 'kids' ? 'text-pink-400' : selectedCourse === 'drone_building' ? 'text-orange-400' : selectedCourse === 'data_analytics' ? 'text-emerald-400' : 'text-purple-400'}`} {...props} />,
@@ -585,7 +588,7 @@ const StudyGuide = () => {
 
         {/* Other Courses View */}
         {activeModule === 'courses' && (
-            <div className="card-elevated p-10 sm:p-16 text-center max-w-2xl mx-auto">
+            <div className="card-elevated p-6 sm:p-10 md:p-16 text-center max-w-2xl mx-auto">
                 <Layers size={48} className="mx-auto text-tw-accent mb-5" />
                 <h2 className="text-2xl sm:text-3xl font-bold text-tw-text mb-3">Explore More Courses</h2>
                 <p className="text-tw-muted max-w-md mx-auto mb-8">Take your skills to the next level with our advanced curriculum.</p>
@@ -593,7 +596,7 @@ const StudyGuide = () => {
                     href="https://www.techwatt.ai/" 
                     target="_blank" 
                     rel="noopener noreferrer"
-                    className="btn btn-primary"
+                    className="btn btn-primary btn-block sm:w-auto"
                 >
                     Visit TechWatt Academy
                 </a>
@@ -601,11 +604,13 @@ const StudyGuide = () => {
         )}
       </div>
 
+      <Footer />
+
       {/* Detail Modal (Full Page View) */}
       {selectedComponent && (
-        <div className="fixed inset-0 z-50 bg-tw-bg overflow-y-auto">
+        <div className="fixed inset-0 z-[60] bg-tw-bg overflow-y-auto">
            <div className="page-container py-6 sm:py-8 max-w-5xl">
-              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 sm:mb-8 sticky top-0 bg-tw-bg/95 backdrop-blur-xl py-4 z-10 border-b border-tw-border gap-4">
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 sm:mb-8 sm:sticky sm:top-0 bg-tw-bg/95 backdrop-blur-xl py-4 z-10 border-b border-tw-border gap-4">
                 <button 
                   onClick={() => setSelectedComponent(null)}
                   className="flex items-center gap-2 text-tw-muted hover:text-tw-text transition-colors group"
@@ -677,7 +682,7 @@ const StudyGuide = () => {
                         <h2 className="flex items-center gap-3 text-2xl font-bold text-tw-primary mb-6 m-0">
                           <Zap className="fill-tw-primary/20" /> How It Works
                         </h2>
-                        <div className="text-tw-text-secondary leading-relaxed text-base md:text-lg">
+                        <div className="prose-content text-tw-text-secondary leading-relaxed text-sm sm:text-base md:text-lg">
                            <ReactMarkdown
                              components={{
                                h1: ({...props}) => <h1 className="text-2xl font-bold text-tw-primary mt-6 mb-3 border-b border-tw-border pb-2" {...props} />,
@@ -701,7 +706,7 @@ const StudyGuide = () => {
                           <h2 className="flex items-center gap-3 text-2xl font-bold text-tw-primary mb-6 m-0">
                             <Activity className="fill-tw-primary/20" /> Wiring Guide
                           </h2>
-                          <div className="bg-tw-surface-3 rounded-xl p-4 md:p-6 font-mono text-sm text-tw-text-secondary border border-tw-border shadow-inner overflow-x-auto">
+                          <div className="prose-content bg-tw-surface-3 rounded-xl p-4 md:p-6 font-mono text-xs sm:text-sm text-tw-text-secondary border border-tw-border shadow-inner overflow-x-auto">
                              <ReactMarkdown components={{
                                  ul: ({...props}) => <ul className="list-disc pl-6 space-y-2" {...props} />,
                                  ol: ({...props}) => <ol className="list-decimal pl-6 space-y-2" {...props} />,
@@ -723,7 +728,7 @@ const StudyGuide = () => {
 
       {/* Image Modal */}
       {selectedImage && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-tw-text/50 backdrop-blur-sm" onClick={() => setSelectedImage(null)}>
+        <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-tw-text/50 backdrop-blur-sm" onClick={() => setSelectedImage(null)}>
           <div className="relative max-w-5xl max-h-[90vh] w-full flex items-center justify-center">
             <button 
               onClick={() => setSelectedImage(null)}

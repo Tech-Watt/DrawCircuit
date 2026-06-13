@@ -5,6 +5,7 @@ import StudyGuide from './StudyGuide';
 import AdminDashboard from './AdminDashboard';
 import UpdateSuccess from './UpdateSuccess';
 import Events from './Events';
+import TrainingGallery from './TrainingGallery';
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/study" element={<StudyGuide />} />
         <Route path="/events" element={<Events />} />
+        <Route path="/gallery" element={<TrainingGallery />} />
         <Route path="/admin" element={<AdminDashboard />} />
         <Route path="/success" element={<UpdateSuccess />} />
       </Routes>

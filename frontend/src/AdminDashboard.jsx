@@ -436,12 +436,20 @@ const AdminDashboard = () => {
   return (
     <div className="page-shell pb-16 sm:pb-20">
       <nav className="border-b border-tw-border bg-tw-surface/80 backdrop-blur-xl sticky top-0 z-40">
-        <div className="page-container h-14 sm:h-16 flex items-center justify-between gap-3">
-          <div className="flex items-center gap-2 font-bold text-base sm:text-lg shrink-0">
-            <Shield className="text-tw-primary" size={20} /> 
-            <span className="gradient-text hidden xs:inline">TechWatt Admin</span>
+        <div className="page-container py-3 sm:py-0 sm:h-16 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
+          <div className="flex items-center justify-between sm:justify-start gap-2 font-bold text-base sm:text-lg shrink-0">
+            <div className="flex items-center gap-2 min-w-0">
+              <Shield className="text-tw-primary shrink-0" size={20} /> 
+              <span className="gradient-text truncate">TechWatt Admin</span>
+            </div>
+            <button 
+              onClick={() => setIsAuthenticated(false)}
+              className="btn btn-ghost btn-sm shrink-0 sm:hidden"
+            >
+              <LogOut size={16} /> Logout
+            </button>
           </div>
-          <div className="flex bg-tw-surface-2 rounded-xl p-1 border border-tw-border overflow-x-auto max-w-[70vw] sm:max-w-none">
+          <div className="flex bg-tw-surface-2 rounded-xl p-1 border border-tw-border overflow-x-auto w-full sm:w-auto sm:max-w-none -mx-1 px-1 sm:mx-0 sm:px-0">
                <button 
                   onClick={() => setView('components')}
                   className={`px-3 sm:px-4 py-1.5 rounded-lg text-xs sm:text-sm font-semibold transition-all whitespace-nowrap ${view === 'components' ? 'bg-tw-primary !text-white' : 'text-tw-muted hover:text-tw-text'}`}
@@ -463,7 +471,7 @@ const AdminDashboard = () => {
           </div>
           <button 
             onClick={() => setIsAuthenticated(false)}
-            className="btn btn-ghost btn-sm shrink-0"
+            className="btn btn-ghost btn-sm shrink-0 hidden sm:inline-flex"
           >
             <LogOut size={16} /> <span className="hidden sm:inline">Logout</span>
           </button>
@@ -534,7 +542,7 @@ const AdminDashboard = () => {
               </div>
 
               <div className="lg:col-span-2 space-y-6">
-                <div className="card p-4 flex justify-between items-center">
+                <div className="card p-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
                   <span className="font-bold text-tw-text flex items-center gap-2"><Calendar size={18} className="text-tw-warning" /> Events</span>
                   <span className="text-tw-muted text-sm">{eventList.length} total</span>
                 </div>
@@ -581,9 +589,9 @@ const AdminDashboard = () => {
                         </div>
                         {ev.description && <p className="text-tw-muted text-sm mt-2 line-clamp-2">{ev.description}</p>}
                       </div>
-                      <div className="flex sm:flex-col gap-2 shrink-0">
+                      <div className="flex flex-row sm:flex-col gap-2 shrink-0 w-full sm:w-auto">
                         <button onClick={() => fetchRegistrations(ev.id)}
-                          className="btn btn-secondary btn-sm"><Users size={15} /> View</button>
+                          className="btn btn-secondary btn-sm flex-1 sm:flex-none"><Users size={15} /> View</button>
                         <button onClick={() => handleEditEvent(ev)}
                           className="p-2 text-tw-muted hover:text-tw-accent hover:bg-tw-surface-2 rounded-lg transition-colors"><Edit size={18} /></button>
                         <button onClick={() => requestDelete('event', ev.id, ev.title)}
@@ -700,11 +708,11 @@ const AdminDashboard = () => {
 
                     <div>
                         <label className="block text-sm font-medium text-tw-text-secondary mb-1">Or Image URL</label>
-                        <div className="flex gap-2">
+                        <div className="flex flex-col sm:flex-row gap-2">
                             <input 
                                 type="url" 
                                 placeholder="https://..."
-                                className="w-full bg-tw-surface-2 border border-tw-border rounded-lg px-3 py-2 text-tw-text outline-none text-sm"
+                                className="w-full bg-tw-surface-2 border border-tw-border rounded-lg px-3 py-2 text-tw-text outline-none text-sm min-w-0"
                                 value={newComponent.image_url_input}
                                 onChange={e => setNewComponent({...newComponent, image_url_input: e.target.value})}
                             />
@@ -712,7 +720,7 @@ const AdminDashboard = () => {
                                 type="button"
                                 onClick={handleGenerateDetails}
                                 disabled={loading}
-                                className="px-3 bg-tw-primary hover:bg-tw-primary-dark !text-white rounded-lg flex items-center"
+                                className="px-3 py-2 bg-tw-primary hover:bg-tw-primary-dark !text-white rounded-lg flex items-center justify-center shrink-0 self-stretch sm:self-auto"
                                 title="Auto-Generate Details"
                             >
                                 <Bot size={18} />
@@ -770,8 +778,8 @@ const AdminDashboard = () => {
 
           {/* List Column */}
           <div className="lg:col-span-2 space-y-6">
-             <div className="flex justify-between items-center bg-tw-surface border border-tw-border p-4 rounded-xl">
-                <div className="relative flex-1 max-w-sm">
+             <div className="flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-3 bg-tw-surface border border-tw-border p-4 rounded-xl">
+                <div className="relative flex-1 w-full sm:max-w-sm">
                     <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-tw-muted" size={18} />
                     <input 
                         type="text" 
@@ -781,14 +789,14 @@ const AdminDashboard = () => {
                         onChange={e => setSearch(e.target.value)}
                     />
                 </div>
-                <div className="text-tw-muted text-sm">
+                <div className="text-tw-muted text-sm text-center sm:text-right shrink-0">
                     {filteredComponents.length} Components
                 </div>
              </div>
 
              <div className="grid md:grid-cols-2 gap-4">
                 {filteredComponents.map(comp => (
-                    <div key={comp.id} className="bg-tw-surface border border-tw-border rounded-xl p-4 flex gap-4 hover:border-tw-border transition-colors group">
+                    <div key={comp.id} className="bg-tw-surface border border-tw-border rounded-xl p-4 flex flex-col sm:flex-row gap-4 hover:border-tw-border transition-colors group">
                         <div className="w-16 h-16 bg-tw-surface-2 rounded-lg flex items-center justify-center shrink-0 overflow-hidden">
                              {comp.image_url && (Array.isArray(comp.image_url) ? comp.image_url.length > 0 : comp.image_url) ? (
                                  <img 
@@ -830,42 +838,42 @@ const AdminDashboard = () => {
 
         </div>
         ) : (
-            <div className="grid lg:grid-cols-3 gap-8">
+            <div className="grid lg:grid-cols-3 gap-6 sm:gap-8">
                  {/* AI Module Form */}
                  <div className="lg:col-span-1">
                     {/* Course Selector Tabs */}
-                    <div className="flex flex-wrap bg-tw-surface-2 p-1 rounded-xl mb-6 border border-tw-border gap-1">
+                    <div className="grid grid-cols-2 sm:flex sm:flex-wrap bg-tw-surface-2 p-1 rounded-xl mb-6 border border-tw-border gap-1">
                         <button 
                             type="button"
                             onClick={() => setSelectedAICourseType('kids')}
-                            className={`flex-1 py-2 px-4 rounded-lg text-sm font-bold transition-all ${selectedAICourseType === 'kids' ? 'bg-tw-primary !text-white shadow-lg' : 'text-tw-muted hover:text-tw-text'}`}
+                            className={`py-2.5 px-3 sm:px-4 rounded-lg text-xs sm:text-sm font-bold transition-all ${selectedAICourseType === 'kids' ? 'bg-tw-primary !text-white shadow-lg' : 'text-tw-muted hover:text-tw-text'}`}
                         >
                             AI for Kids
                         </button>
                         <button 
                             type="button"
                             onClick={() => setSelectedAICourseType('python_master')}
-                            className={`flex-1 py-2 px-4 rounded-lg text-sm font-bold transition-all ${selectedAICourseType === 'python_master' ? 'bg-tw-accent !text-white shadow-lg' : 'text-tw-muted hover:text-tw-text'}`}
+                            className={`py-2.5 px-3 sm:px-4 rounded-lg text-xs sm:text-sm font-bold transition-all ${selectedAICourseType === 'python_master' ? 'bg-tw-accent !text-white shadow-lg' : 'text-tw-muted hover:text-tw-text'}`}
                         >
                             Python & AI
                         </button>
                         <button 
                             type="button"
                             onClick={() => setSelectedAICourseType('drone_building')}
-                            className={`flex-1 py-2 px-4 rounded-lg text-sm font-bold transition-all ${selectedAICourseType === 'drone_building' ? 'bg-orange-500 !text-white shadow-lg' : 'text-tw-muted hover:text-tw-text'}`}
+                            className={`py-2.5 px-3 sm:px-4 rounded-lg text-xs sm:text-sm font-bold transition-all ${selectedAICourseType === 'drone_building' ? 'bg-orange-500 !text-white shadow-lg' : 'text-tw-muted hover:text-tw-text'}`}
                         >
                             Drones
                         </button>
                         <button 
                             type="button"
                             onClick={() => setSelectedAICourseType('data_analytics')}
-                            className={`flex-1 py-2 px-4 rounded-lg text-sm font-bold transition-all ${selectedAICourseType === 'data_analytics' ? 'bg-emerald-500 !text-white shadow-lg' : 'text-tw-muted hover:text-tw-text'}`}
+                            className={`py-2.5 px-3 sm:px-4 rounded-lg text-xs sm:text-sm font-bold transition-all ${selectedAICourseType === 'data_analytics' ? 'bg-emerald-500 !text-white shadow-lg' : 'text-tw-muted hover:text-tw-text'}`}
                         >
                             Data Analytics
                         </button>
                     </div>
 
-                    <div className="bg-tw-surface border border-tw-border rounded-2xl p-6 sticky top-24">
+                    <div className="bg-tw-surface border border-tw-border rounded-2xl p-5 sm:p-6 lg:sticky lg:top-24">
                         <h2 className="text-xl font-bold mb-6 flex items-center gap-2">
                              {editingAIModuleId ? <Edit className="text-purple-400" /> : <Plus className="text-purple-400" />} 
                              {editingAIModuleId ? "Edit Module" : "Add AI Module"}
@@ -937,8 +945,8 @@ const AdminDashboard = () => {
 
                  {/* AI Module List */}
                  <div className="lg:col-span-2 space-y-6">
-                    <div className="bg-tw-surface border border-tw-border p-4 rounded-xl flex justify-between items-center">
-                        <h2 className="font-bold text-lg flex items-center gap-2">
+                    <div className="bg-tw-surface border border-tw-border p-4 rounded-xl flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
+                        <h2 className="font-bold text-base sm:text-lg flex items-center gap-2 min-w-0">
                             {selectedAICourseType === 'kids' ? <Bot className="text-pink-400" /> : 
                              selectedAICourseType === 'drone_building' ? <Plane className="text-orange-400" /> : 
                              selectedAICourseType === 'data_analytics' ? <BarChart className="text-emerald-400" /> : 
@@ -953,18 +961,18 @@ const AdminDashboard = () => {
                     
                     <div className="grid gap-4">
                         {aiModules.map(mod => (
-                            <div key={mod.id} className="bg-tw-surface border border-tw-border rounded-xl p-6 flex gap-4 hover:border-purple-500/30 transition-colors group">
+                            <div key={mod.id} className="bg-tw-surface border border-tw-border rounded-xl p-4 sm:p-6 flex flex-col sm:flex-row gap-4 hover:border-purple-500/30 transition-colors group">
                                 <div className="w-12 h-12 bg-purple-900/20 rounded-lg flex items-center justify-center text-purple-400 shrink-0 font-bold text-xl border border-purple-500/20">
                                     {mod.week}
                                 </div>
-                                <div className="flex-1">
-                                    <h3 className="font-bold text-tw-text text-lg">{mod.title}</h3>
+                                <div className="flex-1 min-w-0">
+                                    <h3 className="font-bold text-tw-text text-base sm:text-lg">{mod.title}</h3>
                                     <p className="text-tw-muted text-sm mt-1 mb-2">{mod.description}</p>
                                     <div className="text-xs text-tw-muted font-mono bg-tw-surface-3 p-2 rounded truncate">
                                         {mod.content ? mod.content.substring(0, 100) + '...' : 'No content'}
                                     </div>
                                 </div>
-                                <div className="flex flex-col gap-2">
+                                <div className="flex flex-row sm:flex-col gap-2 shrink-0 self-end sm:self-auto">
                                      <button 
                                         onClick={() => handleEditAIModule(mod)}
                                         className="p-2 text-tw-muted hover:text-purple-400 hover:bg-purple-900/10 rounded-lg transition-colors"
@@ -1002,7 +1010,7 @@ const AdminDashboard = () => {
       />
 
       {actionError && (
-        <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-[70] px-4 py-3 rounded-xl bg-tw-danger text-white text-sm shadow-lg">
+        <div className="fixed bottom-6 left-4 right-4 sm:left-1/2 sm:right-auto sm:-translate-x-1/2 sm:max-w-md z-[70] px-4 py-3 rounded-xl bg-tw-danger text-white text-sm shadow-lg">
           {actionError}
         </div>
       )}
