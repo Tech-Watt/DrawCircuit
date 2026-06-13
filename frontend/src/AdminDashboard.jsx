@@ -444,19 +444,19 @@ const AdminDashboard = () => {
           <div className="flex bg-tw-surface-2 rounded-xl p-1 border border-tw-border overflow-x-auto max-w-[70vw] sm:max-w-none">
                <button 
                   onClick={() => setView('components')}
-                  className={`px-3 sm:px-4 py-1.5 rounded-lg text-xs sm:text-sm font-semibold transition-all whitespace-nowrap ${view === 'components' ? 'bg-tw-primary text-tw-bg' : 'text-tw-muted hover:text-tw-text'}`}
+                  className={`px-3 sm:px-4 py-1.5 rounded-lg text-xs sm:text-sm font-semibold transition-all whitespace-nowrap ${view === 'components' ? 'bg-tw-primary !text-white' : 'text-tw-muted hover:text-tw-text'}`}
                >
                   Components
                </button>
                <button 
                   onClick={() => setView('ai_modules')}
-                  className={`px-3 sm:px-4 py-1.5 rounded-lg text-xs sm:text-sm font-semibold transition-all whitespace-nowrap ${view === 'ai_modules' ? 'bg-tw-accent text-tw-bg' : 'text-tw-muted hover:text-tw-text'}`}
+                  className={`px-3 sm:px-4 py-1.5 rounded-lg text-xs sm:text-sm font-semibold transition-all whitespace-nowrap ${view === 'ai_modules' ? 'bg-tw-accent !text-white' : 'text-tw-muted hover:text-tw-text'}`}
                >
                   AI Guide
                </button>
                <button 
                   onClick={() => setView('events')}
-                  className={`px-3 sm:px-4 py-1.5 rounded-lg text-xs sm:text-sm font-semibold transition-all whitespace-nowrap ${view === 'events' ? 'bg-tw-warning text-tw-bg' : 'text-tw-muted hover:text-tw-text'}`}
+                  className={`px-3 sm:px-4 py-1.5 rounded-lg text-xs sm:text-sm font-semibold transition-all whitespace-nowrap ${view === 'events' ? 'bg-tw-warning !text-white' : 'text-tw-muted hover:text-tw-text'}`}
                >
                   Events
                </button>
@@ -620,11 +620,11 @@ const AdminDashboard = () => {
                     </div>
 
                     <div>
-                        <label className="block text-sm font-medium text-slate-300 mb-1">Category</label>
+                        <label className="block text-sm font-medium text-tw-text-secondary mb-1">Category</label>
                         <div className="flex flex-col gap-2">
                             {!isCustomCategory ? (
                                 <select 
-                                    className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-white focus:border-cyan-500 outline-none"
+                                    className="w-full bg-tw-surface-2 border border-tw-border rounded-lg px-3 py-2 text-tw-text focus:border-tw-primary outline-none"
                                     value={newComponent.category}
                                     onChange={e => {
                                         if (e.target.value === 'custom') {
@@ -636,7 +636,7 @@ const AdminDashboard = () => {
                                 >
                                     <option value="" disabled>Select Category</option>
                                     {categories.map(cat => <option key={cat} value={cat}>{cat}</option>)}
-                                    <option value="custom" className="font-bold text-cyan-400">+ Create New Category</option>
+                                    <option value="custom" className="font-bold text-tw-primary">+ Create New Category</option>
                                 </select>
                             ) : (
                                 <div className="flex gap-2">
@@ -644,16 +644,16 @@ const AdminDashboard = () => {
                                         type="text"
                                         autoFocus
                                         placeholder="Enter new category..."
-                                        className="w-full bg-slate-800 border border-cyan-500 rounded-lg px-3 py-2 text-white outline-none"
+                                        className="w-full bg-tw-surface-2 border border-tw-primary rounded-lg px-3 py-2 text-tw-text outline-none"
                                         value={customCategory}
                                         onChange={e => setCustomCategory(e.target.value)}
                                     />
                                     <button 
                                         type="button" 
                                         onClick={() => setIsCustomCategory(false)}
-                                        className="p-2 bg-slate-800 border border-slate-700 hover:bg-slate-700 rounded-lg"
+                                        className="p-2 bg-tw-surface-2 border border-tw-border hover:bg-tw-surface-2 rounded-lg"
                                     >
-                                        <X size={18} className="text-slate-400" />
+                                        <X size={18} className="text-tw-muted" />
                                     </button>
                                 </div>
                             )}
@@ -661,8 +661,8 @@ const AdminDashboard = () => {
                     </div>
 
                     <div>
-                        <label className="block text-sm font-medium text-slate-300 mb-1">Image Upload</label>
-                        <div className="relative border-2 border-dashed border-slate-700 rounded-lg p-4 text-center hover:bg-slate-800/50 transition-colors">
+                        <label className="block text-sm font-medium text-tw-text-secondary mb-1">Image Upload</label>
+                        <div className="relative border-2 border-dashed border-tw-border rounded-lg p-4 text-center hover:bg-tw-surface-2/50 transition-colors">
                             <input 
                                 type="file" 
                                 multiple
@@ -670,9 +670,9 @@ const AdminDashboard = () => {
                                 onChange={e => setSelectedFiles(Array.from(e.target.files))}
                                 className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
                             />
-                            <div className="text-slate-400 text-sm">
+                            <div className="text-tw-muted text-sm">
                                 {selectedFiles.length > 0 ? (
-                                    <span className="text-cyan-400">{selectedFiles.length} files selected</span>
+                                    <span className="text-tw-primary">{selectedFiles.length} files selected</span>
                                 ) : (
                                     <span>Drag & Drop or Click (Add New)</span>
                                 )}
@@ -684,11 +684,11 @@ const AdminDashboard = () => {
                             <div className="mt-2 flex gap-2 overflow-x-auto pb-2">
                                 {newComponent.image_urls.map((url, idx) => (
                                     <div key={idx} className="relative w-16 h-16 shrink-0 group">
-                                        <img src={url} alt="existing" className="w-full h-full object-cover rounded-lg border border-slate-600" />
+                                        <img src={url} alt="existing" className="w-full h-full object-cover rounded-lg border border-tw-border" />
                                         <button 
                                             type="button"
                                             onClick={() => handleRemoveImage(idx)}
-                                            className="absolute -top-1 -right-1 bg-red-500 text-white rounded-full p-0.5 opacity-0 group-hover:opacity-100 transition-opacity"
+                                            className="absolute -top-1 -right-1 bg-red-500 text-tw-text rounded-full p-0.5 opacity-0 group-hover:opacity-100 transition-opacity"
                                         >
                                             <X size={12} />
                                         </button>
@@ -699,12 +699,12 @@ const AdminDashboard = () => {
                     </div>
 
                     <div>
-                        <label className="block text-sm font-medium text-slate-300 mb-1">Or Image URL</label>
+                        <label className="block text-sm font-medium text-tw-text-secondary mb-1">Or Image URL</label>
                         <div className="flex gap-2">
                             <input 
                                 type="url" 
                                 placeholder="https://..."
-                                className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-white outline-none text-sm"
+                                className="w-full bg-tw-surface-2 border border-tw-border rounded-lg px-3 py-2 text-tw-text outline-none text-sm"
                                 value={newComponent.image_url_input}
                                 onChange={e => setNewComponent({...newComponent, image_url_input: e.target.value})}
                             />
@@ -712,7 +712,7 @@ const AdminDashboard = () => {
                                 type="button"
                                 onClick={handleGenerateDetails}
                                 disabled={loading}
-                                className="px-3 bg-purple-600 hover:bg-purple-500 text-white rounded-lg flex items-center"
+                                className="px-3 bg-tw-primary hover:bg-tw-primary-dark !text-white rounded-lg flex items-center"
                                 title="Auto-Generate Details"
                             >
                                 <Bot size={18} />
@@ -721,26 +721,26 @@ const AdminDashboard = () => {
                     </div>
 
                     <div>
-                        <label className="block text-sm font-medium text-slate-300 mb-1 flex justify-between">
+                        <label className="block text-sm font-medium text-tw-text-secondary mb-1 flex justify-between">
                             Description 
-                            <span className="text-xs text-slate-500 font-normal">Markdown Supported</span>
+                            <span className="text-xs text-tw-muted font-normal">Markdown Supported</span>
                         </label>
                         <textarea 
                             rows={10}
-                            className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-white outline-none text-sm font-mono leading-relaxed"
+                            className="w-full bg-tw-surface-2 border border-tw-border rounded-lg px-3 py-2 text-tw-text outline-none text-sm font-mono leading-relaxed"
                             value={newComponent.description}
                             onChange={e => setNewComponent({...newComponent, description: e.target.value})}
                         />
                     </div>
 
                     <div>
-                        <label className="block text-sm font-medium text-slate-300 mb-1 flex justify-between">
+                        <label className="block text-sm font-medium text-tw-text-secondary mb-1 flex justify-between">
                             Wiring Guide
-                            <span className="text-xs text-slate-500 font-normal">Markdown / Steps</span>
+                            <span className="text-xs text-tw-muted font-normal">Markdown / Steps</span>
                         </label>
                         <textarea 
                             rows={6}
-                            className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-white outline-none font-mono text-sm leading-relaxed"
+                            className="w-full bg-tw-surface-2 border border-tw-border rounded-lg px-3 py-2 text-tw-text outline-none font-mono text-sm leading-relaxed"
                             value={newComponent.wiring_guide}
                             onChange={e => setNewComponent({...newComponent, wiring_guide: e.target.value})}
                         />
@@ -751,7 +751,7 @@ const AdminDashboard = () => {
                             <button 
                                 type="button" 
                                 onClick={handleCancelEdit}
-                                className="flex-1 py-2 bg-slate-700 hover:bg-slate-600 text-white font-bold rounded-lg transition-colors"
+                                className="flex-1 py-2 bg-tw-surface-2 hover:bg-tw-surface-2 text-tw-text font-bold rounded-lg transition-colors"
                             >
                                 Cancel
                             </button>
@@ -759,7 +759,7 @@ const AdminDashboard = () => {
                         <button 
                             type="submit"
                             disabled={loading}
-                            className="flex-1 py-2 bg-gradient-to-r from-cyan-600 to-blue-600 text-white font-bold rounded-lg hover:shadow-lg hover:scale-[1.02] transition-all"
+                            className="flex-1 py-2 btn btn-primary"
                         >
                             {loading ? "Saving..." : (editingId ? "Update Component" : "Save Component")}
                         </button>
@@ -770,26 +770,26 @@ const AdminDashboard = () => {
 
           {/* List Column */}
           <div className="lg:col-span-2 space-y-6">
-             <div className="flex justify-between items-center bg-slate-900 border border-slate-800 p-4 rounded-xl">
+             <div className="flex justify-between items-center bg-tw-surface border border-tw-border p-4 rounded-xl">
                 <div className="relative flex-1 max-w-sm">
-                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" size={18} />
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-tw-muted" size={18} />
                     <input 
                         type="text" 
                         placeholder="Search components..."
-                        className="w-full bg-slate-950 border border-slate-700 rounded-lg pl-10 pr-4 py-2 text-white outline-none focus:border-cyan-500"
+                        className="w-full bg-tw-surface-3 border border-tw-border rounded-lg pl-10 pr-4 py-2 text-tw-text outline-none focus:border-tw-primary"
                         value={search}
                         onChange={e => setSearch(e.target.value)}
                     />
                 </div>
-                <div className="text-slate-400 text-sm">
+                <div className="text-tw-muted text-sm">
                     {filteredComponents.length} Components
                 </div>
              </div>
 
              <div className="grid md:grid-cols-2 gap-4">
                 {filteredComponents.map(comp => (
-                    <div key={comp.id} className="bg-slate-900 border border-slate-800 rounded-xl p-4 flex gap-4 hover:border-slate-600 transition-colors group">
-                        <div className="w-16 h-16 bg-slate-800 rounded-lg flex items-center justify-center shrink-0 overflow-hidden">
+                    <div key={comp.id} className="bg-tw-surface border border-tw-border rounded-xl p-4 flex gap-4 hover:border-tw-border transition-colors group">
+                        <div className="w-16 h-16 bg-tw-surface-2 rounded-lg flex items-center justify-center shrink-0 overflow-hidden">
                              {comp.image_url && (Array.isArray(comp.image_url) ? comp.image_url.length > 0 : comp.image_url) ? (
                                  <img 
                                     src={Array.isArray(comp.image_url) ? comp.image_url[0] : comp.image_url} 
@@ -797,27 +797,27 @@ const AdminDashboard = () => {
                                     className="w-full h-full object-cover" 
                                  />
                              ) : (
-                                 <Cpu size={24} className="text-slate-500" />
+                                 <Cpu size={24} className="text-tw-muted" />
                              )}
                         </div>
                         <div className="flex-1 min-w-0">
-                            <h3 className="font-bold text-white truncate">{comp.name}</h3>
-                            <span className="text-xs text-cyan-400 bg-cyan-900/20 px-2 py-0.5 rounded border border-cyan-900/30">
+                            <h3 className="font-bold text-tw-text truncate">{comp.name}</h3>
+                            <span className="text-xs text-tw-primary bg-tw-primary/10 px-2 py-0.5 rounded border border-tw-primary/20">
                                 {comp.category}
                             </span>
-                            <p className="text-xs text-slate-400 mt-1 line-clamp-1">{comp.description}</p>
+                            <p className="text-xs text-tw-muted mt-1 line-clamp-1">{comp.description}</p>
                         </div>
                         <div className="flex flex-col gap-2">
                              <button 
                                 onClick={() => handleEdit(comp)}
-                                className="p-2 text-slate-500 hover:text-purple-400 hover:bg-purple-900/10 rounded-lg transition-colors"
+                                className="p-2 text-tw-muted hover:text-purple-400 hover:bg-purple-900/10 rounded-lg transition-colors"
                                 title="Edit"
                             >
                                 <Edit size={18} />
                             </button>
                             <button 
                                 onClick={() => requestDelete('component', comp.id, comp.name)}
-                                className="p-2 text-slate-500 hover:text-red-400 hover:bg-red-900/10 rounded-lg transition-colors"
+                                className="p-2 text-tw-muted hover:text-red-400 hover:bg-red-900/10 rounded-lg transition-colors"
                                 title="Delete"
                             >
                                 <Trash2 size={18} />
@@ -838,76 +838,76 @@ const AdminDashboard = () => {
                         <button 
                             type="button"
                             onClick={() => setSelectedAICourseType('kids')}
-                            className={`flex-1 py-2 px-4 rounded-lg text-sm font-bold transition-all ${selectedAICourseType === 'kids' ? 'bg-pink-500 text-white shadow-lg' : 'text-slate-400 hover:text-white'}`}
+                            className={`flex-1 py-2 px-4 rounded-lg text-sm font-bold transition-all ${selectedAICourseType === 'kids' ? 'bg-tw-primary !text-white shadow-lg' : 'text-tw-muted hover:text-tw-text'}`}
                         >
                             AI for Kids
                         </button>
                         <button 
                             type="button"
                             onClick={() => setSelectedAICourseType('python_master')}
-                            className={`flex-1 py-2 px-4 rounded-lg text-sm font-bold transition-all ${selectedAICourseType === 'python_master' ? 'bg-purple-600 text-white shadow-lg' : 'text-slate-400 hover:text-white'}`}
+                            className={`flex-1 py-2 px-4 rounded-lg text-sm font-bold transition-all ${selectedAICourseType === 'python_master' ? 'bg-tw-accent !text-white shadow-lg' : 'text-tw-muted hover:text-tw-text'}`}
                         >
                             Python & AI
                         </button>
                         <button 
                             type="button"
                             onClick={() => setSelectedAICourseType('drone_building')}
-                            className={`flex-1 py-2 px-4 rounded-lg text-sm font-bold transition-all ${selectedAICourseType === 'drone_building' ? 'bg-orange-500 text-white shadow-lg' : 'text-slate-400 hover:text-white'}`}
+                            className={`flex-1 py-2 px-4 rounded-lg text-sm font-bold transition-all ${selectedAICourseType === 'drone_building' ? 'bg-orange-500 !text-white shadow-lg' : 'text-tw-muted hover:text-tw-text'}`}
                         >
                             Drones
                         </button>
                         <button 
                             type="button"
                             onClick={() => setSelectedAICourseType('data_analytics')}
-                            className={`flex-1 py-2 px-4 rounded-lg text-sm font-bold transition-all ${selectedAICourseType === 'data_analytics' ? 'bg-emerald-500 text-white shadow-lg' : 'text-slate-400 hover:text-white'}`}
+                            className={`flex-1 py-2 px-4 rounded-lg text-sm font-bold transition-all ${selectedAICourseType === 'data_analytics' ? 'bg-emerald-500 !text-white shadow-lg' : 'text-tw-muted hover:text-tw-text'}`}
                         >
                             Data Analytics
                         </button>
                     </div>
 
-                    <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 sticky top-24">
+                    <div className="bg-tw-surface border border-tw-border rounded-2xl p-6 sticky top-24">
                         <h2 className="text-xl font-bold mb-6 flex items-center gap-2">
                              {editingAIModuleId ? <Edit className="text-purple-400" /> : <Plus className="text-purple-400" />} 
                              {editingAIModuleId ? "Edit Module" : "Add AI Module"}
                         </h2>
                         <form onSubmit={handleAddAIModule} className="space-y-4">
                             <div>
-                                <label className="block text-sm font-medium text-slate-300 mb-1">Module Title</label>
+                                <label className="block text-sm font-medium text-tw-text-secondary mb-1">Module Title</label>
                                 <input 
                                     type="text"
                                     required
-                                    className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-white outline-none"
+                                    className="w-full bg-tw-surface-2 border border-tw-border rounded-lg px-3 py-2 text-tw-text outline-none"
                                     value={newAIModule.title}
                                     onChange={e => setNewAIModule({...newAIModule, title: e.target.value})}
                                 />
                             </div>
                             <div>
-                                <label className="block text-sm font-medium text-slate-300 mb-1">Week / Order</label>
+                                <label className="block text-sm font-medium text-tw-text-secondary mb-1">Week / Order</label>
                                 <input 
                                     type="number"
                                     required
-                                    className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-white outline-none"
+                                    className="w-full bg-tw-surface-2 border border-tw-border rounded-lg px-3 py-2 text-tw-text outline-none"
                                     value={newAIModule.week}
                                     onChange={e => setNewAIModule({...newAIModule, week: e.target.value})}
                                 />
                             </div>
                             <div>
-                                <label className="block text-sm font-medium text-slate-300 mb-1">Short Description</label>
+                                <label className="block text-sm font-medium text-tw-text-secondary mb-1">Short Description</label>
                                 <textarea 
                                     rows={3}
-                                    className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-white outline-none"
+                                    className="w-full bg-tw-surface-2 border border-tw-border rounded-lg px-3 py-2 text-tw-text outline-none"
                                     value={newAIModule.description}
                                     onChange={e => setNewAIModule({...newAIModule, description: e.target.value})}
                                 />
                             </div>
                             <div>
-                                <label className="block text-sm font-medium text-slate-300 mb-1 flex justify-between">
+                                <label className="block text-sm font-medium text-tw-text-secondary mb-1 flex justify-between">
                                     Content 
-                                    <span className="text-xs text-slate-500">Markdown</span>
+                                    <span className="text-xs text-tw-muted">Markdown</span>
                                 </label>
                                 <textarea 
                                     rows={10}
-                                    className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-white outline-none font-mono text-sm leading-relaxed"
+                                    className="w-full bg-tw-surface-2 border border-tw-border rounded-lg px-3 py-2 text-tw-text outline-none font-mono text-sm leading-relaxed"
                                     value={newAIModule.content}
                                     onChange={e => setNewAIModule({...newAIModule, content: e.target.value})}
                                 />
@@ -918,7 +918,7 @@ const AdminDashboard = () => {
                                     <button 
                                         type="button" 
                                         onClick={handleCancelEditAIModule}
-                                        className="flex-1 py-2 bg-slate-700 hover:bg-slate-600 text-white font-bold rounded-lg transition-colors"
+                                        className="flex-1 py-2 bg-tw-surface-2 hover:bg-tw-surface-2 text-tw-text font-bold rounded-lg transition-colors"
                                     >   
                                         Cancel
                                     </button>
@@ -926,7 +926,7 @@ const AdminDashboard = () => {
                                 <button 
                                     type="submit"
                                     disabled={loading}
-                                    className="flex-1 py-2 bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-bold rounded-lg hover:shadow-lg transition-all"
+                                    className="flex-1 py-2 btn btn-primary"
                                 >
                                     {loading ? "Saving..." : "Save Module"}
                                 </button>
@@ -937,7 +937,7 @@ const AdminDashboard = () => {
 
                  {/* AI Module List */}
                  <div className="lg:col-span-2 space-y-6">
-                    <div className="bg-slate-900 border border-slate-800 p-4 rounded-xl flex justify-between items-center">
+                    <div className="bg-tw-surface border border-tw-border p-4 rounded-xl flex justify-between items-center">
                         <h2 className="font-bold text-lg flex items-center gap-2">
                             {selectedAICourseType === 'kids' ? <Bot className="text-pink-400" /> : 
                              selectedAICourseType === 'drone_building' ? <Plane className="text-orange-400" /> : 
@@ -948,32 +948,32 @@ const AdminDashboard = () => {
                              selectedAICourseType === 'data_analytics' ? 'Data Analytics Curriculum' : 
                              'Python & AI Master Curriculum'}
                         </h2>
-                        <div className="text-slate-400 text-sm">{aiModules.length} Modules</div>
+                        <div className="text-tw-muted text-sm">{aiModules.length} Modules</div>
                     </div>
                     
                     <div className="grid gap-4">
                         {aiModules.map(mod => (
-                            <div key={mod.id} className="bg-slate-900 border border-slate-800 rounded-xl p-6 flex gap-4 hover:border-purple-500/30 transition-colors group">
+                            <div key={mod.id} className="bg-tw-surface border border-tw-border rounded-xl p-6 flex gap-4 hover:border-purple-500/30 transition-colors group">
                                 <div className="w-12 h-12 bg-purple-900/20 rounded-lg flex items-center justify-center text-purple-400 shrink-0 font-bold text-xl border border-purple-500/20">
                                     {mod.week}
                                 </div>
                                 <div className="flex-1">
-                                    <h3 className="font-bold text-white text-lg">{mod.title}</h3>
-                                    <p className="text-slate-400 text-sm mt-1 mb-2">{mod.description}</p>
-                                    <div className="text-xs text-slate-500 font-mono bg-slate-950 p-2 rounded truncate">
+                                    <h3 className="font-bold text-tw-text text-lg">{mod.title}</h3>
+                                    <p className="text-tw-muted text-sm mt-1 mb-2">{mod.description}</p>
+                                    <div className="text-xs text-tw-muted font-mono bg-tw-surface-3 p-2 rounded truncate">
                                         {mod.content ? mod.content.substring(0, 100) + '...' : 'No content'}
                                     </div>
                                 </div>
                                 <div className="flex flex-col gap-2">
                                      <button 
                                         onClick={() => handleEditAIModule(mod)}
-                                        className="p-2 text-slate-500 hover:text-purple-400 hover:bg-purple-900/10 rounded-lg transition-colors"
+                                        className="p-2 text-tw-muted hover:text-purple-400 hover:bg-purple-900/10 rounded-lg transition-colors"
                                     >
                                         <Edit size={18} />
                                     </button>
                                     <button 
                                         onClick={() => requestDelete('ai_module', mod.id, mod.title)}
-                                        className="p-2 text-slate-500 hover:text-red-400 hover:bg-red-900/10 rounded-lg transition-colors"
+                                        className="p-2 text-tw-muted hover:text-red-400 hover:bg-red-900/10 rounded-lg transition-colors"
                                     >
                                         <Trash2 size={18} />
                                     </button>
@@ -1002,7 +1002,7 @@ const AdminDashboard = () => {
       />
 
       {actionError && (
-        <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-[70] px-4 py-3 rounded-xl bg-tw-danger/90 text-white text-sm shadow-lg">
+        <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-[70] px-4 py-3 rounded-xl bg-tw-danger text-white text-sm shadow-lg">
           {actionError}
         </div>
       )}

@@ -8,13 +8,6 @@ export default defineConfig({
   build: {
     outDir: 'dist',
     sourcemap: false,
-    rollupOptions: {
-      output: {
-        manualChunks: {
-          flow: ['reactflow'],
-        }
-      }
-    }
   },
   server: {
     port: 5173,

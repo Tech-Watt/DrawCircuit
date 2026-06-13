@@ -175,7 +175,7 @@ const Events = () => {
 
       {/* Registration Modal */}
       {selectedEvent && (
-        <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm" onClick={closeModal}>
+        <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-tw-text/50 backdrop-blur-sm" onClick={closeModal}>
           <div
             className="card-elevated w-full max-w-md p-6 sm:p-8 relative max-h-[90vh] overflow-y-auto"
             onClick={(e) => e.stopPropagation()}

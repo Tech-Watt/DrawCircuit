@@ -16,7 +16,6 @@ const Footer = () => (
 
         <div className="flex flex-wrap gap-x-6 gap-y-2 text-sm">
           <Link to="/events" className="text-tw-muted hover:text-tw-primary transition-colors">Events</Link>
-          <Link to="/app" className="text-tw-muted hover:text-tw-primary transition-colors">Circuit Designer</Link>
           <Link to="/study" className="text-tw-muted hover:text-tw-primary transition-colors">Study Guide</Link>
           <a href="https://www.techwatt.ai/" target="_blank" rel="noopener noreferrer" className="text-tw-muted hover:text-tw-primary transition-colors">
             Academy

@@ -410,7 +410,7 @@ const StudyGuide = () => {
 
             {loading ? (
               <div className="flex justify-center items-center h-64">
-                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-tw-primary"></div>
               </div>
             ) : (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
@@ -472,7 +472,7 @@ const StudyGuide = () => {
                        selectedCourse === 'data_analytics' ? 'Data Analytics Curriculum' : 
                        'Python & AI Master Curriculum'}
                   </h2>
-                  <p className="text-slate-400 text-lg">
+                  <p className="text-tw-muted text-lg">
                     {selectedCourse === 'kids' ? 'Fun, safe, and interactive AI learning.' : 
                      selectedCourse === 'drone_building' ? 'Master the skies with drone engineering.' : 
                      selectedCourse === 'data_analytics' ? 'Turn raw data into actionable insights.' : 
@@ -491,27 +491,27 @@ const StudyGuide = () => {
                               'from-purple-500/30'}`}></div>
                       )}
                       
-                      <div className={`bg-slate-900/80 backdrop-blur border border-slate-800 rounded-3xl overflow-hidden transition-all duration-500 hover:shadow-lg 
+                      <div className={`bg-tw-surface/80 backdrop-blur border border-tw-border rounded-3xl overflow-hidden transition-all duration-500 hover:shadow-lg 
                         ${selectedCourse === 'kids' ? 'hover:border-pink-500/30' : 
                           selectedCourse === 'drone_building' ? 'hover:border-orange-500/30' : 
                           selectedCourse === 'data_analytics' ? 'hover:border-emerald-500/30' : 
                           'hover:border-purple-500/30'}
                         ${expandedModuleId === mod.id ? 
-                            (selectedCourse === 'kids' ? 'ring-1 ring-pink-500/50 bg-slate-900' : 
-                             selectedCourse === 'drone_building' ? 'ring-1 ring-orange-500/50 bg-slate-900' : 
-                             selectedCourse === 'data_analytics' ? 'ring-1 ring-emerald-500/50 bg-slate-900' : 
-                             'ring-1 ring-purple-500/50 bg-slate-900') : ''}`}>
+                            (selectedCourse === 'kids' ? 'ring-1 ring-pink-500/50 bg-tw-surface' : 
+                             selectedCourse === 'drone_building' ? 'ring-1 ring-orange-500/50 bg-tw-surface' : 
+                             selectedCourse === 'data_analytics' ? 'ring-1 ring-emerald-500/50 bg-tw-surface' : 
+                             'ring-1 ring-purple-500/50 bg-tw-surface') : ''}`}>
                           <div 
                             className="p-6 md:p-8 cursor-pointer flex gap-6 items-start"
                             onClick={() => setExpandedModuleId(expandedModuleId === mod.id ? null : mod.id)}
                           >
                               {/* Week Badge */}
-                              <div className={`shrink-0 w-16 h-16 rounded-2xl bg-slate-950 border border-slate-800 flex flex-col items-center justify-center shadow-inner transition-all duration-300 group-hover:scale-105 
+                              <div className={`shrink-0 w-16 h-16 rounded-2xl bg-tw-surface-3 border border-tw-border flex flex-col items-center justify-center shadow-inner transition-all duration-300 group-hover:scale-105 
                                 ${expandedModuleId === mod.id ? 
                                     (selectedCourse === 'kids' ? 'border-pink-500/50 text-pink-400' : 
                                      selectedCourse === 'drone_building' ? 'border-orange-500/50 text-orange-400' : 
                                      selectedCourse === 'data_analytics' ? 'border-emerald-500/50 text-emerald-400' : 
-                                     'border-purple-500/50 text-purple-400') : 'text-slate-500'}`}>
+                                     'border-purple-500/50 text-purple-400') : 'text-tw-muted'}`}>
                                   <span className="text-[10px] font-mono uppercase tracking-wider">Week</span>
                                   <span className="text-2xl font-bold font-mono">{mod.week}</span>
                               </div>
@@ -523,36 +523,36 @@ const StudyGuide = () => {
                                          selectedCourse === 'drone_building' ? 'text-orange-400' : 
                                          selectedCourse === 'data_analytics' ? 'text-emerald-400' : 
                                          'text-purple-400') : 
-                                        'text-white group-hover:text-slate-200'}`}>
+                                        'text-tw-text group-hover:text-tw-primary'}`}>
                                       {mod.title}
                                   </h3>
-                                  <p className="text-slate-400 leading-relaxed text-sm md:text-base">{mod.description}</p>
+                                  <p className="text-tw-muted leading-relaxed text-sm md:text-base">{mod.description}</p>
                               </div>
                               
-                              <div className={`p-3 rounded-full border border-slate-800 bg-slate-950 transition-transform duration-300 
+                              <div className={`p-3 rounded-full border border-tw-border bg-tw-surface-3 transition-transform duration-300 
                                 ${expandedModuleId === mod.id ? 
                                     (selectedCourse === 'kids' ? 'rotate-180 border-pink-500/30 text-pink-400' : 
                                      selectedCourse === 'drone_building' ? 'rotate-180 border-orange-500/30 text-orange-400' : 
                                      selectedCourse === 'data_analytics' ? 'rotate-180 border-emerald-500/30 text-emerald-400' : 
                                      'rotate-180 border-purple-500/30 text-purple-400') : 
-                                    'rotate-0 text-slate-500 group-hover:text-white'}`}>
+                                    'rotate-0 text-tw-muted group-hover:text-tw-text'}`}>
                                   <ChevronDown size={20} />
                               </div>
                           </div>
                           
                           {/* Expanded Content */}
                           {expandedModuleId === mod.id && (
-                              <div className="border-t border-slate-800/50 bg-slate-950/30 animate-in fade-in slide-in-from-top-2 duration-300">
+                              <div className="border-t border-tw-border/50 bg-tw-surface-3/30 animate-in fade-in slide-in-from-top-2 duration-300">
                                   <div className="p-8 pt-6">
-                                      <div className="text-slate-300 leading-relaxed text-base md:text-lg">
+                                      <div className="text-tw-text-secondary leading-relaxed text-base md:text-lg">
                                           <ReactMarkdown
                                             components={{
                                                 h1: ({...props}) => <h1 className={`text-2xl font-bold mt-6 mb-3 ${selectedCourse === 'kids' ? 'text-pink-400' : selectedCourse === 'drone_building' ? 'text-orange-400' : selectedCourse === 'data_analytics' ? 'text-emerald-400' : 'text-purple-400'}`} {...props} />,
                                                 h2: ({...props}) => <h2 className={`text-xl font-bold mt-5 mb-2 ${selectedCourse === 'kids' ? 'text-pink-300' : selectedCourse === 'drone_building' ? 'text-orange-300' : selectedCourse === 'data_analytics' ? 'text-emerald-300' : 'text-purple-300'}`} {...props} />,
-                                                ul: ({...props}) => <ul className="list-disc pl-6 mb-4 space-y-1 text-slate-300" {...props} />,
+                                                ul: ({...props}) => <ul className="list-disc pl-6 mb-4 space-y-1 text-tw-text-secondary" {...props} />,
                                                 li: ({...props}) => <li className={`marker:${selectedCourse === 'kids' ? 'text-pink-500' : selectedCourse === 'drone_building' ? 'text-orange-500' : selectedCourse === 'data_analytics' ? 'text-emerald-500' : 'text-purple-500'}`} {...props} />,
-                                                strong: ({...props}) => <strong className="font-bold text-white" {...props} />,
-                                                code: ({...props}) => <code className="bg-slate-900 border border-slate-800 px-1.5 py-0.5 rounded text-slate-300 font-mono text-sm" {...props} />,
+                                                strong: ({...props}) => <strong className="font-bold text-tw-text" {...props} />,
+                                                code: ({...props}) => <code className="bg-tw-surface border border-tw-border px-1.5 py-0.5 rounded text-tw-text-secondary font-mono text-sm" {...props} />,
                                             }}
                                           >
                                             {mod.content}
@@ -560,7 +560,7 @@ const StudyGuide = () => {
                                       </div>
                                       
                                       {mod.image_url && (Array.isArray(mod.image_url) ? mod.image_url.length > 0 : mod.image_url) && (
-                                          <div className="mt-8 rounded-2xl overflow-hidden border border-slate-700/50 shadow-2xl">
+                                          <div className="mt-8 rounded-2xl overflow-hidden border border-tw-border/50 shadow-2xl">
                                               <img 
                                                 src={Array.isArray(mod.image_url) ? mod.image_url[0] : mod.image_url} 
                                                 alt={mod.title} 
@@ -576,8 +576,8 @@ const StudyGuide = () => {
               ))}
               
               {aiModules.length === 0 && (
-                  <div className="text-center py-20 bg-slate-900/50 rounded-3xl border border-slate-800 border-dashed">
-                      <p className="text-slate-500">Curriculum is loading or empty...</p>
+                  <div className="text-center py-20 bg-tw-surface/50 rounded-3xl border border-tw-border border-dashed">
+                      <p className="text-tw-muted">Curriculum is loading or empty...</p>
                   </div>
               )}
           </div>
@@ -623,12 +623,12 @@ const StudyGuide = () => {
 
                {/* Left Column: Image & Quick Info */}
                 <div className="lg:col-span-2 space-y-6">
-                   <div className="bg-slate-800 rounded-3xl p-4 border border-slate-700 shadow-xl">
+                   <div className="bg-tw-surface-2 rounded-3xl p-4 border border-tw-border shadow-xl">
                       <div className="aspect-square rounded-2xl bg-white flex items-center justify-center overflow-hidden mb-4">
                         {activeDisplayImage ? (
                           <img src={activeDisplayImage} alt={selectedComponent.name} className="w-full h-full object-contain" />
                         ) : (
-                          <Cpu size={128} className="text-slate-400" />
+                          <Cpu size={128} className="text-tw-muted" />
                         )}
                       </div>
                       
@@ -639,7 +639,7 @@ const StudyGuide = () => {
                             <div 
                               key={idx} 
                               onClick={() => setActiveDisplayImage(img)}
-                              className={`w-16 h-16 shrink-0 rounded-lg bg-white overflow-hidden cursor-pointer border-2 transition-all ${activeDisplayImage === img ? 'border-cyan-500 ring-2 ring-cyan-500/20' : 'border-transparent opacity-70 hover:opacity-100'}`}
+                              className={`w-16 h-16 shrink-0 rounded-lg bg-white overflow-hidden cursor-pointer border-2 transition-all ${activeDisplayImage === img ? 'border-tw-primary ring-2 ring-tw-primary/20' : 'border-transparent opacity-70 hover:opacity-100'}`}
                             >
                               <img src={img} alt={`Thumbnail ${idx}`} className="w-full h-full object-cover" />
                             </div>
@@ -648,16 +648,16 @@ const StudyGuide = () => {
                       )}
                    </div>
                    
-                   <div className="bg-slate-800/50 rounded-2xl p-6 border border-slate-700">
-                      <h3 className="text-slate-400 text-sm font-bold uppercase tracking-wider mb-4">Quick Specs</h3>
+                   <div className="bg-tw-surface-2/50 rounded-2xl p-6 border border-tw-border">
+                      <h3 className="text-tw-muted text-sm font-bold uppercase tracking-wider mb-4">Quick Specs</h3>
                       <div className="space-y-3">
-                        <div className="flex justify-between py-2 border-b border-slate-700/50">
-                          <span className="text-slate-400">Category</span>
-                          <span className="text-cyan-400 font-medium">{selectedComponent.category}</span>
+                        <div className="flex justify-between py-2 border-b border-tw-border/50">
+                          <span className="text-tw-muted">Category</span>
+                          <span className="text-tw-primary font-medium">{selectedComponent.category}</span>
                         </div>
-                        <div className="flex justify-between py-2 border-b border-slate-700/50">
-                          <span className="text-slate-400">Added On</span>
-                          <span className="text-white">{new Date(selectedComponent.created_at).toLocaleDateString()}</span>
+                        <div className="flex justify-between py-2 border-b border-tw-border/50">
+                          <span className="text-tw-muted">Added On</span>
+                          <span className="text-tw-text">{new Date(selectedComponent.created_at).toLocaleDateString()}</span>
                         </div>
                       </div>
                    </div>
@@ -666,29 +666,29 @@ const StudyGuide = () => {
                 {/* Right Column: Detailed Guide */}
                 <div className="lg:col-span-3 space-y-10">
                    <div>
-                      <h1 className="text-3xl md:text-5xl font-extrabold text-white mb-6 leading-tight">
+                      <h1 className="text-3xl md:text-5xl font-extrabold text-tw-text mb-6 leading-tight">
                         {selectedComponent.name}
                       </h1>
-                      <div className="h-1 w-24 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-full"></div>
+                      <div className="h-1 w-24 bg-gradient-to-r from-tw-primary to-tw-accent rounded-full"></div>
                    </div>
 
                    <div className="prose prose-invert prose-lg max-w-none">
-                      <div className="bg-slate-800/30 rounded-3xl p-6 md:p-8 border border-slate-700/50 hover:border-cyan-500/30 transition-colors">
-                        <h2 className="flex items-center gap-3 text-2xl font-bold text-cyan-400 mb-6 m-0">
-                          <Zap className="fill-cyan-400/20" /> How It Works
+                      <div className="bg-tw-surface-2/30 rounded-3xl p-6 md:p-8 border border-tw-border/50 hover:border-tw-primary/30 transition-colors">
+                        <h2 className="flex items-center gap-3 text-2xl font-bold text-tw-primary mb-6 m-0">
+                          <Zap className="fill-tw-primary/20" /> How It Works
                         </h2>
-                        <div className="text-slate-300 leading-relaxed text-base md:text-lg">
+                        <div className="text-tw-text-secondary leading-relaxed text-base md:text-lg">
                            <ReactMarkdown
                              components={{
-                               h1: ({...props}) => <h1 className="text-2xl font-bold text-cyan-400 mt-6 mb-3 border-b border-slate-700 pb-2" {...props} />,
-                               h2: ({...props}) => <h2 className="text-xl font-bold text-cyan-300 mt-5 mb-2" {...props} />,
-                               h3: ({...props}) => <h3 className="text-lg font-bold text-white mt-4 mb-2" {...props} />,
+                               h1: ({...props}) => <h1 className="text-2xl font-bold text-tw-primary mt-6 mb-3 border-b border-tw-border pb-2" {...props} />,
+                               h2: ({...props}) => <h2 className="text-xl font-bold text-tw-primary mt-5 mb-2" {...props} />,
+                               h3: ({...props}) => <h3 className="text-lg font-bold text-tw-text mt-4 mb-2" {...props} />,
                                ul: ({...props}) => <ul className="list-disc pl-6 mb-4 space-y-1" {...props} />,
                                ol: ({...props}) => <ol className="list-decimal pl-6 mb-4 space-y-1" {...props} />,
                                li: ({...props}) => <li className="mb-1" {...props} />,
                                p: ({...props}) => <p className="mb-4 leading-relaxed" {...props} />,
-                               strong: ({...props}) => <strong className="font-bold text-white" {...props} />,
-                               code: ({...props}) => <code className="bg-slate-900 px-1 py-0.5 rounded text-cyan-300 font-mono text-sm" {...props} />,
+                               strong: ({...props}) => <strong className="font-bold text-tw-text" {...props} />,
+                               code: ({...props}) => <code className="bg-tw-surface px-1 py-0.5 rounded text-tw-primary font-mono text-sm" {...props} />,
                              }}
                            >
                              {selectedComponent.description}
@@ -697,11 +697,11 @@ const StudyGuide = () => {
                       </div>
 
                       {selectedComponent.wiring_guide && (
-                        <div className="bg-slate-800/30 rounded-3xl p-6 md:p-8 border border-slate-700/50 hover:border-blue-500/30 transition-colors mt-8">
-                          <h2 className="flex items-center gap-3 text-2xl font-bold text-blue-400 mb-6 m-0">
-                            <Activity className="fill-blue-400/20" /> Wiring Guide
+                        <div className="bg-tw-surface-2/30 rounded-3xl p-6 md:p-8 border border-tw-border/50 hover:border-tw-primary/30 transition-colors mt-8">
+                          <h2 className="flex items-center gap-3 text-2xl font-bold text-tw-primary mb-6 m-0">
+                            <Activity className="fill-tw-primary/20" /> Wiring Guide
                           </h2>
-                          <div className="bg-slate-950 rounded-xl p-4 md:p-6 font-mono text-sm text-blue-200 border border-slate-800 shadow-inner overflow-x-auto">
+                          <div className="bg-tw-surface-3 rounded-xl p-4 md:p-6 font-mono text-sm text-tw-text-secondary border border-tw-border shadow-inner overflow-x-auto">
                              <ReactMarkdown components={{
                                  ul: ({...props}) => <ul className="list-disc pl-6 space-y-2" {...props} />,
                                  ol: ({...props}) => <ol className="list-decimal pl-6 space-y-2" {...props} />,
@@ -723,7 +723,7 @@ const StudyGuide = () => {
 
       {/* Image Modal */}
       {selectedImage && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/90 backdrop-blur-sm" onClick={() => setSelectedImage(null)}>
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-tw-text/50 backdrop-blur-sm" onClick={() => setSelectedImage(null)}>
           <div className="relative max-w-5xl max-h-[90vh] w-full flex items-center justify-center">
             <button 
               onClick={() => setSelectedImage(null)}

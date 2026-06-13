@@ -5,7 +5,7 @@ const ConfirmDialog = ({ open, title, message, confirmLabel = 'Delete', onConfir
   if (!open) return null;
 
   return (
-    <div className="fixed inset-0 z-[70] flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm" onClick={onCancel}>
+    <div className="fixed inset-0 z-[70] flex items-center justify-center p-4 bg-tw-text/50 backdrop-blur-sm" onClick={onCancel}>
       <div
         className="card-elevated w-full max-w-sm p-6 relative"
         onClick={(e) => e.stopPropagation()}
@@ -28,7 +28,7 @@ const ConfirmDialog = ({ open, title, message, confirmLabel = 'Delete', onConfir
           <button onClick={onCancel} disabled={loading} className="btn btn-secondary flex-1">
             Cancel
           </button>
-          <button onClick={onConfirm} disabled={loading} className="btn flex-1 bg-tw-danger text-white hover:opacity-90">
+          <button onClick={onConfirm} disabled={loading} className="btn flex-1 !text-white bg-tw-danger hover:opacity-90">
             {loading ? 'Deleting...' : confirmLabel}
           </button>
         </div>
